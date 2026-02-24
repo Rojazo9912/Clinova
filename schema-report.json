@@ -1,0 +1,142 @@
+{
+  "clinics": {
+    "status": "exists",
+    "sample_row": {
+      "id": "283a0771-1e42-4233-8164-f1a440cc1368",
+      "name": "Clinova Administración",
+      "slug": "clinova-admin",
+      "email": "admin@clinova.com",
+      "phone": null,
+      "website": null,
+      "address": null,
+      "city": null,
+      "state": null,
+      "postal_code": null,
+      "country": "MX",
+      "timezone": "America/Mexico_City",
+      "currency": "MXN",
+      "language": "es",
+      "business_hours": {
+        "friday": {
+          "open": "08:00",
+          "close": "18:00",
+          "closed": false
+        },
+        "monday": {
+          "open": "08:00",
+          "close": "18:00",
+          "closed": false
+        },
+        "sunday": {
+          "open": "09:00",
+          "close": "14:00",
+          "closed": true
+        },
+        "tuesday": {
+          "open": "08:00",
+          "close": "18:00",
+          "closed": false
+        },
+        "saturday": {
+          "open": "09:00",
+          "close": "14:00",
+          "closed": false
+        },
+        "thursday": {
+          "open": "08:00",
+          "close": "18:00",
+          "closed": false
+        },
+        "wednesday": {
+          "open": "08:00",
+          "close": "18:00",
+          "closed": false
+        }
+      },
+      "default_appointment_duration": 60,
+      "allow_online_booking": false,
+      "require_payment_upfront": false,
+      "subscription_tier": "enterprise",
+      "subscription_status": "active",
+      "trial_ends_at": null,
+      "subscription_started_at": null,
+      "next_payment_date": null,
+      "max_users": 999,
+      "max_patients": 999999,
+      "logo_url": null,
+      "primary_color": "#3B82F6",
+      "stripe_customer_id": null,
+      "stripe_subscription_id": null,
+      "is_active": true,
+      "created_at": "2026-01-27T16:14:21.832812+00:00",
+      "updated_at": "2026-01-27T16:18:35.574723+00:00",
+      "created_by": null
+    }
+  },
+  "profiles": {
+    "status": "error_or_missing",
+    "details": "Could not find the table 'public.profiles' in the schema cache",
+    "code": "PGRST205"
+  },
+  "patients": {
+    "status": "exists",
+    "sample_row": {
+      "id": "6c97a6d3-6dbb-41b1-b84c-e173cfcb3258",
+      "clinic_id": "5306c71e-b94d-42a6-9ee2-dcac07b1e2c7",
+      "auth_user_id": "c673bcff-bf54-4156-9a2f-750f7cfc6d51",
+      "first_name": "Miguel ",
+      "last_name": "Lopez",
+      "email": "miguel.lopez.is@unipolidgo.edu.mx",
+      "phone": "6182692461",
+      "date_of_birth": "1999-01-28",
+      "gender": null,
+      "address": null,
+      "city": null,
+      "state": null,
+      "postal_code": null,
+      "emergency_contact_name": null,
+      "emergency_contact_phone": null,
+      "emergency_contact_relationship": null,
+      "medical_history": null,
+      "notes": null,
+      "primary_therapist_id": null,
+      "active": true,
+      "created_at": "2026-01-28T20:13:06.395344+00:00",
+      "updated_at": "2026-01-29T15:17:39.880841+00:00",
+      "created_by": null
+    }
+  },
+  "appointments": {
+    "status": "exists",
+    "sample_row": {
+      "id": "f5a92ddc-7b43-4974-97c0-aa4d04b1cc35",
+      "clinic_id": "5306c71e-b94d-42a6-9ee2-dcac07b1e2c7",
+      "patient_id": "6c97a6d3-6dbb-41b1-b84c-e173cfcb3258",
+      "therapist_id": "82e6893c-308a-4149-90ca-1aed26ca5dba",
+      "title": null,
+      "start_time": "2026-01-29T21:59:00+00:00",
+      "end_time": "2026-01-29T22:59:00+00:00",
+      "status": "scheduled",
+      "notes": "",
+      "created_at": "2026-01-29T21:59:52.416397+00:00",
+      "updated_at": "2026-01-29T21:59:52.416397+00:00",
+      "payment_status": "pending",
+      "stripe_session_id": null
+    }
+  },
+  "medical_records": {
+    "status": "error_or_missing",
+    "details": "Could not find the table 'public.medical_records' in the schema cache",
+    "code": "PGRST205"
+  },
+  "users": {
+    "status": "error_or_missing",
+    "details": "Could not find the table 'public.users' in the schema cache",
+    "code": "PGRST205"
+  },
+  "citas": {
+    "status": "error_or_missing",
+    "details": "Could not find the table 'public.citas' in the schema cache",
+    "code": "PGRST205"
+  }
+}
