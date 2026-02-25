@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createPatient, updatePatient } from '@/lib/actions/patients'
 import { grantPortalAccess } from '@/lib/actions/patient-portal-access'
 import { X, User, Phone, Mail, Calendar, MapPin, Shield, Heart } from 'lucide-react'
@@ -31,6 +32,7 @@ interface PatientModalProps {
 }
 
 export default function PatientModal({ isOpen, onClose, onSuccess, patient }: PatientModalProps) {
+    const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const isEditing = !!patient?.id
@@ -65,15 +67,17 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
         try {
             if (isEditing && patient?.id) {
                 await updatePatient(patient.id, data)
+                onSuccess()
+                onClose()
             } else {
                 const newPatient = await createPatient(data)
                 if (grantAccess && newPatient.email) {
                     await grantPortalAccess(newPatient.id)
                 }
+                onSuccess()
+                onClose()
+                router.push(`/dashboard/patients/${newPatient.id}/intake`)
             }
-
-            onSuccess()
-            onClose()
         } catch (err) {
             setError(isEditing ? 'Error al actualizar el paciente.' : 'Error al crear el paciente.')
             console.error(err)
