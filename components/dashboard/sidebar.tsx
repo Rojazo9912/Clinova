@@ -176,7 +176,6 @@ export function DashboardSidebar({ permissions = [] }: DashboardSidebarProps) {
                     <LogOut className="h-5 w-5" />
                     Cerrar Sesión
                 </button>
-                <div className="text-xs text-slate-700 text-center pt-2">v2.1 (RLS Fix)</div>
             </div>
         </div>
     )
