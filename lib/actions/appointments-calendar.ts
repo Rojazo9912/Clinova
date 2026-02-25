@@ -117,7 +117,6 @@ export async function createQuickAppointment(data: {
                 clinic_id: profile.clinic_id,
                 start_time: startIso,
                 end_time: endIso,
-                status: 'pending',
                 notes: data.notes || null
             }).select().single()
 
