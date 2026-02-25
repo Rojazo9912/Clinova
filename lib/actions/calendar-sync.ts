@@ -58,3 +58,52 @@ export async function exportAppointmentToGoogleCalendar(
         return { error: error.message || 'Unknown error' };
     }
 }
+
+export async function fetchGoogleCalendarEvents(userId: string, timeMin: Date, timeMax: Date) {
+    const supabase = await createClient();
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('gcal_access_token, gcal_refresh_token, gcal_token_expiry')
+        .eq('id', userId)
+        .single();
+
+    if (!profile || !profile.gcal_refresh_token) {
+        return []; // No conectado
+    }
+
+    try {
+        const oauth2Client = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET
+        );
+
+        oauth2Client.setCredentials({
+            access_token: profile.gcal_access_token,
+            refresh_token: profile.gcal_refresh_token,
+            expiry_date: profile.gcal_token_expiry ? new Date(profile.gcal_token_expiry).getTime() : null,
+        });
+
+        const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+        const response = await calendar.events.list({
+            calendarId: 'primary',
+            timeMin: timeMin.toISOString(),
+            timeMax: timeMax.toISOString(),
+            singleEvents: true,
+            orderBy: 'startTime',
+        });
+
+        const events = response.data.items || [];
+
+        return events.map((event) => ({
+            id: `gcal-${event.id}`,
+            summary: event.summary || 'Ocupado',
+            start: event.start?.dateTime || event.start?.date,
+            end: event.end?.dateTime || event.end?.date,
+        })).filter(e => e.start && e.end); // Solo eventos con fechas válidas
+    } catch (error: any) {
+        console.error('Error fetched eventos de Google Calendar:', error.message || error);
+        return [];
+    }
+}

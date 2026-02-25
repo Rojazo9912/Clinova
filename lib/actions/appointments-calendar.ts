@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import { exportAppointmentToGoogleCalendar } from './calendar-sync'
+import { exportAppointmentToGoogleCalendar, fetchGoogleCalendarEvents } from './calendar-sync'
 
 export async function getAppointmentsForCalendar() {
     const supabase = await createClient()
@@ -189,4 +189,31 @@ export async function getServicesForCalendar() {
         .order('name')
 
     return services || []
+}
+
+export async function getGoogleCalendarBlocks(startDate: Date, endDate: Date) {
+    const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return []
+
+    // Llamar a nuestra función de sincronización que interactúa con Google APIs
+    const gcalEvents = await fetchGoogleCalendarEvents(user.id, startDate, endDate)
+
+    // Formatear los eventos al formato que espera react-big-calendar y la Agenda de Clinova
+    return gcalEvents.map((event: any) => ({
+        id: event.id,
+        title: `🔵 ${event.summary}`,
+        start: new Date(event.start),
+        end: new Date(event.end),
+        resource: {
+            patientId: '',
+            patientName: '',
+            serviceId: '',
+            serviceName: '',
+            status: 'blocked',
+            isBlock: true,
+            isGcal: true // Bandera útil para UI
+        }
+    }))
 }

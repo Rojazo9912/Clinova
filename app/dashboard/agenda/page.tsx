@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import AdvancedCalendar from '@/components/calendar/AdvancedCalendar'
 import AvailabilityBlockModal from '@/components/calendar/AvailabilityBlockModal'
 import RecurringAppointmentModal from '@/components/calendar/RecurringAppointmentModal'
-import { getAppointmentsForCalendar, updateAppointmentTime, createQuickAppointment, getPatientsForCalendar, getServicesForCalendar } from '@/lib/actions/appointments-calendar'
+import { getAppointmentsForCalendar, updateAppointmentTime, createQuickAppointment, getPatientsForCalendar, getServicesForCalendar, getGoogleCalendarBlocks } from '@/lib/actions/appointments-calendar'
 import { getAvailabilityBlocks, checkTimeSlotAvailability } from '@/lib/actions/availability'
 import { SlotInfo } from 'react-big-calendar'
 import { X, Plus, Calendar as CalendarIcon, User, Clock, Ban, Repeat, Send } from 'lucide-react'
@@ -22,6 +22,7 @@ interface CalendarEvent {
         serviceName: string
         status: string
         isBlock?: boolean
+        isGcal?: boolean
     }
 }
 
@@ -57,11 +58,12 @@ export default function AgendaPage() {
         const startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1)
         const endDate = new Date(now.getFullYear(), now.getMonth() + 2, 0)
 
-        const [appointmentsData, patientsData, servicesData, blocksData] = await Promise.all([
+        const [appointmentsData, patientsData, servicesData, blocksData, gcalBlocks] = await Promise.all([
             getAppointmentsForCalendar(),
             getPatientsForCalendar(),
             getServicesForCalendar(),
-            getAvailabilityBlocks(startDate, endDate)
+            getAvailabilityBlocks(startDate, endDate),
+            getGoogleCalendarBlocks(startDate, endDate)
         ])
 
         // Convert blocks to calendar events
@@ -81,7 +83,7 @@ export default function AgendaPage() {
             }
         }))
 
-        setEvents([...appointmentsData, ...blockEvents])
+        setEvents([...appointmentsData, ...blockEvents, ...gcalBlocks])
         setPatients(patientsData)
         setServices(servicesData)
 
@@ -95,6 +97,12 @@ export default function AgendaPage() {
 
     // Handle event drop (drag & drop)
     const handleEventDrop = useCallback(async (eventId: string, start: Date, end: Date) => {
+        // Prevent moving GCal blocks or normal blocks
+        if (eventId.toString().startsWith('block-') || eventId.toString().startsWith('gcal-')) {
+            alert('No puedes mover bloqueos de calendario.')
+            return
+        }
+
         setLoading(true)
         try {
             await updateAppointmentTime(eventId, start, end)
@@ -109,6 +117,11 @@ export default function AgendaPage() {
 
     // Handle event resize
     const handleEventResize = useCallback(async (eventId: string, start: Date, end: Date) => {
+        if (eventId.toString().startsWith('block-') || eventId.toString().startsWith('gcal-')) {
+            alert('No puedes redimensionar bloqueos de calendario.')
+            return
+        }
+
         setLoading(true)
         try {
             await updateAppointmentTime(eventId, start, end)
@@ -128,6 +141,17 @@ export default function AgendaPage() {
         // If in Block Mode, open Block Modal immediately
         if (isBlockMode) {
             setIsBlockModalOpen(true)
+            return
+        }
+
+        // Si hay eventos de Google Calendar en ese horario, también bloqueamos
+        const isGcalConflict = events.some(e =>
+            e.resource?.isGcal &&
+            (slotInfo.start < new Date(e.end) && slotInfo.end > new Date(e.start))
+        )
+
+        if (isGcalConflict) {
+            alert('Este horario se cruza con un evento de tu Google Calendar.')
             return
         }
 
@@ -227,8 +251,8 @@ export default function AgendaPage() {
                     <button
                         onClick={() => setIsBlockMode(!isBlockMode)}
                         className={`px-4 py-2 rounded-lg transition flex items-center gap-2 border ${isBlockMode
-                                ? 'bg-red-100 text-red-700 border-red-200 hover:bg-red-200'
-                                : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                            ? 'bg-red-100 text-red-700 border-red-200 hover:bg-red-200'
+                            : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
                             }`}
                     >
                         <Ban className={`h-4 w-4 ${isBlockMode ? 'text-red-600' : 'text-gray-500'}`} />
