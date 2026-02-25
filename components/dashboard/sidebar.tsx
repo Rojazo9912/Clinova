@@ -112,7 +112,7 @@ export function DashboardSidebar({ permissions = [] }: DashboardSidebarProps) {
             {/* Ambient Background Glow */}
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-900/0 to-slate-900/0 pointer-events-none" />
 
-            <div className="px-6 py-4 flex-1 z-10">
+            <div className="px-6 py-4 flex-1 z-10 overflow-y-auto overflow-x-hidden">
                 <Link href="/dashboard" className="flex items-center gap-2 mb-10 group">
                     <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/30 transition-all duration-300">
                         <span className="font-bold text-white text-lg">C</span>
