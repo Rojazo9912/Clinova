@@ -5,7 +5,7 @@ import { createUser, updateUser } from '@/lib/actions/users'
 import { getRoles } from '@/lib/actions/roles'
 import { useEffect } from 'react'
 
-import { X } from 'lucide-react'
+import { X, CheckCircle2, Copy } from 'lucide-react'
 
 interface UserModalProps {
     isOpen: boolean
@@ -18,6 +18,7 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
     const [loading, setLoading] = useState(false)
     const [roles, setRoles] = useState<any[]>([])
     const [loadingRoles, setLoadingRoles] = useState(false)
+    const [generatedPassword, setGeneratedPassword] = useState<string | null>(null)
 
     useEffect(() => {
         if (isOpen) {
@@ -37,8 +38,10 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
     }, [isOpen])
 
 
-
-    if (!isOpen) return null
+    if (!isOpen) {
+        if (generatedPassword) setGeneratedPassword(null) // reset on strict close
+        return null
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -49,16 +52,68 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
 
             if (user) {
                 await updateUser(user.id, formData)
+                onSuccess()
             } else {
-                await createUser(formData)
+                const result = await createUser(formData)
+                if (result?.password) {
+                    setGeneratedPassword(result.password)
+                } else {
+                    onSuccess()
+                }
             }
-
-            onSuccess()
-        } catch (error) {
-            alert('Error al guardar usuario')
+        } catch (error: any) {
+            alert(error.message || 'Error al guardar usuario')
         } finally {
             setLoading(false)
         }
+    }
+
+    const handleCopyPassword = () => {
+        if (generatedPassword) {
+            navigator.clipboard.writeText(generatedPassword)
+            alert('¡Contraseña copiada al portapapeles!')
+        }
+    }
+
+    const handleFinalClose = () => {
+        setGeneratedPassword(null)
+        onSuccess()
+    }
+
+    if (generatedPassword) {
+        return (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-xl p-6 w-full max-w-md text-center space-y-4">
+                    <div className="flex justify-center">
+                        <div className="h-12 w-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                            <CheckCircle2 className="h-6 w-6" />
+                        </div>
+                    </div>
+                    <h2 className="text-xl font-bold">¡Usuario Creado!</h2>
+                    <p className="text-slate-600 text-sm">
+                        Se ha generado una contraseña segura para este usuario. Por favor, <b>cópiala y envíasela al fisioterapeuta</b> para que pueda iniciar sesión. Solo se mostrará esta vez.
+                    </p>
+
+                    <div className="bg-slate-50 border p-4 rounded-lg flex items-center justify-between">
+                        <code className="text-lg font-mono text-slate-800">{generatedPassword}</code>
+                        <button
+                            onClick={handleCopyPassword}
+                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition"
+                            title="Copiar contraseña"
+                        >
+                            <Copy className="h-5 w-5" />
+                        </button>
+                    </div>
+
+                    <button
+                        onClick={handleFinalClose}
+                        className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    >
+                        Entendido, cerrar
+                    </button>
+                </div>
+            </div>
+        )
     }
 
     return (

@@ -1,7 +1,9 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
+import crypto from 'crypto'
 
 export async function getUsers() {
     const supabase = await createClient()
@@ -34,6 +36,7 @@ export async function getUsers() {
 
 export async function createUser(formData: FormData) {
     const supabase = await createClient()
+    const supabaseAdmin = createAdminClient()
 
     const email = formData.get('email') as string
     const fullName = formData.get('full_name') as string
@@ -51,9 +54,31 @@ export async function createUser(formData: FormData) {
 
     if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
 
-    const { data: newProfile, error } = await supabase
+    // Generar contraseña segura (12 caracteres)
+    const securePassword = crypto.randomBytes(8).toString('base64').replace(/[^a-zA-Z0-9]/g, '').slice(0, 10) + 'A1!'
+
+    // Crear usuario en Supabase Auth
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password: securePassword,
+        email_confirm: true,
+        user_metadata: {
+            full_name: fullName
+        }
+    })
+
+    if (authError) {
+        console.error('Error creando en Auth:', authError)
+        throw new Error(`Error en Auth: ${authError.message}`)
+    }
+
+    if (!authData.user) throw new Error('No se devolvió ID de usuario desde Auth')
+
+    // Insertar el perfil conectado al ID del usuario de Auth recién creado
+    const { data: newProfile, error } = await supabaseAdmin
         .from('profiles')
         .insert({
+            id: authData.user.id,
             full_name: fullName,
             email,
             phone,
@@ -63,10 +88,14 @@ export async function createUser(formData: FormData) {
         .select()
         .single()
 
-    if (error) throw error
+    if (error) {
+        // Rollback opcional, pero al menos lo registramos
+        console.error('Error insertando perfil:', error)
+        throw new Error(`Error en Profiles: ${error.message}`)
+    }
 
     revalidatePath('/dashboard/users')
-    return newProfile
+    return { profile: newProfile, password: securePassword }
 }
 
 export async function updateUser(id: string, formData: FormData) {
