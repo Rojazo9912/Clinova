@@ -27,6 +27,7 @@ interface CalendarEvent {
         physiotherapistId?: string
         isBlock?: boolean
         blockId?: string
+        isGcal?: boolean
     }
 }
 
@@ -71,15 +72,16 @@ export default function AdvancedCalendar({
         let backgroundColor = '#3b82f6' // Default blue
 
         if (isBlock) {
-            // Blocked slots are gray with stripes
+            // Reutilizar estilo para bloqueos de GCal
+            const isGcal = event.resource?.isGcal;
             return {
                 style: {
-                    backgroundColor: '#9ca3af',
+                    backgroundColor: isGcal ? '#4f46e5' : '#9ca3af', // Indigo para Gcal, Gris para bloqueos locales
                     backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.1) 10px, rgba(255,255,255,.1) 20px)',
                     borderRadius: '6px',
-                    opacity: 0.8,
+                    opacity: isGcal ? 0.9 : 0.8,
                     color: 'white',
-                    border: '2px dashed #6b7280',
+                    border: isGcal ? '2px solid #4338ca' : '2px dashed #6b7280',
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: '600',

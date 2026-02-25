@@ -95,13 +95,14 @@ export async function createQuickAppointment(data: {
 
         const { data: profile } = await supabase
             .from('profiles')
-            .select('clinic_id')
+            .select('clinic_id, clinics(name)')
             .eq('id', user.id)
             .single()
 
         console.log('Profile found:', profile)
 
         if (!profile?.clinic_id) throw new Error('No clinic found')
+        const clinicName = (profile.clinics as any)?.name || 'Clinova'
 
         const startIso = new Date(data.startTime).toISOString()
         const endIso = new Date(data.endTime).toISOString()
@@ -130,7 +131,7 @@ export async function createQuickAppointment(data: {
         // Exportar a Google Calendar de forma síncrona para atrapar errores
         console.log('Starting Google Calendar Export...')
         const gcalResponse = await exportAppointmentToGoogleCalendar(user.id, {
-            title: 'Cita en Clinova',
+            title: `Cita en ${clinicName}`,
             start: new Date(data.startTime),
             end: new Date(data.endTime),
             description: `Paciente ID: ${data.patientId || 'No asignado'}\nCita creada desde la Agenda de Clinova.`
