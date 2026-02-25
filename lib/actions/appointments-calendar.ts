@@ -84,46 +84,65 @@ export async function createQuickAppointment(data: {
 }) {
     const supabase = await createClient()
 
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+    try {
+        console.log('--- START createQuickAppointment ---')
+        console.log('Received data:', data)
 
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('clinic_id')
-        .eq('id', user.id)
-        .single()
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) throw new Error('Not authenticated')
 
-    if (!profile?.clinic_id) throw new Error('No clinic found')
+        console.log('User authenticated:', user.id)
 
-    const startIso = new Date(data.startTime).toISOString()
-    const endIso = new Date(data.endTime).toISOString()
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('clinic_id')
+            .eq('id', user.id)
+            .single()
 
-    const { error, data: newApt } = await supabase
-        .from('appointments')
-        .insert({
-            patient_id: data.patientId || null,
-            service_id: data.serviceId || null,
-            clinic_id: profile.clinic_id,
-            start_time: startIso,
-            end_time: endIso,
-            status: 'pending',
-            notes: data.notes || null
-        }).select().single()
+        console.log('Profile found:', profile)
 
-    if (error) {
-        console.error('Error creating appointment:', error)
-        throw new Error('Failed to create appointment: ' + error.message)
+        if (!profile?.clinic_id) throw new Error('No clinic found')
+
+        const startIso = new Date(data.startTime).toISOString()
+        const endIso = new Date(data.endTime).toISOString()
+
+        console.log('Dates parsed:', { startIso, endIso })
+
+        console.log('Inserting to Supabase DB...')
+        const { error, data: newApt } = await supabase
+            .from('appointments')
+            .insert({
+                patient_id: data.patientId || null,
+                service_id: data.serviceId || null,
+                clinic_id: profile.clinic_id,
+                start_time: startIso,
+                end_time: endIso,
+                status: 'pending',
+                notes: data.notes || null
+            }).select().single()
+
+        if (error) {
+            console.error('Supabase DB Insert Error:', error)
+            throw new Error('Database Error: ' + error.message)
+        }
+
+        console.log('Appointment created successfully:', newApt)
+
+        // Exportar a Google Calendar de forma asíncrona
+        console.log('Starting Google Calendar Export...')
+        exportAppointmentToGoogleCalendar(user.id, {
+            title: 'Cita en Clinova',
+            start: new Date(data.startTime),
+            end: new Date(data.endTime),
+            description: `Paciente ID: ${data.patientId || 'No asignado'}\nCita creada desde la Agenda de Clinova.`
+        }).catch(err => console.error('GCal Export Error:', err))
+
+        revalidatePath('/dashboard/agenda')
+        console.log('--- END createQuickAppointment ---')
+    } catch (error: any) {
+        console.error('CRITICAL ERROR in createQuickAppointment:', error)
+        throw new Error(error.message || 'Unknown Server Error in createQuickAppointment')
     }
-
-    // Exportar a Google Calendar de forma asíncrona
-    exportAppointmentToGoogleCalendar(user.id, {
-        title: 'Cita en Clinova',
-        start: new Date(data.startTime),
-        end: new Date(data.endTime),
-        description: `Paciente ID: ${data.patientId || 'No asignado'}\nCita creada desde la Agenda de Clinova.`
-    }).catch(console.error)
-
-    revalidatePath('/dashboard/agenda')
 }
 
 export async function getPatientsForCalendar() {
