@@ -38,25 +38,23 @@ export async function exportAppointmentToGoogleCalendar(
             description: appointmentData.description || 'Cita generada desde Clinova.',
             start: {
                 dateTime: appointmentData.start.toISOString(),
-                timeZone: 'America/Mexico_City', // Ajustable según necesidad
             },
             end: {
                 dateTime: appointmentData.end.toISOString(),
-                timeZone: 'America/Mexico_City',
             },
         };
+
+        console.log('Sending event payload to GCal:', JSON.stringify(event, null, 2))
 
         const response = await calendar.events.insert({
             calendarId: 'primary',
             requestBody: event,
         });
 
-        // Opcional: Si las credenciales se refrescaron, podríamos actualizar la base de datos
-        // oauth2Client.on('tokens', (tokens) => { ... }) 
-
+        console.log('Event successfully inserted:', response.data.htmlLink)
         return response.data;
-    } catch (error) {
-        console.error('Error exportando evento a Google Calendar:', error);
-        return null;
+    } catch (error: any) {
+        console.error('Error exportando evento a Google Calendar:', error.message || error);
+        return { error: error.message || 'Unknown error' };
     }
 }

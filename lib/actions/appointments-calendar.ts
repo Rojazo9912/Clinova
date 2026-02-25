@@ -127,14 +127,15 @@ export async function createQuickAppointment(data: {
 
         console.log('Appointment created successfully:', newApt)
 
-        // Exportar a Google Calendar de forma asíncrona
+        // Exportar a Google Calendar de forma síncrona para atrapar errores
         console.log('Starting Google Calendar Export...')
-        exportAppointmentToGoogleCalendar(user.id, {
+        const gcalResponse = await exportAppointmentToGoogleCalendar(user.id, {
             title: 'Cita en Clinova',
             start: new Date(data.startTime),
             end: new Date(data.endTime),
             description: `Paciente ID: ${data.patientId || 'No asignado'}\nCita creada desde la Agenda de Clinova.`
-        }).catch(err => console.error('GCal Export Error:', err))
+        })
+        console.log('GCal Response:', gcalResponse)
 
         revalidatePath('/dashboard/agenda')
         console.log('--- END createQuickAppointment ---')
