@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { exportAppointmentToGoogleCalendar } from './calendar-sync'
 
 export async function getAppointmentsForCalendar() {
     const supabase = await createClient()
@@ -77,8 +78,8 @@ export async function updateAppointmentTime(appointmentId: string, startTime: Da
 export async function createQuickAppointment(data: {
     patientId: string
     serviceId: string
-    startTime: Date
-    endTime: Date
+    startTime: Date | string
+    endTime: Date | string
     notes?: string
 }) {
     const supabase = await createClient()
@@ -94,22 +95,33 @@ export async function createQuickAppointment(data: {
 
     if (!profile?.clinic_id) throw new Error('No clinic found')
 
-    const { error } = await supabase
+    const startIso = new Date(data.startTime).toISOString()
+    const endIso = new Date(data.endTime).toISOString()
+
+    const { error, data: newApt } = await supabase
         .from('appointments')
         .insert({
-            patient_id: data.patientId,
-            service_id: data.serviceId,
+            patient_id: data.patientId || null,
+            service_id: data.serviceId || null,
             clinic_id: profile.clinic_id,
-            start_time: data.startTime.toISOString(),
-            end_time: data.endTime.toISOString(),
+            start_time: startIso,
+            end_time: endIso,
             status: 'pending',
             notes: data.notes || null
-        })
+        }).select().single()
 
     if (error) {
         console.error('Error creating appointment:', error)
-        throw new Error('Failed to create appointment')
+        throw new Error('Failed to create appointment: ' + error.message)
     }
+
+    // Exportar a Google Calendar de forma asíncrona
+    exportAppointmentToGoogleCalendar(user.id, {
+        title: 'Cita en Clinova',
+        start: new Date(data.startTime),
+        end: new Date(data.endTime),
+        description: `Paciente ID: ${data.patientId || 'No asignado'}\nCita creada desde la Agenda de Clinova.`
+    }).catch(console.error)
 
     revalidatePath('/dashboard/agenda')
 }
