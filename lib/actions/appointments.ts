@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
+import { exportAppointmentToGoogleCalendar } from './calendar-sync'
 
 export async function getAppointments(start: Date, end: Date) {
     const cookieStore = await cookies()
@@ -54,17 +55,25 @@ export async function createAppointment(data: {
 
     if (!profile?.clinic_id) throw new Error('No clinic found')
 
-    const { error } = await supabase.from('appointments').insert({
+    const { error, data: newApt } = await supabase.from('appointments').insert({
         start_time: data.start.toISOString(),
         end_time: data.end.toISOString(),
         patient_id: data.patient_id || null,
         clinic_id: profile.clinic_id
-    })
+    }).select().single()
 
     if (error) {
         console.error('Error creating appointment:', error)
         throw new Error('Failed to create appointment')
     }
+
+    // Exportar a Google Calendar de forma asíncrona sin bloquear
+    exportAppointmentToGoogleCalendar(user.id, {
+        title: 'Cita en Clinova',
+        start: data.start,
+        end: data.end,
+        description: `Paciente ID: ${data.patient_id || 'No asignado'}\nCita creada desde Clinova.`
+    }).catch(console.error)
 }
 
 export async function updateAppointment(id: string, data: {
