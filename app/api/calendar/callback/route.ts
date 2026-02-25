@@ -10,9 +10,7 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'Falta código de autorización' }, { status: 400 });
     }
 
-    const baseUrl = process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
-        : process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || new URL(request.url).origin;
 
     try {
         const oauth2Client = new google.auth.OAuth2(
