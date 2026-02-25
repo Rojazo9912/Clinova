@@ -99,6 +99,7 @@ export async function fetchGoogleCalendarEvents(userId: string, timeMin: Date, t
         return events.map((event) => ({
             id: `gcal-${event.id}`,
             summary: event.summary || 'Ocupado',
+            description: event.description || '',
             start: event.start?.dateTime || event.start?.date,
             end: event.end?.dateTime || event.end?.date,
         })).filter(e => e.start && e.end); // Solo eventos con fechas válidas

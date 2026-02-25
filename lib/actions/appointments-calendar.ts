@@ -202,19 +202,26 @@ export async function getGoogleCalendarBlocks(startDate: Date, endDate: Date) {
     const gcalEvents = await fetchGoogleCalendarEvents(user.id, startDate, endDate)
 
     // Formatear los eventos al formato que espera react-big-calendar y la Agenda de Clinova
-    return gcalEvents.map((event: any) => ({
-        id: event.id,
-        title: `🔵 ${event.summary}`,
-        start: new Date(event.start),
-        end: new Date(event.end),
-        resource: {
-            patientId: '',
-            patientName: '',
-            serviceId: '',
-            serviceName: '',
-            status: 'blocked',
-            isBlock: true,
-            isGcal: true // Bandera útil para UI
-        }
-    }))
+    return gcalEvents
+        .filter((event: any) => {
+            // No importar eventos que fueron creados por la propia Clinova 
+            // (evita tener la cita y el bloqueo idénticos encimados)
+            const desc = event.description || ''
+            return !desc.includes('Cita creada desde la Agenda de Clinova')
+        })
+        .map((event: any) => ({
+            id: event.id,
+            title: `🔵 ${event.summary}`,
+            start: new Date(event.start),
+            end: new Date(event.end),
+            resource: {
+                patientId: '',
+                patientName: '',
+                serviceId: '',
+                serviceName: '',
+                status: 'blocked',
+                isBlock: true,
+                isGcal: true // Bandera útil para UI
+            }
+        }))
 }

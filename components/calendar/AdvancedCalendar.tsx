@@ -191,6 +191,7 @@ export default function AdvancedCalendar({
                     dayRangeHeaderFormat: ({ start, end }) =>
                         `${moment(start).format('DD MMM')} - ${moment(end).format('DD MMM YYYY')}`
                 }}
+                dayLayoutAlgorithm="no-overlap"
                 components={{
                     toolbar: CustomToolbar
                 }}
