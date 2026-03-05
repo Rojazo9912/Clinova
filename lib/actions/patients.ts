@@ -94,7 +94,27 @@ export async function searchPatients(query: string) {
         return []
     }
 
-    return data
+    if (!data || data.length === 0) return []
+
+    // Enrich with last session date per patient
+    const patientIds = data.map(p => p.id)
+    const { data: sessions } = await supabase
+        .from('therapy_sessions')
+        .select('patient_id, session_date')
+        .in('patient_id', patientIds)
+        .order('session_date', { ascending: false })
+
+    const lastSessionMap: Record<string, string> = {}
+    for (const s of sessions || []) {
+        if (!lastSessionMap[s.patient_id]) {
+            lastSessionMap[s.patient_id] = s.session_date
+        }
+    }
+
+    return data.map(p => ({
+        ...p,
+        last_session_date: lastSessionMap[p.id] ?? null,
+    }))
 }
 
 export async function updatePatient(id: string, data: {

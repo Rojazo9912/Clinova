@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { startOfMonth, endOfMonth, subMonths, format } from 'date-fns'
+import { startOfMonth, endOfMonth, subMonths, subDays, format } from 'date-fns'
 
 export async function getDashboardMetrics() {
     const supabase = await createClient()
@@ -218,4 +218,86 @@ export async function getCurrentUserProfile() {
         .single()
 
     return profile?.full_name ?? null
+}
+
+export async function getBusinessAlerts() {
+    const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return null
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .maybeSingle()
+
+    if (!profile?.clinic_id) return null
+
+    const clinicId = profile.clinic_id
+    const now = new Date()
+    const monthStart = startOfMonth(now)
+    const monthEnd = endOfMonth(now)
+    const thirtyDaysAgo = subDays(now, 30)
+
+    // Pending collections: active plans with package_price > paid_amount
+    const { data: activePlans } = await supabase
+        .from('treatment_plans')
+        .select('package_price, paid_amount')
+        .eq('clinic_id', clinicId)
+        .eq('status', 'active')
+        .not('package_price', 'is', null)
+
+    const pendingPlans = (activePlans || []).filter(
+        p => Number(p.package_price) > Number(p.paid_amount)
+    )
+    const pendingAmount = pendingPlans.reduce(
+        (sum, p) => sum + (Number(p.package_price) - Number(p.paid_amount)), 0
+    )
+
+    // Inactive patients: patients with no session in last 30 days
+    const [{ count: totalPatients }, { data: recentSessions }] = await Promise.all([
+        supabase
+            .from('patients')
+            .select('id', { count: 'exact', head: true })
+            .eq('clinic_id', clinicId),
+        supabase
+            .from('therapy_sessions')
+            .select('patient_id')
+            .eq('clinic_id', clinicId)
+            .gte('session_date', thirtyDaysAgo.toISOString())
+    ])
+
+    const activePatientIds = new Set((recentSessions || []).map(s => s.patient_id))
+    const inactivePatients = Math.max(0, (totalPatients || 0) - activePatientIds.size)
+
+    // Completion rate: completed / total non-cancelled appointments this month
+    const [{ count: completedThisMonth }, { count: scheduledThisMonth }] = await Promise.all([
+        supabase
+            .from('appointments')
+            .select('id', { count: 'exact', head: true })
+            .eq('clinic_id', clinicId)
+            .eq('status', 'completed')
+            .gte('start_time', monthStart.toISOString())
+            .lte('start_time', monthEnd.toISOString()),
+        supabase
+            .from('appointments')
+            .select('id', { count: 'exact', head: true })
+            .eq('clinic_id', clinicId)
+            .neq('status', 'cancelled')
+            .gte('start_time', monthStart.toISOString())
+            .lte('start_time', monthEnd.toISOString())
+    ])
+
+    const completionRate = scheduledThisMonth
+        ? Math.round(((completedThisMonth || 0) / scheduledThisMonth) * 100)
+        : 0
+
+    return {
+        pendingAmount,
+        pendingPlansCount: pendingPlans.length,
+        inactivePatients,
+        completionRate,
+        scheduledThisMonth: scheduledThisMonth || 0,
+    }
 }

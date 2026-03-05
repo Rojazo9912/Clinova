@@ -1,30 +1,38 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getServices, getPayments, getFinancialReport } from '@/lib/actions/finance'
-import { searchPatients } from '@/lib/actions/patients'
+import { useSearchParams } from 'next/navigation'
+import { getServices, getPayments, getFinancialReport, getPendingCollections } from '@/lib/actions/finance'
 import ServiceModal from '@/components/finance/ServiceModal'
 import PaymentModal from '@/components/finance/PaymentModal'
 import PageHeader from '@/components/ui/PageHeader'
 import { generateFinancialReport } from '@/lib/pdf/reports'
-import { DollarSign, CreditCard, TrendingUp, FileDown } from 'lucide-react'
+import { DollarSign, CreditCard, TrendingUp, FileDown, AlertCircle } from 'lucide-react'
+import Link from 'next/link'
 
 export default function FinancePage() {
-    const [activeTab, setActiveTab] = useState<'services' | 'payments' | 'reports'>('services')
+    const searchParams = useSearchParams()
+    const initialTab = searchParams.get('tab') === 'pending' ? 'pending' : 'services'
+
+    const [activeTab, setActiveTab] = useState<'services' | 'payments' | 'reports' | 'pending'>(initialTab as any)
     const [services, setServices] = useState<any[]>([])
     const [payments, setPayments] = useState<any[]>([])
     const [report, setReport] = useState<any>({ total: 0, byMethod: {}, byService: {} })
+    const [pendingCollections, setPendingCollections] = useState<any[]>([])
     const [isServiceModalOpen, setIsServiceModalOpen] = useState(false)
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
     const [refreshKey, setRefreshKey] = useState(0)
 
     useEffect(() => {
         const fetchData = async () => {
-            const servicesData = await getServices()
+            const [servicesData, paymentsData, pendingData] = await Promise.all([
+                getServices(),
+                getPayments(),
+                getPendingCollections(),
+            ])
             setServices(servicesData)
-
-            const paymentsData = await getPayments()
             setPayments(paymentsData)
+            setPendingCollections(pendingData)
 
             const endDate = new Date().toISOString()
             const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
@@ -45,7 +53,7 @@ export default function FinancePage() {
                         Nuevo Servicio
                     </button>
                 )}
-                {activeTab === 'payments' && (
+                {(activeTab === 'payments' || activeTab === 'pending') && (
                     <button
                         onClick={() => setIsPaymentModalOpen(true)}
                         className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
@@ -83,6 +91,20 @@ export default function FinancePage() {
                         }`}
                 >
                     Reportes
+                </button>
+                <button
+                    onClick={() => setActiveTab('pending')}
+                    className={`px-4 py-2 font-medium transition flex items-center gap-1.5 ${activeTab === 'pending'
+                        ? 'border-b-2 border-red-500 text-red-600'
+                        : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                >
+                    Cobros Pendientes
+                    {pendingCollections.length > 0 && (
+                        <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full leading-none">
+                            {pendingCollections.length}
+                        </span>
+                    )}
                 </button>
             </div>
 
@@ -229,6 +251,82 @@ export default function FinancePage() {
                             </div>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Pending Collections Tab */}
+            {activeTab === 'pending' && (
+                <div className="space-y-4">
+                    {pendingCollections.length === 0 ? (
+                        <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
+                            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <DollarSign className="h-6 w-6 text-green-600" />
+                            </div>
+                            <p className="font-semibold text-green-800">Todo al corriente</p>
+                            <p className="text-sm text-green-600 mt-1">No hay planes de tratamiento con saldo pendiente.</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="flex items-center gap-2 px-1">
+                                <AlertCircle className="h-4 w-4 text-red-500" />
+                                <p className="text-sm text-slate-600">
+                                    <span className="font-semibold text-red-600">
+                                        ${pendingCollections.reduce((s, p) => s + p.pending, 0).toLocaleString('es-MX', { minimumFractionDigits: 0 })}
+                                    </span>
+                                    {' '}pendientes en {pendingCollections.length} plan{pendingCollections.length !== 1 ? 'es' : ''} activo{pendingCollections.length !== 1 ? 's' : ''}
+                                </p>
+                            </div>
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                                <table className="w-full text-left">
+                                    <thead className="bg-slate-50 border-b">
+                                        <tr>
+                                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Paciente</th>
+                                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Plan</th>
+                                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Sesiones</th>
+                                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Total</th>
+                                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Pagado</th>
+                                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Pendiente</th>
+                                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100">
+                                        {pendingCollections.map((plan) => (
+                                            <tr key={plan.id} className="hover:bg-slate-50/50">
+                                                <td className="px-6 py-4 font-medium text-slate-900">
+                                                    <Link href={`/dashboard/patients/${plan.patient_id}`} className="hover:text-blue-600 transition-colors">
+                                                        {plan.patient_name}
+                                                    </Link>
+                                                </td>
+                                                <td className="px-6 py-4 text-slate-600 text-sm">{plan.title}</td>
+                                                <td className="px-6 py-4 text-slate-600 text-sm">
+                                                    {plan.completed_sessions}/{plan.total_sessions}
+                                                </td>
+                                                <td className="px-6 py-4 text-slate-700 font-medium">
+                                                    ${plan.package_price.toLocaleString('es-MX', { minimumFractionDigits: 0 })}
+                                                </td>
+                                                <td className="px-6 py-4 text-green-600 font-medium">
+                                                    ${plan.paid_amount.toLocaleString('es-MX', { minimumFractionDigits: 0 })}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className="font-bold text-red-600">
+                                                        ${plan.pending.toLocaleString('es-MX', { minimumFractionDigits: 0 })}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <button
+                                                        onClick={() => setIsPaymentModalOpen(true)}
+                                                        className="text-xs px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
+                                                    >
+                                                        Cobrar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </>
+                    )}
                 </div>
             )}
 

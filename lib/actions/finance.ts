@@ -233,3 +233,57 @@ export async function getFinancialReport(startDate: string, endDate: string) {
 
     return { total, byMethod, byService }
 }
+
+export async function getPendingCollections() {
+    const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return []
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) return []
+
+    const { data, error } = await supabase
+        .from('treatment_plans')
+        .select(`
+            id,
+            title,
+            package_price,
+            paid_amount,
+            total_sessions,
+            completed_sessions,
+            patients (
+                id,
+                first_name,
+                last_name
+            )
+        `)
+        .eq('clinic_id', profile.clinic_id)
+        .eq('status', 'active')
+        .not('package_price', 'is', null)
+        .order('created_at', { ascending: false })
+
+    if (error) {
+        console.error('Error fetching pending collections:', error)
+        return []
+    }
+
+    return (data || [])
+        .filter(plan => Number(plan.package_price) > Number(plan.paid_amount))
+        .map(plan => ({
+            id: plan.id,
+            title: plan.title,
+            patient_id: (plan.patients as any)?.id as string,
+            patient_name: `${(plan.patients as any)?.first_name ?? ''} ${(plan.patients as any)?.last_name ?? ''}`.trim(),
+            package_price: Number(plan.package_price),
+            paid_amount: Number(plan.paid_amount),
+            pending: Number(plan.package_price) - Number(plan.paid_amount),
+            total_sessions: plan.total_sessions,
+            completed_sessions: plan.completed_sessions,
+        }))
+}

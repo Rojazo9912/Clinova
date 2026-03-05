@@ -1,7 +1,8 @@
-import { getDashboardMetrics, getRevenueChartData, getTodayAppointments, getCurrentUserProfile } from '@/lib/actions/dashboard'
+import { getDashboardMetrics, getRevenueChartData, getTodayAppointments, getCurrentUserProfile, getBusinessAlerts } from '@/lib/actions/dashboard'
 import MetricCard from '@/components/dashboard/MetricCard'
 import RevenueChart from '@/components/dashboard/RevenueChart'
 import AppointmentTimeline from '@/components/dashboard/AppointmentTimeline'
+import BusinessAlertsPanel from '@/components/dashboard/BusinessAlertsPanel'
 import { Users, Calendar, DollarSign, Activity } from '@/components/ui/icons'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -16,11 +17,12 @@ function getGreeting() {
 }
 
 export default async function DashboardPage() {
-    const [metrics, revenueData, appointments, userName] = await Promise.all([
+    const [metrics, revenueData, appointments, userName, alerts] = await Promise.all([
         getDashboardMetrics(),
         getRevenueChartData(),
         getTodayAppointments(),
         getCurrentUserProfile(),
+        getBusinessAlerts(),
     ])
 
     if (!metrics) {
@@ -91,6 +93,17 @@ export default async function DashboardPage() {
                     subtitle="vs mes anterior"
                 />
             </div>
+
+            {/* Business Health */}
+            {alerts && (
+                <BusinessAlertsPanel
+                    pendingAmount={alerts.pendingAmount}
+                    pendingPlansCount={alerts.pendingPlansCount}
+                    inactivePatients={alerts.inactivePatients}
+                    completionRate={alerts.completionRate}
+                    scheduledThisMonth={alerts.scheduledThisMonth}
+                />
+            )}
 
             {/* Today's Patients — full width, the star of the page */}
             <AppointmentTimeline appointments={appointments} />
