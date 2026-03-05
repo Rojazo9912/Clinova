@@ -1,7 +1,24 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
+import { z } from 'zod'
+
+const patientSchema = z.object({
+    first_name: z.string().min(1, 'El nombre es requerido').max(100),
+    last_name: z.string().min(1, 'El apellido es requerido').max(100),
+    email: z.string().email('Email inválido').optional().or(z.literal('')),
+    phone: z.string().max(20).optional(),
+    birth_date: z.string().optional(),
+    gender: z.string().optional(),
+    address: z.string().max(255).optional(),
+    city: z.string().max(100).optional(),
+    state: z.string().max(100).optional(),
+    postal_code: z.string().max(20).optional(),
+    emergency_contact_name: z.string().max(100).optional(),
+    emergency_contact_phone: z.string().max(20).optional(),
+    emergency_contact_relationship: z.string().max(100).optional(),
+    notes: z.string().max(2000).optional(),
+})
 
 export async function createPatient(data: {
     first_name: string
@@ -19,26 +36,31 @@ export async function createPatient(data: {
     emergency_contact_relationship?: string
     notes?: string
 }) {
-    // const cookieStore = await cookies()
+    const validated = patientSchema.safeParse(data)
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos de paciente inválidos')
+    }
+
     const supabase = await createClient()
 
     const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
 
-    // Get clinic_id from profile
     const { data: profile } = await supabase
         .from('profiles')
         .select('clinic_id')
-        .eq('id', user?.id)
+        .eq('id', user.id)
         .single()
 
     if (!profile?.clinic_id) {
-        throw new Error('User does not belong to a clinic')
+        throw new Error('El usuario no pertenece a una clínica')
     }
 
     const { data: newPatient, error } = await supabase
         .from('patients')
         .insert({
-            ...data,
+            ...validated.data,
+            email: validated.data.email || null,
             clinic_id: profile.clinic_id
         })
         .select()
@@ -46,14 +68,13 @@ export async function createPatient(data: {
 
     if (error) {
         console.error('Error creating patient:', error)
-        throw new Error('Failed to create patient')
+        throw new Error('Error al crear el paciente')
     }
 
     return newPatient
 }
 
 export async function searchPatients(query: string) {
-    // const cookieStore = await cookies()
     const supabase = await createClient()
 
     let queryBuilder = supabase
@@ -92,25 +113,33 @@ export async function updatePatient(id: string, data: {
     emergency_contact_relationship?: string
     notes?: string
 }) {
+    if (!id || typeof id !== 'string') throw new Error('ID de paciente inválido')
+
+    const validated = patientSchema.safeParse(data)
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos de paciente inválidos')
+    }
+
     const supabase = await createClient()
 
     const { data: updated, error } = await supabase
         .from('patients')
-        .update(data)
+        .update({ ...validated.data, email: validated.data.email || null })
         .eq('id', id)
         .select()
         .single()
 
     if (error) {
         console.error('Error updating patient:', error)
-        throw new Error('Failed to update patient')
+        throw new Error('Error al actualizar el paciente')
     }
 
     return updated
 }
 
 export async function getPatientById(id: string) {
-    // const cookieStore = await cookies()
+    if (!id || typeof id !== 'string') return null
+
     const supabase = await createClient()
 
     const { data, error } = await supabase

@@ -1,10 +1,27 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
+import { z } from 'zod'
+
+const medicalRecordSchema = z.object({
+    patient_id: z.string().uuid('ID de paciente inválido'),
+    diagnosis: z.string().min(1, 'El diagnóstico es requerido').max(2000),
+    treatment_plan: z.string().max(2000).optional().default(''),
+    notes: z.string().max(2000).optional().default(''),
+})
+
+const therapySessionSchema = z.object({
+    patient_id: z.string().uuid('ID de paciente inválido'),
+    session_date: z.string().min(1, 'La fecha es requerida'),
+    duration_minutes: z.number().int().min(1).max(480),
+    notes: z.string().max(5000).optional().default(''),
+    exercises: z.array(z.any()).optional().default([]),
+    progress_rating: z.number().int().min(0).max(10),
+})
 
 export async function getMedicalRecords(patientId: string) {
-    const cookieStore = await cookies()
+    if (!patientId || typeof patientId !== 'string') return []
+
     const supabase = await createClient()
 
     const { data, error } = await supabase
@@ -39,28 +56,32 @@ export async function createMedicalRecord(data: {
     treatment_plan: string
     notes: string
 }) {
-    const cookieStore = await cookies()
+    const validated = medicalRecordSchema.safeParse(data)
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos de expediente inválidos')
+    }
+
     const supabase = await createClient()
 
     const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
 
-    // Get clinic_id
-    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user?.id).single()
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
 
-    if (!profile?.clinic_id) throw new Error('No clinic found for user')
+    if (!profile?.clinic_id) throw new Error('No se encontró la clínica del usuario')
 
     const { error } = await supabase.from('medical_records').insert({
         clinic_id: profile.clinic_id,
-        patient_id: data.patient_id,
-        doctor_id: user?.id,
-        diagnosis: data.diagnosis,
-        treatment_plan: data.treatment_plan,
-        notes: data.notes
+        patient_id: validated.data.patient_id,
+        doctor_id: user.id,
+        diagnosis: validated.data.diagnosis,
+        treatment_plan: validated.data.treatment_plan,
+        notes: validated.data.notes
     })
 
     if (error) {
         console.error('Error creating medical record:', error)
-        throw new Error('Failed to create medical record')
+        throw new Error('Error al crear el expediente médico')
     }
 }
 
@@ -102,34 +123,40 @@ export async function createTherapySession(data: {
     exercises: any[]
     progress_rating: number
 }) {
+    const validated = therapySessionSchema.safeParse(data)
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos de sesión inválidos')
+    }
+
     const supabase = await createClient()
 
     const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
 
     const { data: profile } = await supabase
         .from('profiles')
         .select('clinic_id')
-        .eq('id', user?.id)
+        .eq('id', user.id)
         .single()
 
-    if (!profile?.clinic_id) throw new Error('No clinic found for user')
+    if (!profile?.clinic_id) throw new Error('No se encontró la clínica del usuario')
 
     const { error } = await supabase
         .from('therapy_sessions')
         .insert({
             clinic_id: profile.clinic_id,
-            patient_id: data.patient_id,
-            physio_id: user?.id,
-            session_date: data.session_date,
-            duration_minutes: data.duration_minutes,
-            notes: data.notes,
-            exercises: data.exercises,
-            progress_rating: data.progress_rating
+            patient_id: validated.data.patient_id,
+            physio_id: user.id,
+            session_date: validated.data.session_date,
+            duration_minutes: validated.data.duration_minutes,
+            notes: validated.data.notes,
+            exercises: validated.data.exercises,
+            progress_rating: validated.data.progress_rating
         })
 
     if (error) {
         console.error('Error creating therapy session:', error)
-        throw new Error('Failed to create therapy session')
+        throw new Error('Error al crear la sesión de terapia')
     }
 }
 
@@ -138,19 +165,31 @@ export async function updateTherapySession(id: string, data: {
     exercises: any[]
     progress_rating: number
 }) {
+    if (!id || typeof id !== 'string') throw new Error('ID de sesión inválido')
+
+    const validated = z.object({
+        notes: z.string().max(5000).optional().default(''),
+        exercises: z.array(z.any()).optional().default([]),
+        progress_rating: z.number().int().min(0).max(10),
+    }).safeParse(data)
+
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos de sesión inválidos')
+    }
+
     const supabase = await createClient()
 
     const { error } = await supabase
         .from('therapy_sessions')
         .update({
-            notes: data.notes,
-            exercises: data.exercises,
-            progress_rating: data.progress_rating
+            notes: validated.data.notes,
+            exercises: validated.data.exercises,
+            progress_rating: validated.data.progress_rating
         })
         .eq('id', id)
 
     if (error) {
         console.error('Error updating therapy session:', error)
-        throw new Error('Failed to update therapy session')
+        throw new Error('Error al actualizar la sesión de terapia')
     }
 }

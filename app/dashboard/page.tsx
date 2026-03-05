@@ -1,17 +1,26 @@
-import { getDashboardMetrics, getRevenueChartData, getTodayAppointments } from '@/lib/actions/dashboard'
+import { getDashboardMetrics, getRevenueChartData, getTodayAppointments, getCurrentUserProfile } from '@/lib/actions/dashboard'
 import MetricCard from '@/components/dashboard/MetricCard'
 import RevenueChart from '@/components/dashboard/RevenueChart'
 import AppointmentTimeline from '@/components/dashboard/AppointmentTimeline'
 import { Users, Calendar, DollarSign, Activity } from '@/components/ui/icons'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 
 export const dynamic = 'force-dynamic'
 
+function getGreeting() {
+    const hour = new Date().getHours()
+    if (hour < 12) return 'Buenos días'
+    if (hour < 19) return 'Buenas tardes'
+    return 'Buenas noches'
+}
+
 export default async function DashboardPage() {
-    // Fetch all dashboard data in parallel
-    const [metrics, revenueData, appointments] = await Promise.all([
+    const [metrics, revenueData, appointments, userName] = await Promise.all([
         getDashboardMetrics(),
         getRevenueChartData(),
-        getTodayAppointments()
+        getTodayAppointments(),
+        getCurrentUserProfile(),
     ])
 
     if (!metrics) {
@@ -24,18 +33,33 @@ export default async function DashboardPage() {
         )
     }
 
+    const firstName = userName?.split(' ')[0] ?? 'Doctor'
+    const today = format(new Date(), "EEEE d 'de' MMMM", { locale: es })
+
     return (
-        <div className="p-8 space-y-8">
-            {/* Header */}
-            <div>
-                <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-                <p className="text-muted-foreground">
-                    Resumen de tu clínica en tiempo real
-                </p>
+        <div className="space-y-8">
+            {/* Greeting */}
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+                <div>
+                    <p className="text-sm font-medium text-slate-500 capitalize">{today}</p>
+                    <h1 className="text-3xl font-bold text-slate-900 mt-1">
+                        {getGreeting()}, {firstName} 👋
+                    </h1>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl shadow-sm text-sm text-slate-600 w-fit">
+                    <Calendar className="h-4 w-4 text-blue-500" />
+                    <span>
+                        {appointments.length === 0
+                            ? 'Sin citas hoy'
+                            : appointments.length === 1
+                            ? '1 cita hoy'
+                            : `${appointments.length} citas hoy`}
+                    </span>
+                </div>
             </div>
 
             {/* Metrics Grid */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <MetricCard
                     title="Pacientes Totales"
                     value={metrics.totalPatients}
@@ -44,7 +68,6 @@ export default async function DashboardPage() {
                     trend={metrics.patientChange >= 0 ? 'up' : 'down'}
                     subtitle="vs mes anterior"
                 />
-
                 <MetricCard
                     title="Ingresos del Mes"
                     value={`$${metrics.revenue.toLocaleString()}`}
@@ -53,14 +76,12 @@ export default async function DashboardPage() {
                     trend={metrics.revenueChange >= 0 ? 'up' : 'down'}
                     subtitle="vs mes anterior"
                 />
-
                 <MetricCard
                     title="Citas de Hoy"
                     value={metrics.appointmentsToday}
                     icon={Calendar}
                     subtitle={`${metrics.appointmentsThisMonth} este mes`}
                 />
-
                 <MetricCard
                     title="Citas del Mes"
                     value={metrics.appointmentsThisMonth}
@@ -71,11 +92,11 @@ export default async function DashboardPage() {
                 />
             </div>
 
-            {/* Charts and Timeline */}
-            <div className="grid gap-6 lg:grid-cols-2">
-                <RevenueChart data={revenueData} />
-                <AppointmentTimeline appointments={appointments} />
-            </div>
+            {/* Today's Patients — full width, the star of the page */}
+            <AppointmentTimeline appointments={appointments} />
+
+            {/* Revenue Chart */}
+            <RevenueChart data={revenueData} />
         </div>
     )
 }

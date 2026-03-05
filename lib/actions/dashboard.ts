@@ -183,6 +183,7 @@ export async function getTodayAppointments() {
             start_time,
             status,
             patients (
+                id,
                 first_name,
                 last_name
             ),
@@ -197,9 +198,24 @@ export async function getTodayAppointments() {
 
     return appointments?.map(apt => ({
         id: apt.id,
-        patient_name: `${(apt.patients as any)?.first_name} ${(apt.patients as any)?.last_name}`,
+        patient_id: (apt.patients as any)?.id || null,
+        patient_name: `${(apt.patients as any)?.first_name ?? ''} ${(apt.patients as any)?.last_name ?? ''}`.trim() || 'Sin paciente',
         service_name: (apt.services as any)?.name || 'Consulta',
         start_time: apt.start_time,
         status: apt.status
     })) || []
+}
+
+export async function getCurrentUserProfile() {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return null
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .single()
+
+    return profile?.full_name ?? null
 }

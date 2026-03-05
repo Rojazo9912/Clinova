@@ -13,6 +13,15 @@ const clinicSchema = z.object({
     email: z.string().email('Email inválido').optional().or(z.literal('')),
 })
 
+const clinicUserSchema = z.object({
+    email: z.string().email('Email inválido'),
+    password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
+    full_name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
+    phone: z.string().optional(),
+    clinic_id: z.string().uuid('ID de clínica inválido'),
+    role: z.string().min(1, 'El rol es requerido'),
+})
+
 export type Clinic = {
     id: string
     name: string
@@ -26,7 +35,6 @@ export type Clinic = {
 export async function getClinics() {
     const supabase = await createClient()
 
-    // Verify Super Admin (Double check on server action for safety)
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
         return { error: 'No autenticado' }
@@ -57,12 +65,9 @@ export async function getClinics() {
 export async function createClinic(prevState: any, formData: FormData) {
     const supabase = await createClient()
 
-    // Verify Super Admin
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-        return {
-            message: 'No autenticado',
-        }
+        return { message: 'No autenticado' }
     }
 
     const { data: profile } = await supabase
@@ -72,12 +77,9 @@ export async function createClinic(prevState: any, formData: FormData) {
         .single()
 
     if (profile?.role !== 'super_admin') {
-        return {
-            message: 'No autorizado: Requiere rol super_admin',
-        }
+        return { message: 'No autorizado: Requiere rol super_admin' }
     }
 
-    // Validate Input
     const rawData = {
         name: formData.get('name'),
         slug: formData.get('slug'),
@@ -94,7 +96,6 @@ export async function createClinic(prevState: any, formData: FormData) {
         }
     }
 
-    // Insert Database
     const { error } = await supabase
         .from('clinics')
         .insert({
@@ -106,9 +107,7 @@ export async function createClinic(prevState: any, formData: FormData) {
         })
 
     if (error) {
-        return {
-            message: 'Error al crear la clínica: ' + error.message,
-        }
+        return { message: 'Error al crear la clínica: ' + error.message }
     }
 
     revalidatePath('/dashboard/admin')
@@ -147,7 +146,6 @@ export async function getClinicUsers(clinicId: string) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return []
 
-    // Verify admin
     const { data: adminProfile } = await supabase
         .from('profiles')
         .select('role')
@@ -163,7 +161,7 @@ export async function getClinicUsers(clinicId: string) {
         .order('full_name')
 
     if (error) {
-        console.error('Error fetching users:', error)
+        console.error('Error fetching clinic users:', error)
         return []
     }
 
@@ -173,7 +171,6 @@ export async function getClinicUsers(clinicId: string) {
 export async function createClinicUser(prevState: any, formData: FormData) {
     const supabase = await createClient()
 
-    // 1. Verify Super Admin
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return { message: 'No autenticado' }
 
@@ -187,95 +184,78 @@ export async function createClinicUser(prevState: any, formData: FormData) {
         return { message: 'No autorizado' }
     }
 
-    // 2. Extract Data
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
-    const fullName = formData.get('full_name') as string
-    const phone = formData.get('phone') as string
-    const clinicId = formData.get('clinic_id') as string
-    const role = formData.get('role') as string || 'clinic_manager'
-
-    console.log('--- createClinicUser Debug ---')
-    console.log('Received formData:', Object.fromEntries(formData))
-    console.log('clinicId:', clinicId)
-    console.log('------------------------------')
-
-
-
-    if (!email || !password || !fullName || !clinicId) {
-        return { message: 'Faltan campos requeridos' }
+    const rawData = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        full_name: formData.get('full_name'),
+        phone: formData.get('phone') || undefined,
+        clinic_id: formData.get('clinic_id'),
+        role: formData.get('role') || 'clinic_manager',
     }
 
-    // 3. Admin Client Setup
+    const validated = clinicUserSchema.safeParse(rawData)
+    if (!validated.success) {
+        const firstError = Object.values(validated.error.flatten().fieldErrors).flat()[0]
+        return { message: firstError ?? 'Datos inválidos' }
+    }
+
+    const { email, password, full_name, phone, clinic_id, role } = validated.data
+
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
     if (!serviceRoleKey) {
-        return { message: 'Error de configuración: SUPABASE_SERVICE_ROLE_KEY faltante' }
+        return { message: 'Error de configuración del servidor' }
     }
 
-    // Import supabase-js dynamically to avoid issues if not installed (though it should be)
     const { createClient: createServiceClient } = await import('@supabase/supabase-js')
     const supabaseAdmin = createServiceClient(supabaseUrl, serviceRoleKey, {
-        auth: {
-            autoRefreshToken: false,
-            persistSession: false
-        }
+        auth: { autoRefreshToken: false, persistSession: false }
     })
 
-    // 4. Create User
     const { data: newUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
         password,
         email_confirm: true,
-        user_metadata: { full_name: fullName }
+        user_metadata: { full_name }
     })
 
     if (authError) {
-        return { message: 'Error al crear usuario auth: ' + authError.message }
+        return { message: 'Error al crear usuario: ' + authError.message }
     }
 
     if (!newUser.user) {
-        return { message: 'Wtf? No se pudo crear el usuario' }
+        return { message: 'No se pudo crear el usuario' }
     }
 
-    // 5. Update/Create Profile
-    // Try update first assuming trigger ran
     const { data: updatedUsers, error: updateError } = await supabaseAdmin
         .from('profiles')
         .update({
-            full_name: fullName,
+            full_name,
             phone: phone || null,
             role: role as any,
-            clinic_id: clinicId
+            clinic_id
         })
         .eq('id', newUser.user.id)
         .select('id')
 
-    // Fallback Insert if profile doesn't exist (trigger fail or count is 0)
     if (updateError || !updatedUsers || updatedUsers.length === 0) {
-        console.log('Profile update failed or no rows matched. Attempting insert.')
-
-        // Try insert
         const { error: insertError } = await supabaseAdmin
             .from('profiles')
             .insert({
                 id: newUser.user.id,
-                full_name: fullName,
-                // email deleted
+                full_name,
                 phone: phone || null,
                 role: role as any,
-                clinic_id: clinicId
+                clinic_id
             })
 
         if (insertError) {
-            // Rollback auth
             await supabaseAdmin.auth.admin.deleteUser(newUser.user.id)
-            return { message: 'Usuario creado pero falló perfil: ' + insertError.message }
+            return { message: 'Error al crear el perfil del usuario: ' + insertError.message }
         }
     }
 
-
-    revalidatePath(`/dashboard/admin/clinics/${clinicId}`)
+    revalidatePath(`/dashboard/admin/clinics/${clinic_id}`)
     return { message: 'Usuario creado exitosamente', success: true }
 }

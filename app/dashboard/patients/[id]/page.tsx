@@ -1,5 +1,5 @@
 import { getPatientById } from '@/lib/actions/patients'
-import { getMedicalRecords } from '@/lib/actions/medical-records'
+import { getMedicalRecords, getTherapySessions } from '@/lib/actions/medical-records'
 import { getPatientProgress } from '@/lib/actions/clinical-measurements'
 import { getPatientTreatmentPlans } from '@/lib/actions/treatment-plans'
 import NewConsultationForm from '@/components/emr/NewConsultationForm'
@@ -7,6 +7,7 @@ import RecordList from '@/components/emr/RecordList'
 import ProgressSummary from '@/components/patients/history/ProgressSummary'
 import TreatmentPlanCard from '@/components/patients/TreatmentPlanCard'
 import PatientActions from '@/components/patients/PatientActions'
+import ClinicalSnapshotBanner from '@/components/patients/ClinicalSnapshotBanner'
 import { notFound } from 'next/navigation'
 import { Phone, Mail, Calendar } from 'lucide-react'
 import { format } from 'date-fns'
@@ -21,9 +22,12 @@ export default async function PatientDetailsPage({ params }: { params: Promise<{
         notFound()
     }
 
-    const records = await getMedicalRecords(id)
-    const progress = await getPatientProgress(id)
-    const treatmentPlans = await getPatientTreatmentPlans(id)
+    const [records, progress, treatmentPlans, sessions] = await Promise.all([
+        getMedicalRecords(id),
+        getPatientProgress(id),
+        getPatientTreatmentPlans(id),
+        getTherapySessions(id),
+    ])
 
     // Calculate patient age
     const patientAge = patient.birth_date
@@ -31,13 +35,14 @@ export default async function PatientDetailsPage({ params }: { params: Promise<{
         : undefined
 
     const patientFullName = `${patient.first_name} ${patient.last_name}`
+    const lastSessionDate = sessions[0]?.session_date ?? null
 
     return (
         <div className="space-y-6">
             {/* Patient Header Card */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div>
+                    <div className="flex-1">
                         <h1 className="text-3xl font-bold text-slate-900">{patient.first_name} {patient.last_name}</h1>
                         <div className="flex flex-wrap gap-4 mt-2 text-slate-600">
                             {patient.email && (
@@ -58,6 +63,14 @@ export default async function PatientDetailsPage({ params }: { params: Promise<{
                                     {format(new Date(patient.birth_date), "d 'de' MMMM, yyyy", { locale: es })}
                                 </div>
                             )}
+                        </div>
+                        {/* Clinical Snapshot */}
+                        <div className="mt-4">
+                            <ClinicalSnapshotBanner
+                                progress={progress}
+                                sessionsCount={sessions.length}
+                                lastSessionDate={lastSessionDate}
+                            />
                         </div>
                     </div>
                     <PatientActions patient={patient} patientId={id} />

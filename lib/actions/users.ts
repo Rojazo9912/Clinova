@@ -4,6 +4,20 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import crypto from 'crypto'
+import { z } from 'zod'
+
+const createUserSchema = z.object({
+    email: z.string().email('Email inválido'),
+    full_name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(100),
+    phone: z.string().max(20).optional(),
+    role: z.string().min(1, 'El rol es requerido'),
+})
+
+const updateUserSchema = z.object({
+    full_name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(100),
+    phone: z.string().max(20).optional(),
+    role: z.string().min(1, 'El rol es requerido'),
+})
 
 export async function getUsers() {
     const supabase = await createClient()
@@ -35,13 +49,22 @@ export async function getUsers() {
 }
 
 export async function createUser(formData: FormData) {
+    const rawData = {
+        email: formData.get('email'),
+        full_name: formData.get('full_name'),
+        phone: formData.get('phone') || undefined,
+        role: formData.get('role'),
+    }
+
+    const validated = createUserSchema.safeParse(rawData)
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos inválidos')
+    }
+
+    const { email, full_name, phone, role } = validated.data
+
     const supabase = await createClient()
     const supabaseAdmin = createAdminClient()
-
-    const email = formData.get('email') as string
-    const fullName = formData.get('full_name') as string
-    const phone = formData.get('phone') as string
-    const role = formData.get('role') as string
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('No autenticado')
@@ -54,34 +77,28 @@ export async function createUser(formData: FormData) {
 
     if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
 
-    // Generar contraseña segura (12 caracteres)
-    const securePassword = crypto.randomBytes(8).toString('base64').replace(/[^a-zA-Z0-9]/g, '').slice(0, 10) + 'A1!'
+    const securePassword = crypto.randomBytes(12).toString('base64').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12) + 'A1!'
 
-    // Crear usuario en Supabase Auth
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
         password: securePassword,
         email_confirm: true,
-        user_metadata: {
-            full_name: fullName
-        }
+        user_metadata: { full_name }
     })
 
     if (authError) {
-        console.error('Error creando en Auth:', authError)
-        throw new Error(`Error en Auth: ${authError.message}`)
+        throw new Error(`Error al crear usuario: ${authError.message}`)
     }
 
-    if (!authData.user) throw new Error('No se devolvió ID de usuario desde Auth')
+    if (!authData.user) throw new Error('No se pudo crear el usuario')
 
-    // Insertar el perfil conectado al ID del usuario de Auth recién creado
     const { data: newProfile, error } = await supabaseAdmin
         .from('profiles')
         .insert({
             id: authData.user.id,
-            full_name: fullName,
+            full_name,
             email,
-            phone,
+            phone: phone || null,
             role,
             clinic_id: profile.clinic_id
         })
@@ -89,9 +106,8 @@ export async function createUser(formData: FormData) {
         .single()
 
     if (error) {
-        // Rollback opcional, pero al menos lo registramos
-        console.error('Error insertando perfil:', error)
-        throw new Error(`Error en Profiles: ${error.message}`)
+        await supabaseAdmin.auth.admin.deleteUser(authData.user.id)
+        throw new Error(`Error al crear el perfil: ${error.message}`)
     }
 
     revalidatePath('/dashboard/users')
@@ -99,27 +115,38 @@ export async function createUser(formData: FormData) {
 }
 
 export async function updateUser(id: string, formData: FormData) {
-    const supabase = await createClient()
+    if (!id || typeof id !== 'string') throw new Error('ID de usuario inválido')
 
-    const fullName = formData.get('full_name') as string
-    const phone = formData.get('phone') as string
-    const role = formData.get('role') as string
+    const rawData = {
+        full_name: formData.get('full_name'),
+        phone: formData.get('phone') || undefined,
+        role: formData.get('role'),
+    }
+
+    const validated = updateUserSchema.safeParse(rawData)
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos inválidos')
+    }
+
+    const supabase = await createClient()
 
     const { error } = await supabase
         .from('profiles')
         .update({
-            full_name: fullName,
-            phone,
-            role
+            full_name: validated.data.full_name,
+            phone: validated.data.phone || null,
+            role: validated.data.role
         })
         .eq('id', id)
 
-    if (error) throw error
+    if (error) throw new Error(`Error al actualizar usuario: ${error.message}`)
 
     revalidatePath('/dashboard/users')
 }
 
 export async function deleteUser(id: string) {
+    if (!id || typeof id !== 'string') throw new Error('ID de usuario inválido')
+
     const supabase = await createClient()
 
     const { error } = await supabase
@@ -127,7 +154,7 @@ export async function deleteUser(id: string) {
         .delete()
         .eq('id', id)
 
-    if (error) throw error
+    if (error) throw new Error(`Error al eliminar usuario: ${error.message}`)
 
     revalidatePath('/dashboard/users')
 }

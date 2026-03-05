@@ -1,11 +1,27 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
+import { z } from 'zod'
 import { exportAppointmentToGoogleCalendar } from './calendar-sync'
 
+const createAppointmentSchema = z.object({
+    start: z.coerce.date(),
+    end: z.coerce.date(),
+    patient_id: z.string().uuid().optional(),
+    service_id: z.string().uuid().optional(),
+}).refine(data => data.end > data.start, {
+    message: 'La hora de fin debe ser posterior a la de inicio',
+    path: ['end'],
+})
+
+const updateAppointmentSchema = z.object({
+    title: z.string().max(255).optional(),
+    start: z.coerce.date().optional(),
+    end: z.coerce.date().optional(),
+    patient_id: z.string().uuid().optional(),
+})
+
 export async function getAppointments(start: Date, end: Date) {
-    const cookieStore = await cookies()
     const supabase = await createClient()
 
     const { data, error } = await supabase
@@ -40,12 +56,15 @@ export async function createAppointment(data: {
     patient_id?: string
     service_id?: string
 }) {
-    const cookieStore = await cookies()
+    const validated = createAppointmentSchema.safeParse(data)
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos de cita inválidos')
+    }
+
     const supabase = await createClient()
 
-    // Get current user and clinic
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) throw new Error('Not authenticated')
+    if (!user) throw new Error('No autenticado')
 
     const { data: profile } = await supabase
         .from('profiles')
@@ -53,26 +72,25 @@ export async function createAppointment(data: {
         .eq('id', user.id)
         .single()
 
-    if (!profile?.clinic_id) throw new Error('No clinic found')
+    if (!profile?.clinic_id) throw new Error('No se encontró la clínica del usuario')
 
     const { error, data: newApt } = await supabase.from('appointments').insert({
-        start_time: data.start.toISOString(),
-        end_time: data.end.toISOString(),
-        patient_id: data.patient_id || null,
+        start_time: validated.data.start.toISOString(),
+        end_time: validated.data.end.toISOString(),
+        patient_id: validated.data.patient_id || null,
         clinic_id: profile.clinic_id
     }).select().single()
 
     if (error) {
         console.error('Error creating appointment:', error)
-        throw new Error('Failed to create appointment')
+        throw new Error('Error al crear la cita')
     }
 
-    // Exportar a Google Calendar de forma asíncrona sin bloquear
     exportAppointmentToGoogleCalendar(user.id, {
         title: 'Cita en Clinova',
-        start: data.start,
-        end: data.end,
-        description: `Paciente ID: ${data.patient_id || 'No asignado'}\nCita creada desde Clinova.`
+        start: validated.data.start,
+        end: validated.data.end,
+        description: `Paciente ID: ${validated.data.patient_id || 'No asignado'}\nCita creada desde Clinova.`
     }).catch(console.error)
 }
 
@@ -82,13 +100,20 @@ export async function updateAppointment(id: string, data: {
     end?: Date
     patient_id?: string
 }) {
+    if (!id || typeof id !== 'string') throw new Error('ID de cita inválido')
+
+    const validated = updateAppointmentSchema.safeParse(data)
+    if (!validated.success) {
+        throw new Error(validated.error.errors[0]?.message ?? 'Datos inválidos')
+    }
+
     const supabase = await createClient()
 
-    const updateData: any = {}
-    if (data.title) updateData.title = data.title
-    if (data.start) updateData.start_time = data.start.toISOString()
-    if (data.end) updateData.end_time = data.end.toISOString()
-    if (data.patient_id) updateData.patient_id = data.patient_id
+    const updateData: Record<string, any> = {}
+    if (validated.data.title) updateData.title = validated.data.title
+    if (validated.data.start) updateData.start_time = validated.data.start.toISOString()
+    if (validated.data.end) updateData.end_time = validated.data.end.toISOString()
+    if (validated.data.patient_id) updateData.patient_id = validated.data.patient_id
 
     const { error } = await supabase
         .from('appointments')
@@ -97,19 +122,22 @@ export async function updateAppointment(id: string, data: {
 
     if (error) {
         console.error('Error updating appointment:', error)
-        throw new Error('Failed to update appointment')
+        throw new Error('Error al actualizar la cita')
     }
 }
 
 export async function confirmAppointment(token: string) {
+    if (!token || typeof token !== 'string' || token.length < 10) {
+        return { success: false, message: 'Token inválido.' }
+    }
+
     const supabase = await createClient()
 
-    // 1. Find appointment by token
     const { data: appointment, error: fetchError } = await supabase
         .from('appointments')
         .select(`
-            id, 
-            start_time, 
+            id,
+            start_time,
             status,
             patients (first_name, last_name),
             clinics (name)
@@ -118,26 +146,19 @@ export async function confirmAppointment(token: string) {
         .single()
 
     if (fetchError || !appointment) {
-        console.error('Error finding appointment:', fetchError)
         return { success: false, message: 'Cita no encontrada o enlace inválido.' }
     }
 
     if (appointment.status === 'confirmed') {
-        return {
-            success: true,
-            alreadyConfirmed: true,
-            data: appointment
-        }
+        return { success: true, alreadyConfirmed: true, data: appointment }
     }
 
-    // 2. Update status to confirmed
     const { error: updateError } = await supabase
         .from('appointments')
         .update({ status: 'confirmed' })
         .eq('id', appointment.id)
 
     if (updateError) {
-        console.error('Error confirming appointment:', updateError)
         return { success: false, message: 'Error al confirmar la cita.' }
     }
 
