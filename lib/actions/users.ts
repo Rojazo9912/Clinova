@@ -58,7 +58,7 @@ export async function createUser(formData: FormData) {
 
     const validated = createUserSchema.safeParse(rawData)
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos inválidos')
     }
 
     const { email, full_name, phone, role } = validated.data
@@ -125,7 +125,7 @@ export async function updateUser(id: string, formData: FormData) {
 
     const validated = updateUserSchema.safeParse(rawData)
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos inválidos')
     }
 
     const supabase = await createClient()

@@ -38,7 +38,7 @@ export async function createPatient(data: {
 }) {
     const validated = patientSchema.safeParse(data)
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos de paciente inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos de paciente inválidos')
     }
 
     const supabase = await createClient()
@@ -137,7 +137,7 @@ export async function updatePatient(id: string, data: {
 
     const validated = patientSchema.safeParse(data)
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos de paciente inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos de paciente inválidos')
     }
 
     const supabase = await createClient()

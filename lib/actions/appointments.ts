@@ -58,7 +58,7 @@ export async function createAppointment(data: {
 }) {
     const validated = createAppointmentSchema.safeParse(data)
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos de cita inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos de cita inválidos')
     }
 
     const supabase = await createClient()
@@ -104,7 +104,7 @@ export async function updateAppointment(id: string, data: {
 
     const validated = updateAppointmentSchema.safeParse(data)
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos inválidos')
     }
 
     const supabase = await createClient()

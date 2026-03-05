@@ -58,7 +58,7 @@ export async function createMedicalRecord(data: {
 }) {
     const validated = medicalRecordSchema.safeParse(data)
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos de expediente inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos de expediente inválidos')
     }
 
     const supabase = await createClient()
@@ -125,7 +125,7 @@ export async function createTherapySession(data: {
 }) {
     const validated = therapySessionSchema.safeParse(data)
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos de sesión inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos de sesión inválidos')
     }
 
     const supabase = await createClient()
@@ -174,7 +174,7 @@ export async function updateTherapySession(id: string, data: {
     }).safeParse(data)
 
     if (!validated.success) {
-        throw new Error(validated.error.errors[0]?.message ?? 'Datos de sesión inválidos')
+        throw new Error(validated.error.issues[0]?.message ?? 'Datos de sesión inválidos')
     }
 
     const supabase = await createClient()
