@@ -91,13 +91,14 @@ export async function createAppointment(data: {
             ? supabase.from('patients').select('first_name, last_name').eq('id', validated.data.patient_id).single()
             : Promise.resolve({ data: null }),
         validated.data.service_id
-            ? supabase.from('services').select('name').eq('id', validated.data.service_id).single()
+            ? supabase.from('services').select('name, description').eq('id', validated.data.service_id).single()
             : Promise.resolve({ data: null }),
     ])
 
     const patient = patientResult.data
     const patientName = patient ? `${(patient as any).first_name} ${(patient as any).last_name}` : 'Sin paciente'
     const serviceName = (serviceResult.data as any)?.name ?? null
+    const serviceDescription = (serviceResult.data as any)?.description ?? null
 
     const eventTitle = serviceName ? `${patientName} — ${serviceName}` : patientName
 
@@ -108,6 +109,7 @@ export async function createAppointment(data: {
         description: [
             `Paciente: ${patientName}`,
             serviceName ? `Servicio: ${serviceName}` : null,
+            serviceDescription ? `Descripción: ${serviceDescription}` : null,
             'Cita creada desde Clinova.',
         ].filter(Boolean).join('\n')
     }).catch(console.error)

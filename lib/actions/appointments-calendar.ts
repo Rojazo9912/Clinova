@@ -133,13 +133,14 @@ export async function createQuickAppointment(data: {
                 ? supabase.from('patients').select('first_name, last_name').eq('id', data.patientId).single()
                 : Promise.resolve({ data: null }),
             data.serviceId
-                ? supabase.from('services').select('name').eq('id', data.serviceId).single()
+                ? supabase.from('services').select('name, description').eq('id', data.serviceId).single()
                 : Promise.resolve({ data: null }),
         ])
 
         const patient = patientResult.data
         const patientName = patient ? `${(patient as any).first_name} ${(patient as any).last_name}` : 'Sin paciente'
         const serviceName = (serviceResult.data as any)?.name ?? null
+        const serviceDescription = (serviceResult.data as any)?.description ?? null
 
         const eventTitle = serviceName ? `${patientName} — ${serviceName}` : patientName
 
@@ -151,6 +152,7 @@ export async function createQuickAppointment(data: {
             description: [
                 `Paciente: ${patientName}`,
                 serviceName ? `Servicio: ${serviceName}` : null,
+                serviceDescription ? `Descripción: ${serviceDescription}` : null,
                 `Clínica: ${clinicName}`,
                 'Cita creada desde la Agenda de Clinova.',
             ].filter(Boolean).join('\n')
