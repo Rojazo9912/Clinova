@@ -128,15 +128,33 @@ export async function createQuickAppointment(data: {
 
         console.log('Appointment created successfully:', newApt)
 
-        // Exportar a Google Calendar de forma síncrona para atrapar errores
-        console.log('Starting Google Calendar Export...')
-        const gcalResponse = await exportAppointmentToGoogleCalendar(user.id, {
-            title: `Cita en ${clinicName}`,
+        const [patientResult, serviceResult] = await Promise.all([
+            data.patientId
+                ? supabase.from('patients').select('first_name, last_name').eq('id', data.patientId).single()
+                : Promise.resolve({ data: null }),
+            data.serviceId
+                ? supabase.from('services').select('name').eq('id', data.serviceId).single()
+                : Promise.resolve({ data: null }),
+        ])
+
+        const patient = patientResult.data
+        const patientName = patient ? `${(patient as any).first_name} ${(patient as any).last_name}` : 'Sin paciente'
+        const serviceName = (serviceResult.data as any)?.name ?? null
+
+        const eventTitle = serviceName ? `${patientName} — ${serviceName}` : patientName
+
+        // Exportar a Google Calendar
+        await exportAppointmentToGoogleCalendar(user.id, {
+            title: eventTitle,
             start: new Date(data.startTime),
             end: new Date(data.endTime),
-            description: `Paciente ID: ${data.patientId || 'No asignado'}\nCita creada desde la Agenda de Clinova.`
+            description: [
+                `Paciente: ${patientName}`,
+                serviceName ? `Servicio: ${serviceName}` : null,
+                `Clínica: ${clinicName}`,
+                'Cita creada desde la Agenda de Clinova.',
+            ].filter(Boolean).join('\n')
         })
-        console.log('GCal Response:', gcalResponse)
 
         revalidatePath('/dashboard/agenda')
         console.log('--- END createQuickAppointment ---')

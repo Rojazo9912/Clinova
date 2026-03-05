@@ -86,11 +86,30 @@ export async function createAppointment(data: {
         throw new Error('Error al crear la cita')
     }
 
+    const [patientResult, serviceResult] = await Promise.all([
+        validated.data.patient_id
+            ? supabase.from('patients').select('first_name, last_name').eq('id', validated.data.patient_id).single()
+            : Promise.resolve({ data: null }),
+        validated.data.service_id
+            ? supabase.from('services').select('name').eq('id', validated.data.service_id).single()
+            : Promise.resolve({ data: null }),
+    ])
+
+    const patient = patientResult.data
+    const patientName = patient ? `${(patient as any).first_name} ${(patient as any).last_name}` : 'Sin paciente'
+    const serviceName = (serviceResult.data as any)?.name ?? null
+
+    const eventTitle = serviceName ? `${patientName} — ${serviceName}` : patientName
+
     exportAppointmentToGoogleCalendar(user.id, {
-        title: 'Cita en Clinova',
+        title: eventTitle,
         start: validated.data.start,
         end: validated.data.end,
-        description: `Paciente ID: ${validated.data.patient_id || 'No asignado'}\nCita creada desde Clinova.`
+        description: [
+            `Paciente: ${patientName}`,
+            serviceName ? `Servicio: ${serviceName}` : null,
+            'Cita creada desde Clinova.',
+        ].filter(Boolean).join('\n')
     }).catch(console.error)
 }
 
