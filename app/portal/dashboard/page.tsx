@@ -203,7 +203,7 @@ export default function PortalDashboardPage() {
                                             {format(new Date(appointment.start_time), "EEEE, d 'de' MMMM 'a las' HH:mm", { locale: es })}
                                         </p>
                                         <p className="text-sm text-slate-500">
-                                            Con {appointment.physiotherapist.first_name} {appointment.physiotherapist.last_name}
+                                            Con {appointment.physiotherapist.full_name}
                                         </p>
                                     </div>
                                 </div>

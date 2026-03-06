@@ -27,7 +27,7 @@ export async function getPatientAppointments() {
             status,
             notes,
             services!inner(name),
-            profiles!inner(first_name, last_name)
+            profiles!inner(full_name)
         `)
         .eq('patient_id', patientUser.patient_id)
         .order('start_time', { ascending: false })
@@ -83,7 +83,7 @@ export async function getPatientMedicalRecords() {
             treatment,
             notes,
             services!inner(name),
-            profiles!inner(first_name, last_name)
+            profiles!inner(full_name)
         `)
         .eq('patient_id', patientUser.patient_id)
         .order('session_date', { ascending: false })

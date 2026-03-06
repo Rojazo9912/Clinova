@@ -90,7 +90,7 @@ export async function getPatientTreatmentPlans(patientId: string) {
 
     const { data, error } = await supabase
         .from('treatment_plans')
-        .select('*, profiles!treatment_plans_physio_id_fkey(first_name, last_name)')
+        .select('*, profiles!treatment_plans_physio_id_fkey(full_name)')
         .eq('patient_id', patientId)
         .order('created_at', { ascending: false })
 

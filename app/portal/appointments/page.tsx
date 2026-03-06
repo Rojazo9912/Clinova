@@ -138,7 +138,7 @@ export default function AppointmentsPage() {
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 <User className="w-4 h-4" />
-                                                {apt.physiotherapist.first_name} {apt.physiotherapist.last_name}
+                                                {apt.physiotherapist.full_name}
                                             </div>
                                         </div>
                                         {apt.notes && (

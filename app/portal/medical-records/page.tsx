@@ -64,7 +64,7 @@ export default function MedicalRecordsPage() {
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <User className="w-4 h-4" />
-                                                    {record.physiotherapist.first_name} {record.physiotherapist.last_name}
+                                                    {record.physiotherapist.full_name}
                                                 </div>
                                             </div>
                                         </div>
