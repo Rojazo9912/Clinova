@@ -13,7 +13,7 @@ interface Appointment {
     status: string
     notes: string | null
     service: { name: string }
-    physiotherapist: { first_name: string; last_name: string }
+    physiotherapist: { full_name: string }
 }
 
 export default function AppointmentsPage() {

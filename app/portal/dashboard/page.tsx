@@ -16,8 +16,7 @@ interface Appointment {
         name: string
     }
     physiotherapist: {
-        first_name: string
-        last_name: string
+        full_name: string
     }
 }
 
@@ -49,7 +48,7 @@ export default function PortalDashboardPage() {
                     end_time,
                     status,
                     services!inner(name),
-                    profiles!inner(first_name, last_name)
+                    profiles!inner(full_name)
                 `)
                 .eq('patient_id', patientUser.patient_id)
                 .gte('start_time', new Date().toISOString())
