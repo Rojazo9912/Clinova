@@ -155,7 +155,7 @@ export default function AdvancedCalendar({
     }), [])
 
     return (
-        <div className="h-[calc(100vh-200px)] bg-card rounded-xl border border-border shadow-sm p-4">
+        <div className="h-[calc(100vh-200px)] bg-card rounded-xl p-4">
             <DnDCalendar
                 localizer={localizer}
                 events={events}
@@ -203,7 +203,7 @@ export default function AdvancedCalendar({
 // Custom Toolbar Component
 function CustomToolbar({ label, onNavigate, onView, view }: any) {
     return (
-        <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
+        <div className="flex items-center justify-between mb-4 pb-4">
             <div className="flex items-center gap-2">
                 <button
                     onClick={() => onNavigate('TODAY')}
