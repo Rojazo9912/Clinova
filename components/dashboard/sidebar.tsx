@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-
 import { cn } from '@/lib/utils'
 import {
     LayoutDashboard,
@@ -13,15 +12,20 @@ import {
     LogOut,
     Shield,
     Dumbbell,
-    Copy
+    Copy,
+    PanelLeftClose,
+    PanelLeftOpen,
+    DollarSign,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { PERMISSIONS, hasPermission } from '@/lib/auth/permissions'
 import { useRouter, usePathname } from 'next/navigation'
+import { useSidebar } from '@/lib/contexts/sidebar-context'
 
 interface DashboardSidebarProps {
-
     permissions?: string[]
+    userInitials?: string
+    userName?: string
 }
 
 const routes = [
@@ -29,78 +33,109 @@ const routes = [
         label: 'Dashboard',
         icon: LayoutDashboard,
         href: '/dashboard',
-        active: (pathname: string) => pathname === '/dashboard',
+        active: (p: string) => p === '/dashboard',
         permission: PERMISSIONS.VIEW_DASHBOARD,
+        iconColor: 'text-blue-500',
+        activeBg: 'bg-blue-50',
+        activeText: 'text-blue-700',
     },
     {
         label: 'Agenda',
         icon: Calendar,
         href: '/dashboard/agenda',
-        active: (pathname: string) => pathname.startsWith('/dashboard/agenda'),
+        active: (p: string) => p.startsWith('/dashboard/agenda'),
         permission: PERMISSIONS.VIEW_AGENDA,
+        iconColor: 'text-indigo-500',
+        activeBg: 'bg-indigo-50',
+        activeText: 'text-indigo-700',
     },
     {
         label: 'Pacientes',
         icon: Users,
         href: '/dashboard/patients',
-        active: (pathname: string) => pathname.startsWith('/dashboard/patients'),
+        active: (p: string) => p.startsWith('/dashboard/patients'),
         permission: PERMISSIONS.VIEW_PATIENTS,
+        iconColor: 'text-emerald-500',
+        activeBg: 'bg-emerald-50',
+        activeText: 'text-emerald-700',
     },
     {
         label: 'Fisioterapeutas',
         icon: Activity,
         href: '/dashboard/physiotherapists',
-        active: (pathname: string) => pathname.startsWith('/dashboard/physiotherapists'),
+        active: (p: string) => p.startsWith('/dashboard/physiotherapists'),
         permission: PERMISSIONS.VIEW_PHYSIOS,
+        iconColor: 'text-cyan-500',
+        activeBg: 'bg-cyan-50',
+        activeText: 'text-cyan-700',
     },
     {
         label: 'Usuarios',
         icon: Shield,
         href: '/dashboard/users',
-        active: (pathname: string) => pathname.startsWith('/dashboard/users'),
+        active: (p: string) => p.startsWith('/dashboard/users'),
         permission: PERMISSIONS.VIEW_USERS,
+        iconColor: 'text-violet-500',
+        activeBg: 'bg-violet-50',
+        activeText: 'text-violet-700',
     },
     {
         label: 'Expedientes',
         icon: FileText,
         href: '/dashboard/emr',
-        active: (pathname: string) => pathname.startsWith('/dashboard/emr'),
+        active: (p: string) => p.startsWith('/dashboard/emr'),
         permission: PERMISSIONS.VIEW_EMR,
+        iconColor: 'text-orange-500',
+        activeBg: 'bg-orange-50',
+        activeText: 'text-orange-700',
     },
     {
         label: 'Finanzas',
-        icon: FileText,
+        icon: DollarSign,
         href: '/dashboard/finance',
-        active: (pathname: string) => pathname.startsWith('/dashboard/finance'),
+        active: (p: string) => p.startsWith('/dashboard/finance'),
         permission: PERMISSIONS.VIEW_FINANCE,
+        iconColor: 'text-green-500',
+        activeBg: 'bg-green-50',
+        activeText: 'text-green-700',
     },
     {
         label: 'Ejercicios',
         icon: Dumbbell,
         href: '/dashboard/exercises',
-        active: (pathname: string) => pathname.startsWith('/dashboard/exercises'),
+        active: (p: string) => p.startsWith('/dashboard/exercises'),
         permission: PERMISSIONS.VIEW_EXERCISES,
+        iconColor: 'text-pink-500',
+        activeBg: 'bg-pink-50',
+        activeText: 'text-pink-700',
     },
     {
         label: 'Plantillas',
         icon: Copy,
         href: '/dashboard/templates',
-        active: (pathname: string) => pathname.startsWith('/dashboard/templates'),
+        active: (p: string) => p.startsWith('/dashboard/templates'),
         permission: PERMISSIONS.VIEW_TEMPLATES,
+        iconColor: 'text-amber-500',
+        activeBg: 'bg-amber-50',
+        activeText: 'text-amber-700',
     },
     {
         label: 'Configuración',
         icon: Settings,
         href: '/dashboard/settings',
-        active: (pathname: string) => pathname.startsWith('/dashboard/settings'),
+        active: (p: string) => p.startsWith('/dashboard/settings'),
         permission: PERMISSIONS.VIEW_SETTINGS,
+        iconColor: 'text-slate-400',
+        activeBg: 'bg-slate-100',
+        activeText: 'text-slate-700',
     },
 ]
 
-export function DashboardSidebar({ permissions = [] }: DashboardSidebarProps) {
+export function DashboardSidebar({ permissions = [], userInitials = 'U', userName = '' }: DashboardSidebarProps) {
     const pathname = usePathname()
     const router = useRouter()
     const supabase = createClient()
+    const { isCollapsed, toggle } = useSidebar()
 
     const handleSignOut = async () => {
         await supabase.auth.signOut()
@@ -108,73 +143,118 @@ export function DashboardSidebar({ permissions = [] }: DashboardSidebarProps) {
     }
 
     return (
-        <div className="space-y-4 py-4 flex flex-col h-full bg-[#0F172A] text-white border-r border-white/5 relative overflow-hidden">
-            {/* Ambient Background Glow */}
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-900/0 to-slate-900/0 pointer-events-none" />
-
-            <div className="px-6 py-4 flex-1 z-10 overflow-y-auto overflow-x-hidden">
-                <Link href="/dashboard" className="flex items-center gap-2 mb-10 group">
-                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/30 transition-all duration-300">
-                        <span className="font-bold text-white text-lg">C</span>
+        <div className={cn(
+            "flex flex-col h-full bg-white border-r border-slate-200 transition-all duration-300 ease-in-out",
+            isCollapsed ? "w-16" : "w-64"
+        )}>
+            {/* Logo */}
+            <div className={cn("py-5 flex-shrink-0 border-b border-slate-100", isCollapsed ? "px-3" : "px-5")}>
+                <Link href="/dashboard" className="flex items-center gap-2.5 group">
+                    <div className="h-8 w-8 min-w-[2rem] rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm shadow-blue-200 group-hover:shadow-md group-hover:shadow-blue-200 transition-all duration-200">
+                        <span className="font-bold text-white text-base">C</span>
                     </div>
-                    <h1 className="text-xl font-bold bg-gradient-to-r from-white to-slate-400 text-transparent bg-clip-text">
-                        Clinova
-                    </h1>
+                    {!isCollapsed && (
+                        <span className="text-lg font-bold text-slate-800 tracking-tight">
+                            Clinova
+                        </span>
+                    )}
                 </Link>
+            </div>
 
-                <div className="space-y-2">
+            {/* User badge (only expanded) */}
+            {!isCollapsed && userName && (
+                <div className="px-4 py-3 border-b border-slate-100">
+                    <div className="flex items-center gap-2.5">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                            {userInitials}
+                        </div>
+                        <div className="min-w-0">
+                            <p className="text-sm font-medium text-slate-800 truncate">{userName}</p>
+                            <p className="text-xs text-slate-400">Personal clínico</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Navigation */}
+            <div className={cn("flex-1 overflow-y-auto overflow-x-hidden py-3", isCollapsed ? "px-2" : "px-3")}>
+                <div className="space-y-0.5">
                     {routes
                         .filter(route => hasPermission(permissions, route.permission))
-                        .map((route) => (
-                            <Link
-                                key={route.href}
-                                href={route.href}
-                                className={cn(
-                                    "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-xl transition-all duration-200 relative overflow-hidden",
-                                    route.active(pathname)
-                                        ? "bg-gradient-to-r from-blue-600/20 to-indigo-600/20 text-blue-400 border border-blue-500/10"
-                                        : "text-slate-400 hover:text-white hover:bg-white/5"
-                                )}
-                            >
-                                {route.active(pathname) && (
-                                    <div className="absolute left-0 top-0 h-full w-1 bg-blue-500 rounded-r-full" />
-                                )}
-                                <div className="flex items-center flex-1 z-10">
-                                    <route.icon className={cn("h-5 w-5 mr-3 transition-colors", route.active(pathname) ? "text-blue-400" : "text-slate-500 group-hover:text-slate-300")} />
-                                    {route.label}
-                                </div>
-                            </Link>
-                        ))}
+                        .map((route) => {
+                            const isActive = route.active(pathname)
+                            return (
+                                <Link
+                                    key={route.href}
+                                    href={route.href}
+                                    title={isCollapsed ? route.label : undefined}
+                                    className={cn(
+                                        "flex items-center p-2.5 w-full rounded-xl transition-all duration-150 group",
+                                        isCollapsed ? "justify-center" : "gap-3",
+                                        isActive
+                                            ? `${route.activeBg} ${route.activeText} font-semibold`
+                                            : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                                    )}
+                                >
+                                    <route.icon className={cn(
+                                        "h-5 w-5 min-w-[1.25rem] transition-colors",
+                                        isActive ? route.iconColor : `${route.iconColor} opacity-60 group-hover:opacity-100`
+                                    )} />
+                                    {!isCollapsed && (
+                                        <span className="text-sm truncate">{route.label}</span>
+                                    )}
+                                </Link>
+                            )
+                        })}
 
                     {hasPermission(permissions, PERMISSIONS.MANAGE_ROLES) && (
                         <Link
                             href="/dashboard/admin"
+                            title={isCollapsed ? 'Super Admin' : undefined}
                             className={cn(
-                                "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-xl transition-all duration-200 relative overflow-hidden",
+                                "flex items-center p-2.5 w-full rounded-xl transition-all duration-150 group",
+                                isCollapsed ? "justify-center" : "gap-3",
                                 pathname.startsWith('/dashboard/admin')
-                                    ? "bg-gradient-to-r from-red-600/20 to-orange-600/20 text-red-400 border border-red-500/10"
-                                    : "text-slate-400 hover:text-white hover:bg-white/5"
+                                    ? "bg-red-50 text-red-700 font-semibold"
+                                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
                             )}
                         >
-                            {pathname.startsWith('/dashboard/admin') && (
-                                <div className="absolute left-0 top-0 h-full w-1 bg-red-500 rounded-r-full" />
-                            )}
-                            <div className="flex items-center flex-1 z-10">
-                                <Shield className={cn("h-5 w-5 mr-3 transition-colors", pathname.startsWith('/dashboard/admin') ? "text-red-400" : "text-slate-500 group-hover:text-red-400")} />
-                                Super Admin
-                            </div>
+                            <Shield className={cn(
+                                "h-5 w-5 min-w-[1.25rem] text-red-400 transition-colors",
+                                pathname.startsWith('/dashboard/admin') ? "opacity-100" : "opacity-60 group-hover:opacity-100"
+                            )} />
+                            {!isCollapsed && <span className="text-sm truncate">Super Admin</span>}
                         </Link>
                     )}
                 </div>
             </div>
 
-            <div className="px-6 py-4 z-10">
+            {/* Bottom */}
+            <div className={cn("pb-4 flex-shrink-0 space-y-0.5 border-t border-slate-100 pt-3", isCollapsed ? "px-2" : "px-3")}>
                 <button
                     onClick={handleSignOut}
-                    className="flex items-center gap-3 w-full p-3 rounded-xl text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+                    title={isCollapsed ? 'Cerrar Sesión' : undefined}
+                    className={cn(
+                        "flex items-center p-2.5 w-full rounded-xl text-sm text-slate-500 hover:text-red-500 hover:bg-red-50 transition-all duration-150",
+                        isCollapsed ? "justify-center" : "gap-3"
+                    )}
                 >
-                    <LogOut className="h-5 w-5" />
-                    Cerrar Sesión
+                    <LogOut className="h-5 w-5 min-w-[1.25rem]" />
+                    {!isCollapsed && <span>Cerrar Sesión</span>}
+                </button>
+
+                <button
+                    onClick={toggle}
+                    title={isCollapsed ? 'Expandir' : 'Colapsar'}
+                    className={cn(
+                        "flex items-center p-2.5 w-full rounded-xl text-sm text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-all duration-150",
+                        isCollapsed ? "justify-center" : "gap-3"
+                    )}
+                >
+                    {isCollapsed
+                        ? <PanelLeftOpen className="h-5 w-5 min-w-[1.25rem]" />
+                        : <><PanelLeftClose className="h-5 w-5 min-w-[1.25rem]" /><span>Colapsar</span></>
+                    }
                 </button>
             </div>
         </div>

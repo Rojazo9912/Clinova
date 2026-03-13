@@ -4,16 +4,22 @@ interface PageHeaderProps {
     title: string
     description?: string
     children?: ReactNode
+    emoji?: string
 }
 
-export default function PageHeader({ title, description, children }: PageHeaderProps) {
+export default function PageHeader({ title, description, children, emoji }: PageHeaderProps) {
     return (
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-slate-200/60">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
-                <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">{title}</h1>
-                {description && <p className="text-slate-500 mt-2 text-lg font-light leading-relaxed">{description}</p>}
+                <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    {emoji && <span className="text-2xl">{emoji}</span>}
+                    {title}
+                </h1>
+                {description && (
+                    <p className="text-sm text-slate-500 mt-1">{description}</p>
+                )}
             </div>
-            {children && <div className="flex gap-3">{children}</div>}
+            {children && <div className="flex gap-3 items-center">{children}</div>}
         </div>
     )
 }

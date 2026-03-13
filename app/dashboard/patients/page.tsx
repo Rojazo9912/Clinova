@@ -136,7 +136,15 @@ export default function PatientsPage() {
                             </tr>
                         ) : patients.filter(p => !filterInactive || (getActivityStatus(p.last_session_date).days === null || (getActivityStatus(p.last_session_date).days ?? 0) > 30)).length === 0 ? (
                             <tr>
-                                <td colSpan={8} className="px-6 py-8 text-center text-slate-500">No se encontraron pacientes.</td>
+                                <td colSpan={8} className="px-6 py-16 text-center">
+                                    <div className="flex flex-col items-center gap-2">
+                                        <span className="text-4xl select-none">🔍</span>
+                                        <p className="font-semibold text-slate-700">Sin resultados</p>
+                                        <p className="text-sm text-slate-400">
+                                            {search ? `No hay pacientes que coincidan con "${search}"` : 'No hay pacientes registrados aún'}
+                                        </p>
+                                    </div>
+                                </td>
                             </tr>
                         ) : (
                             patients

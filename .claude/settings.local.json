@@ -10,7 +10,8 @@
       "Bash(ls -la /c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/.env*)",
       "Bash(git -C /c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova ls-files .env.local)",
       "Bash(iconv -f UTF-16LE -t UTF-8 \"/c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/lib/database.types.ts\")",
-      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)"
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)",
+      "Bash(npx tsc --noEmit)"
     ]
   }
 }

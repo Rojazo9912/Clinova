@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { Calendar, ChevronRight } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 
 interface Appointment {
     id: string
@@ -49,12 +49,14 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
     const confirmedCount = appointments.filter(a => a.status === 'confirmed').length
 
     return (
-        <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="rounded-2xl bg-white border border-slate-100 shadow-sm overflow-hidden">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                 <div>
-                    <h3 className="text-base font-semibold text-slate-900">Pacientes de hoy</h3>
-                    <p className="text-sm text-slate-500 mt-0.5">
+                    <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        🗓️ Pacientes de hoy
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-0.5">
                         {appointments.length === 0
                             ? 'Sin citas programadas'
                             : `${appointments.length} citas · ${confirmedCount} confirmadas`}
@@ -62,23 +64,26 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
                 </div>
                 <Link
                     href="/dashboard/agenda"
-                    className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1 font-medium transition-colors"
+                    className="text-xs text-blue-600 hover:text-blue-700 flex items-center gap-1 font-semibold transition-colors"
                 >
-                    Ver agenda <ChevronRight className="h-4 w-4" />
+                    Ver agenda <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
             </div>
 
             {/* List */}
             <div className="divide-y divide-slate-50">
                 {appointments.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-                        <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
-                            <Calendar className="h-7 w-7 text-slate-400" />
-                        </div>
-                        <p className="font-semibold text-slate-700">Día libre</p>
-                        <p className="text-sm text-slate-400 mt-1">No tienes citas programadas para hoy</p>
-                        <Link href="/dashboard/agenda" className="mt-4 text-sm text-blue-600 hover:underline">
-                            Ir a la agenda →
+                    <div className="flex flex-col items-center justify-center py-14 px-6 text-center">
+                        <div className="text-5xl mb-4 select-none">🌿</div>
+                        <p className="font-bold text-slate-700 text-base">¡Día tranquilo!</p>
+                        <p className="text-sm text-slate-400 mt-1 max-w-xs">
+                            Tu pasión mueve vidas. Cada día es una oportunidad.
+                        </p>
+                        <Link
+                            href="/dashboard/agenda"
+                            className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-colors"
+                        >
+                            Agendar cita
                         </Link>
                     </div>
                 ) : (

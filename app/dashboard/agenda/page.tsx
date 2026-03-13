@@ -9,6 +9,7 @@ import { getAvailabilityBlocks, checkTimeSlotAvailability } from '@/lib/actions/
 import { SlotInfo } from 'react-big-calendar'
 import { X, Plus, Calendar as CalendarIcon, User, Clock, Ban, Repeat, Send } from 'lucide-react'
 import { resendAppointmentConfirmation } from '@/lib/actions/notifications'
+import SlideOver from '@/components/ui/SlideOver'
 
 interface CalendarEvent {
     id: string
@@ -317,141 +318,141 @@ export default function AgendaPage() {
                 />
             </div>
 
-            {/* Quick Appointment Modal */}
-            {isModalOpen && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full">
-                        <div className="flex items-center justify-between p-6 border-b">
-                            <h3 className="text-lg font-semibold flex items-center gap-2">
-                                <CalendarIcon className="h-5 w-5" />
-                                {selectedEvent ? 'Detalles de Cita' : 'Nueva Cita'}
-                            </h3>
+            {/* Quick Appointment SlideOver */}
+            <SlideOver
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title={selectedEvent ? 'Detalles de Cita' : 'Nueva Cita'}
+                subtitle={
+                    selectedSlot
+                        ? `${selectedSlot.start.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })}`
+                        : selectedEvent
+                        ? `${selectedEvent.start.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })}`
+                        : undefined
+                }
+                footer={
+                    selectedEvent ? (
+                        <div>
                             <button
-                                onClick={() => setIsModalOpen(false)}
-                                className="p-1 hover:bg-gray-100 rounded-lg transition"
+                                onClick={handleResendConfirmation}
+                                className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2 text-sm font-medium"
                             >
-                                <X className="h-5 w-5" />
+                                <Send className="h-4 w-4" />
+                                Reenviar Confirmación
                             </button>
+                            <p className="text-xs text-slate-500 mt-2 text-center">
+                                Envía WhatsApp y Email al paciente
+                            </p>
+                        </div>
+                    ) : (
+                        <button
+                            type="submit"
+                            form="quick-appointment-form"
+                            disabled={loading}
+                            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 flex items-center justify-center gap-2 text-sm font-medium"
+                        >
+                            {loading ? 'Creando...' : <><Plus className="h-4 w-4" /> Crear Cita</>}
+                        </button>
+                    )
+                }
+            >
+                {selectedEvent ? (
+                    <div className="p-6 space-y-5">
+                        <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
+                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                                <User className="h-5 w-5 text-blue-600" />
+                            </div>
+                            <div>
+                                <p className="text-xs text-slate-500">Paciente</p>
+                                <p className="font-medium text-slate-900">{selectedEvent.resource?.patientName}</p>
+                            </div>
                         </div>
 
-                        {selectedEvent ? (
-                            <div className="p-6 space-y-4">
-                                <div>
-                                    <p className="text-sm text-gray-500">Paciente</p>
-                                    <p className="font-medium">{selectedEvent.resource?.patientName}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-500">Servicio</p>
-                                    <p className="font-medium">{selectedEvent.resource?.serviceName}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-500">Horario</p>
-                                    <p className="font-medium">
-                                        {selectedEvent.start.toLocaleString('es-MX')}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-500">Estado</p>
-                                    <p className="font-medium capitalize">{selectedEvent.resource?.status}</p>
-                                </div>
-
-                                {/* Resend Confirmation Button */}
-                                <div className="pt-4 border-t">
-                                    <button
-                                        onClick={handleResendConfirmation}
-                                        className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
-                                    >
-                                        <Send className="h-4 w-4" />
-                                        Reenviar Confirmación
-                                    </button>
-                                    <p className="text-xs text-gray-500 mt-2 text-center">
-                                        Envía WhatsApp y Email al paciente
-                                    </p>
-                                </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="p-4 bg-slate-50 rounded-xl">
+                                <p className="text-xs text-slate-500 mb-1">Servicio</p>
+                                <p className="text-sm font-medium text-slate-900">{selectedEvent.resource?.serviceName || '—'}</p>
                             </div>
-                        ) : (
-                            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">
-                                        <User className="h-4 w-4 inline mr-1" />
-                                        Paciente
-                                    </label>
-                                    <select
-                                        value={formData.patientId}
-                                        onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
-                                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                                        required
-                                    >
-                                        <option value="">Seleccionar paciente</option>
-                                        {patients.map(p => (
-                                            <option key={p.id} value={p.id}>
-                                                {p.first_name} {p.last_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                            <div className="p-4 bg-slate-50 rounded-xl">
+                                <p className="text-xs text-slate-500 mb-1">Estado</p>
+                                <p className="text-sm font-medium capitalize text-slate-900">{selectedEvent.resource?.status}</p>
+                            </div>
+                        </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">
-                                        Servicio
-                                    </label>
-                                    <select
-                                        value={formData.serviceId}
-                                        onChange={(e) => setFormData({ ...formData, serviceId: e.target.value })}
-                                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                                        required
-                                    >
-                                        <option value="">Seleccionar servicio</option>
-                                        {services.map(s => (
-                                            <option key={s.id} value={s.id}>
-                                                {s.name} - ${s.price}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">
-                                        <Clock className="h-4 w-4 inline mr-1" />
-                                        Horario
-                                    </label>
-                                    <p className="text-sm text-gray-600">
-                                        {selectedSlot?.start.toLocaleString('es-MX')} - {selectedSlot?.end.toLocaleTimeString('es-MX')}
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">
-                                        Notas (opcional)
-                                    </label>
-                                    <textarea
-                                        value={formData.notes}
-                                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                                        rows={3}
-                                        placeholder="Notas adicionales..."
-                                    />
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
-                                >
-                                    {loading ? (
-                                        'Creando...'
-                                    ) : (
-                                        <>
-                                            <Plus className="h-4 w-4" />
-                                            Crear Cita
-                                        </>
-                                    )}
-                                </button>
-                            </form>
-                        )}
+                        <div className="p-4 bg-slate-50 rounded-xl">
+                            <p className="text-xs text-slate-500 mb-1 flex items-center gap-1">
+                                <Clock className="h-3 w-3" /> Horario
+                            </p>
+                            <p className="text-sm font-medium text-slate-900">
+                                {selectedEvent.start.toLocaleString('es-MX', { hour: '2-digit', minute: '2-digit' })} – {selectedEvent.end.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                        </div>
                     </div>
-                </div>
-            )}
+                ) : (
+                    <form id="quick-appointment-form" onSubmit={handleSubmit} className="p-6 space-y-5">
+                        {/* Slot info */}
+                        {selectedSlot && (
+                            <div className="flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl">
+                                <Clock className="h-4 w-4 text-blue-600 shrink-0" />
+                                <p className="text-sm text-blue-800 font-medium">
+                                    {selectedSlot.start.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })} – {selectedSlot.end.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                            </div>
+                        )}
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                                Paciente *
+                            </label>
+                            <select
+                                value={formData.patientId}
+                                onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
+                                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-white"
+                                required
+                            >
+                                <option value="">Seleccionar paciente...</option>
+                                {patients.map(p => (
+                                    <option key={p.id} value={p.id}>
+                                        {p.first_name} {p.last_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                                Servicio *
+                            </label>
+                            <select
+                                value={formData.serviceId}
+                                onChange={(e) => setFormData({ ...formData, serviceId: e.target.value })}
+                                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-white"
+                                required
+                            >
+                                <option value="">Seleccionar servicio...</option>
+                                {services.map(s => (
+                                    <option key={s.id} value={s.id}>
+                                        {s.name} — ${s.price}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                                Notas (opcional)
+                            </label>
+                            <textarea
+                                value={formData.notes}
+                                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm resize-none"
+                                rows={3}
+                                placeholder="Observaciones, indicaciones especiales..."
+                            />
+                        </div>
+                    </form>
+                )}
+            </SlideOver>
 
             {/* Availability Block Modal */}
             <AvailabilityBlockModal
