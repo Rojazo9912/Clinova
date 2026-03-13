@@ -91,15 +91,15 @@ export default function RecurringAppointmentModal({
 
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full my-8">
-                <div className="flex items-center justify-between p-6 border-b">
-                    <h3 className="text-lg font-semibold flex items-center gap-2">
+            <div className="bg-card rounded-xl shadow-2xl max-w-2xl w-full my-8">
+                <div className="flex items-center justify-between p-6 border-b border-border">
+                    <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground">
                         <Repeat className="h-5 w-5 text-blue-500" />
                         Crear Citas Recurrentes
                     </h3>
                     <button
                         onClick={onClose}
-                        className="p-1 hover:bg-gray-100 rounded-lg transition"
+                        className="p-1 hover:bg-muted rounded-lg transition text-foreground"
                     >
                         <X className="h-5 w-5" />
                     </button>
@@ -121,7 +121,7 @@ export default function RecurringAppointmentModal({
                             <select
                                 value={formData.patientId}
                                 onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                                 required
                             >
                                 <option value="">Seleccionar paciente</option>
@@ -140,7 +140,7 @@ export default function RecurringAppointmentModal({
                             <select
                                 value={formData.serviceId}
                                 onChange={(e) => setFormData({ ...formData, serviceId: e.target.value })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                                 required
                             >
                                 <option value="">Seleccionar servicio</option>
@@ -163,7 +163,7 @@ export default function RecurringAppointmentModal({
                                 type="date"
                                 value={formData.startDate}
                                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                                 required
                             />
                         </div>
@@ -176,7 +176,7 @@ export default function RecurringAppointmentModal({
                                 type="time"
                                 value={formData.startTime}
                                 onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                                 required
                             />
                         </div>
@@ -188,7 +188,7 @@ export default function RecurringAppointmentModal({
                                 type="number"
                                 value={formData.durationMinutes}
                                 onChange={(e) => setFormData({ ...formData, durationMinutes: parseInt(e.target.value) })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                                 min="15"
                                 step="15"
                                 required
@@ -196,8 +196,8 @@ export default function RecurringAppointmentModal({
                         </div>
                     </div>
 
-                    <div className="p-4 bg-blue-50 rounded-lg space-y-4">
-                        <h4 className="font-medium text-blue-900">Patrón de Recurrencia</h4>
+                    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg space-y-4">
+                        <h4 className="font-medium text-blue-900 dark:text-blue-300">Patrón de Recurrencia</h4>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
@@ -207,7 +207,7 @@ export default function RecurringAppointmentModal({
                                 <select
                                     value={formData.frequency}
                                     onChange={(e) => setFormData({ ...formData, frequency: e.target.value as any })}
-                                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                                 >
                                     <option value="daily">Diaria</option>
                                     <option value="weekly">Semanal</option>
@@ -222,7 +222,7 @@ export default function RecurringAppointmentModal({
                                     type="number"
                                     value={formData.interval}
                                     onChange={(e) => setFormData({ ...formData, interval: parseInt(e.target.value) })}
-                                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                                     min="1"
                                     required
                                 />
@@ -242,7 +242,7 @@ export default function RecurringAppointmentModal({
                                             onClick={() => handleDayToggle(index)}
                                             className={`flex-1 py-2 rounded-lg text-sm font-medium transition ${formData.daysOfWeek.includes(index)
                                                     ? 'bg-blue-600 text-white'
-                                                    : 'bg-white border hover:bg-gray-50'
+                                                    : 'bg-card border border-border hover:bg-muted text-foreground'
                                                 }`}
                                         >
                                             {day}
@@ -269,7 +269,7 @@ export default function RecurringAppointmentModal({
                                         type="number"
                                         value={formData.occurrences}
                                         onChange={(e) => setFormData({ ...formData, occurrences: parseInt(e.target.value) })}
-                                        className="w-20 px-2 py-1 border rounded focus:ring-2 focus:ring-blue-500 outline-none"
+                                        className="w-20 px-2 py-1 border border-border rounded focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                                         min="1"
                                         disabled={formData.endType !== 'occurrences'}
                                     />
@@ -302,7 +302,7 @@ export default function RecurringAppointmentModal({
                         <textarea
                             value={formData.notes}
                             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-card text-foreground"
                             rows={2}
                             placeholder="Notas adicionales..."
                         />

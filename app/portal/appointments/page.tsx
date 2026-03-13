@@ -74,8 +74,8 @@ export default function AppointmentsPage() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">Mis Citas</h1>
-                    <p className="text-slate-600 mt-2">Gestiona tus citas médicas</p>
+                    <h1 className="text-3xl font-bold text-foreground">Mis Citas</h1>
+                    <p className="text-muted-foreground mt-2">Gestiona tus citas médicas</p>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@ export default function AppointmentsPage() {
                     onClick={() => setFilter('upcoming')}
                     className={`px-4 py-2 rounded-lg font-medium transition ${filter === 'upcoming'
                             ? 'bg-blue-600 text-white'
-                            : 'bg-white text-slate-700 hover:bg-slate-50'
+                            : 'bg-card text-foreground hover:bg-muted'
                         }`}
                 >
                     Próximas
@@ -94,7 +94,7 @@ export default function AppointmentsPage() {
                     onClick={() => setFilter('past')}
                     className={`px-4 py-2 rounded-lg font-medium transition ${filter === 'past'
                             ? 'bg-blue-600 text-white'
-                            : 'bg-white text-slate-700 hover:bg-slate-50'
+                            : 'bg-card text-foreground hover:bg-muted'
                         }`}
                 >
                     Pasadas
@@ -103,7 +103,7 @@ export default function AppointmentsPage() {
                     onClick={() => setFilter('all')}
                     className={`px-4 py-2 rounded-lg font-medium transition ${filter === 'all'
                             ? 'bg-blue-600 text-white'
-                            : 'bg-white text-slate-700 hover:bg-slate-50'
+                            : 'bg-card text-foreground hover:bg-muted'
                         }`}
                 >
                     Todas
@@ -114,24 +114,24 @@ export default function AppointmentsPage() {
             <div className="space-y-4">
                 {loading ? (
                     <div className="text-center py-12">
-                        <p className="text-slate-500">Cargando...</p>
+                        <p className="text-muted-foreground">Cargando...</p>
                     </div>
                 ) : filteredAppointments.length === 0 ? (
-                    <div className="text-center py-12 bg-white rounded-xl border">
-                        <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                        <p className="text-slate-600">No hay citas en esta categoría</p>
+                    <div className="text-center py-12 bg-card rounded-xl border border-border">
+                        <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground">No hay citas en esta categoría</p>
                     </div>
                 ) : (
                     filteredAppointments.map((apt) => (
-                        <div key={apt.id} className="bg-white rounded-xl border p-6 hover:shadow-md transition">
+                        <div key={apt.id} className="bg-card rounded-xl border border-border p-6 hover:shadow-md transition">
                             <div className="flex justify-between items-start">
                                 <div className="flex gap-4">
                                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                         <Calendar className="w-6 h-6 text-blue-600" />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-lg text-slate-900">{apt.service.name}</h3>
-                                        <div className="flex items-center gap-4 mt-2 text-sm text-slate-600">
+                                        <h3 className="font-semibold text-lg text-foreground">{apt.service.name}</h3>
+                                        <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                                             <div className="flex items-center gap-1">
                                                 <Clock className="w-4 h-4" />
                                                 {format(new Date(apt.start_time), "EEEE, d 'de' MMMM 'a las' HH:mm", { locale: es })}
@@ -142,7 +142,7 @@ export default function AppointmentsPage() {
                                             </div>
                                         </div>
                                         {apt.notes && (
-                                            <p className="mt-2 text-sm text-slate-600">{apt.notes}</p>
+                                            <p className="mt-2 text-sm text-muted-foreground">{apt.notes}</p>
                                         )}
                                     </div>
                                 </div>

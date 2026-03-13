@@ -58,7 +58,7 @@ export default function ExercisesPage() {
     if (loading) {
         return (
             <div className="p-8">
-                <div className="text-center py-12 text-slate-500">Cargando ejercicios...</div>
+                <div className="text-center py-12 text-muted-foreground">Cargando ejercicios...</div>
             </div>
         )
     }
@@ -68,8 +68,8 @@ export default function ExercisesPage() {
             <div className="p-8">
                 <div className="text-center py-12">
                     <Dumbbell className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                    <h2 className="text-xl font-semibold text-slate-900 mb-2">No tienes ejercicios asignados</h2>
-                    <p className="text-slate-600">
+                    <h2 className="text-xl font-semibold text-foreground mb-2">No tienes ejercicios asignados</h2>
+                    <p className="text-muted-foreground">
                         Tu fisioterapeuta te asignará ejercicios personalizados en tu próxima sesión.
                     </p>
                 </div>
@@ -80,8 +80,8 @@ export default function ExercisesPage() {
     return (
         <div className="p-8 space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-slate-900">Mis Ejercicios</h1>
-                <p className="text-slate-600 mt-2">
+                <h1 className="text-3xl font-bold text-foreground">Mis Ejercicios</h1>
+                <p className="text-muted-foreground mt-2">
                     Ejercicios personalizados para tu recuperación
                 </p>
             </div>
@@ -89,7 +89,7 @@ export default function ExercisesPage() {
             {/* Active Exercises */}
             {activeExercises.length > 0 && (
                 <div>
-                    <h2 className="text-xl font-semibold text-slate-900 mb-4">Ejercicios Activos</h2>
+                    <h2 className="text-xl font-semibold text-foreground mb-4">Ejercicios Activos</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {activeExercises.map(assignment => {
                             const exercise = assignment.exercises
@@ -101,10 +101,10 @@ export default function ExercisesPage() {
                                 <div
                                     key={assignment.id}
                                     onClick={() => setSelectedExercise(assignment)}
-                                    className="bg-white border rounded-xl overflow-hidden hover:shadow-md transition cursor-pointer"
+                                    className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-md transition cursor-pointer"
                                 >
                                     {exercise.image_url && (
-                                        <div className="h-40 bg-slate-100 overflow-hidden">
+                                        <div className="h-40 bg-muted overflow-hidden">
                                             <img
                                                 src={exercise.image_url}
                                                 alt={exercise.name}
@@ -115,7 +115,7 @@ export default function ExercisesPage() {
 
                                     <div className="p-4 space-y-3">
                                         <div>
-                                            <h3 className="font-semibold text-slate-900">{exercise.name}</h3>
+                                            <h3 className="font-semibold text-foreground">{exercise.name}</h3>
                                             <div className="flex gap-2 mt-2">
                                                 <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
                                                     {CATEGORIES[exercise.category as keyof typeof CATEGORIES]}
@@ -127,12 +127,12 @@ export default function ExercisesPage() {
                                         </div>
 
                                         {assignment.frequency && (
-                                            <p className="text-sm text-slate-600">
+                                            <p className="text-sm text-muted-foreground">
                                                 <strong>Frecuencia:</strong> {assignment.frequency}
                                             </p>
                                         )}
 
-                                        <div className="flex items-center gap-4 text-xs text-slate-500">
+                                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                             {exercise.duration_minutes && (
                                                 <span>⏱️ {exercise.duration_minutes} min</span>
                                             )}
@@ -159,19 +159,19 @@ export default function ExercisesPage() {
             {/* Completed Exercises */}
             {completedExercises.length > 0 && (
                 <div>
-                    <h2 className="text-xl font-semibold text-slate-900 mb-4">Ejercicios Completados</h2>
+                    <h2 className="text-xl font-semibold text-foreground mb-4">Ejercicios Completados</h2>
                     <div className="space-y-2">
                         {completedExercises.map(assignment => {
                             const exercise = assignment.exercises
                             if (!exercise) return null
 
                             return (
-                                <div key={assignment.id} className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center justify-between">
+                                <div key={assignment.id} className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <CheckCircle2 className="w-5 h-5 text-green-600" />
                                         <div>
-                                            <h4 className="font-medium text-slate-900">{exercise.name}</h4>
-                                            <p className="text-sm text-slate-600">
+                                            <h4 className="font-medium text-foreground">{exercise.name}</h4>
+                                            <p className="text-sm text-muted-foreground">
                                                 Completado el {new Date(assignment.completed_date!).toLocaleDateString('es-MX')}
                                             </p>
                                         </div>
@@ -186,7 +186,7 @@ export default function ExercisesPage() {
             {/* Exercise Detail Modal */}
             {selectedExercise && selectedExercise.exercises && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="bg-card rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         <div className="p-6 space-y-6">
                             {selectedExercise.exercises.image_url && (
                                 <div className="rounded-lg overflow-hidden">
@@ -199,7 +199,7 @@ export default function ExercisesPage() {
                             )}
 
                             <div>
-                                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                                <h2 className="text-2xl font-bold text-foreground mb-2">
                                     {selectedExercise.exercises.name}
                                 </h2>
                                 <div className="flex gap-2">
@@ -212,13 +212,13 @@ export default function ExercisesPage() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-4 p-4 bg-slate-50 rounded-lg">
+                            <div className="grid grid-cols-3 gap-4 p-4 bg-muted rounded-lg">
                                 {selectedExercise.exercises.duration_minutes && (
                                     <div className="text-center">
                                         <div className="text-2xl font-bold text-blue-600">
                                             {selectedExercise.exercises.duration_minutes}
                                         </div>
-                                        <div className="text-sm text-slate-600">minutos</div>
+                                        <div className="text-sm text-muted-foreground">minutos</div>
                                     </div>
                                 )}
                                 {selectedExercise.exercises.repetitions && (
@@ -226,7 +226,7 @@ export default function ExercisesPage() {
                                         <div className="text-2xl font-bold text-blue-600">
                                             {selectedExercise.exercises.repetitions}
                                         </div>
-                                        <div className="text-sm text-slate-600">repeticiones</div>
+                                        <div className="text-sm text-muted-foreground">repeticiones</div>
                                     </div>
                                 )}
                                 {selectedExercise.exercises.sets && (
@@ -234,29 +234,29 @@ export default function ExercisesPage() {
                                         <div className="text-2xl font-bold text-blue-600">
                                             {selectedExercise.exercises.sets}
                                         </div>
-                                        <div className="text-sm text-slate-600">series</div>
+                                        <div className="text-sm text-muted-foreground">series</div>
                                     </div>
                                 )}
                             </div>
 
                             {selectedExercise.frequency && (
-                                <div className="p-4 bg-blue-50 rounded-lg">
-                                    <h3 className="font-semibold text-blue-900 mb-1">Frecuencia Recomendada</h3>
-                                    <p className="text-blue-700">{selectedExercise.frequency}</p>
+                                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                    <h3 className="font-semibold text-blue-900 dark:text-blue-300 mb-1">Frecuencia Recomendada</h3>
+                                    <p className="text-blue-700 dark:text-blue-400">{selectedExercise.frequency}</p>
                                 </div>
                             )}
 
                             {selectedExercise.notes && (
-                                <div className="p-4 bg-amber-50 rounded-lg">
-                                    <h3 className="font-semibold text-amber-900 mb-1">Notas de tu Fisioterapeuta</h3>
-                                    <p className="text-amber-700">{selectedExercise.notes}</p>
+                                <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                                    <h3 className="font-semibold text-amber-900 dark:text-amber-300 mb-1">Notas de tu Fisioterapeuta</h3>
+                                    <p className="text-amber-700 dark:text-amber-400">{selectedExercise.notes}</p>
                                 </div>
                             )}
 
                             <div>
-                                <h3 className="font-semibold text-slate-900 mb-2">Instrucciones</h3>
+                                <h3 className="font-semibold text-foreground mb-2">Instrucciones</h3>
                                 <div className="prose prose-sm max-w-none">
-                                    <pre className="whitespace-pre-wrap text-slate-700 font-sans">
+                                    <pre className="whitespace-pre-wrap text-muted-foreground font-sans">
                                         {selectedExercise.exercises.description}
                                     </pre>
                                 </div>
@@ -264,7 +264,7 @@ export default function ExercisesPage() {
 
                             {selectedExercise.exercises.video_url && (
                                 <div>
-                                    <h3 className="font-semibold text-slate-900 mb-2">Video Demostrativo</h3>
+                                    <h3 className="font-semibold text-foreground mb-2">Video Demostrativo</h3>
                                     <a
                                         href={selectedExercise.exercises.video_url}
                                         target="_blank"
@@ -276,7 +276,7 @@ export default function ExercisesPage() {
                                 </div>
                             )}
 
-                            <div className="flex gap-3 pt-4 border-t">
+                            <div className="flex gap-3 pt-4 border-t border-border">
                                 <button
                                     onClick={() => handleMarkComplete(selectedExercise.id)}
                                     className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
@@ -286,7 +286,7 @@ export default function ExercisesPage() {
                                 </button>
                                 <button
                                     onClick={() => setSelectedExercise(null)}
-                                    className="px-4 py-3 border rounded-lg hover:bg-slate-50"
+                                    className="px-4 py-3 border border-border rounded-lg hover:bg-muted text-foreground"
                                 >
                                     Cerrar
                                 </button>

@@ -85,13 +85,9 @@ export async function createQuickAppointment(data: {
     const supabase = await createClient()
 
     try {
-        console.log('--- START createQuickAppointment ---')
-        console.log('Received data:', data)
 
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) throw new Error('Not authenticated')
-
-        console.log('User authenticated:', user.id)
 
         const { data: profile } = await supabase
             .from('profiles')
@@ -99,17 +95,12 @@ export async function createQuickAppointment(data: {
             .eq('id', user.id)
             .single()
 
-        console.log('Profile found:', profile)
-
         if (!profile?.clinic_id) throw new Error('No clinic found')
         const clinicName = (profile.clinics as any)?.name || 'Clinova'
 
         const startIso = new Date(data.startTime).toISOString()
         const endIso = new Date(data.endTime).toISOString()
 
-        console.log('Dates parsed:', { startIso, endIso })
-
-        console.log('Inserting to Supabase DB...')
         const { error, data: newApt } = await supabase
             .from('appointments')
             .insert({
@@ -125,8 +116,6 @@ export async function createQuickAppointment(data: {
             console.error('Supabase DB Insert Error:', error)
             throw new Error('Database Error: ' + error.message)
         }
-
-        console.log('Appointment created successfully:', newApt)
 
         const [patientResult, serviceResult] = await Promise.all([
             data.patientId
@@ -159,7 +148,6 @@ export async function createQuickAppointment(data: {
         })
 
         revalidatePath('/dashboard/agenda')
-        console.log('--- END createQuickAppointment ---')
     } catch (error: any) {
         console.error('CRITICAL ERROR in createQuickAppointment:', error)
         throw new Error(error.message || 'Unknown Server Error in createQuickAppointment')

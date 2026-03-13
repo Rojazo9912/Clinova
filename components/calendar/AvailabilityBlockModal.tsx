@@ -91,15 +91,15 @@ export default function AvailabilityBlockModal({
 
     return (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-2xl max-w-md w-full">
-                <div className="flex items-center justify-between p-6 border-b">
-                    <h3 className="text-lg font-semibold flex items-center gap-2">
+            <div className="bg-card rounded-xl shadow-2xl max-w-md w-full">
+                <div className="flex items-center justify-between p-6 border-b border-border">
+                    <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground">
                         <Clock className="h-5 w-5 text-red-500" />
                         Bloquear Horario
                     </h3>
                     <button
                         onClick={onClose}
-                        className="p-1 hover:bg-gray-100 rounded-lg transition"
+                        className="p-1 hover:bg-muted rounded-lg transition text-foreground"
                     >
                         <X className="h-5 w-5" />
                     </button>
@@ -121,7 +121,7 @@ export default function AvailabilityBlockModal({
                                 type="date"
                                 value={formData.startDate}
                                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-red-500 outline-none bg-card text-foreground"
                                 required
                             />
                         </div>
@@ -133,7 +133,7 @@ export default function AvailabilityBlockModal({
                                 type="time"
                                 value={formData.startTime}
                                 onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-red-500 outline-none bg-card text-foreground"
                                 required
                             />
                         </div>
@@ -148,7 +148,7 @@ export default function AvailabilityBlockModal({
                                 type="date"
                                 value={formData.endDate}
                                 onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-red-500 outline-none bg-card text-foreground"
                                 required
                             />
                         </div>
@@ -160,7 +160,7 @@ export default function AvailabilityBlockModal({
                                 type="time"
                                 value={formData.endTime}
                                 onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-red-500 outline-none bg-card text-foreground"
                                 required
                             />
                         </div>
@@ -181,7 +181,7 @@ export default function AvailabilityBlockModal({
                         />
                     </div>
 
-                    <div className="p-4 bg-gray-50 rounded-lg space-y-3">
+                    <div className="p-4 bg-muted rounded-lg space-y-3">
                         <label className="flex items-center gap-2 cursor-pointer">
                             <input
                                 type="checkbox"
@@ -203,7 +203,7 @@ export default function AvailabilityBlockModal({
                                 <select
                                     value={formData.therapistId}
                                     onChange={(e) => setFormData({ ...formData, therapistId: e.target.value })}
-                                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
+                                    className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-red-500 outline-none bg-card text-foreground"
                                     required={!formData.applyToAll}
                                 >
                                     <option value="">Seleccionar fisioterapeuta</option>

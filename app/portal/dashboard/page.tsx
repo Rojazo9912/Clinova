@@ -95,23 +95,23 @@ export default function PortalDashboardPage() {
         <div className="space-y-6">
             {/* Welcome Header */}
             <div>
-                <h1 className="text-3xl font-bold text-slate-900">Bienvenido</h1>
-                <p className="text-slate-600 mt-2">Gestiona tus citas y revisa tu información médica</p>
+                <h1 className="text-3xl font-bold text-foreground">Bienvenido</h1>
+                <p className="text-muted-foreground mt-2">Gestiona tus citas y revisa tu información médica</p>
             </div>
 
             {/* Quick Actions */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Link
                     href="/portal/appointments/new"
-                    className="p-6 bg-white rounded-xl border border-slate-200 hover:shadow-lg transition group"
+                    className="p-6 bg-card rounded-xl border border-border hover:shadow-lg transition group"
                 >
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition">
                             <Plus className="w-6 h-6 text-blue-600 group-hover:text-white transition" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-slate-900">Agendar Cita</h3>
-                            <p className="text-sm text-slate-600">Nueva cita</p>
+                            <h3 className="font-semibold text-foreground">Agendar Cita</h3>
+                            <p className="text-sm text-muted-foreground">Nueva cita</p>
                         </div>
                     </div>
                 </Link>
@@ -125,8 +125,8 @@ export default function PortalDashboardPage() {
                             <Calendar className="w-6 h-6 text-purple-600" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-slate-900">Mis Citas</h3>
-                            <p className="text-sm text-slate-600">Ver todas</p>
+                            <h3 className="font-semibold text-foreground">Mis Citas</h3>
+                            <p className="text-sm text-muted-foreground">Ver todas</p>
                         </div>
                     </div>
                 </Link>
@@ -140,8 +140,8 @@ export default function PortalDashboardPage() {
                             <MapPin className="w-6 h-6 text-green-600" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-slate-900">Expediente</h3>
-                            <p className="text-sm text-slate-600">Ver historial</p>
+                            <h3 className="font-semibold text-foreground">Expediente</h3>
+                            <p className="text-sm text-muted-foreground">Ver historial</p>
                         </div>
                     </div>
                 </Link>
@@ -155,28 +155,28 @@ export default function PortalDashboardPage() {
                             <Clock className="w-6 h-6 text-orange-600" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-slate-900">Ejercicios</h3>
-                            <p className="text-sm text-slate-600">Ver asignados</p>
+                            <h3 className="font-semibold text-foreground">Ejercicios</h3>
+                            <p className="text-sm text-muted-foreground">Ver asignados</p>
                         </div>
                     </div>
                 </Link>
             </div>
 
             {/* Upcoming Appointments */}
-            <div className="bg-white rounded-xl border border-slate-200 p-6">
+            <div className="bg-card rounded-xl border border-border p-6">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold text-slate-900">Próximas Citas</h2>
+                    <h2 className="text-xl font-bold text-foreground">Próximas Citas</h2>
                     <Link href="/portal/appointments" className="text-sm text-blue-600 hover:text-blue-700">
                         Ver todas →
                     </Link>
                 </div>
 
                 {loading ? (
-                    <p className="text-center py-8 text-slate-500">Cargando...</p>
+                    <p className="text-center py-8 text-muted-foreground">Cargando...</p>
                 ) : upcomingAppointments.length === 0 ? (
                     <div className="text-center py-12">
                         <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                        <p className="text-slate-600 mb-4">No tienes citas próximas</p>
+                        <p className="text-muted-foreground mb-4">No tienes citas próximas</p>
                         <Link
                             href="/portal/appointments/new"
                             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -190,18 +190,18 @@ export default function PortalDashboardPage() {
                         {upcomingAppointments.map((appointment) => (
                             <div
                                 key={appointment.id}
-                                className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition"
+                                className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition"
                             >
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <Calendar className="w-6 h-6 text-blue-600" />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-slate-900">{appointment.service.name}</h3>
-                                        <p className="text-sm text-slate-600">
+                                        <h3 className="font-semibold text-foreground">{appointment.service.name}</h3>
+                                        <p className="text-sm text-muted-foreground">
                                             {format(new Date(appointment.start_time), "EEEE, d 'de' MMMM 'a las' HH:mm", { locale: es })}
                                         </p>
-                                        <p className="text-sm text-slate-500">
+                                        <p className="text-sm text-muted-foreground">
                                             Con {appointment.physiotherapist.full_name}
                                         </p>
                                     </div>

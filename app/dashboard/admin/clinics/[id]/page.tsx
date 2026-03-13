@@ -8,9 +8,6 @@ export const dynamic = "force-dynamic";
 export default async function ClinicDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
 
-    // Debug
-    console.log('ClinicDetailsPage ID:', id);
-
     const clinic = await getClinicById(id);
     const users = await getClinicUsers(id);
 

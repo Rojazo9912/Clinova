@@ -82,23 +82,23 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
         }
     }
 
-    const inputClass = "mt-1 block w-full rounded-lg border border-slate-200 shadow-sm p-2.5 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+    const inputClass = "mt-1 block w-full rounded-lg border border-border shadow-sm p-2.5 bg-card text-foreground text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
 
     // When editing, always show full form
     const showFull = isEditing || mode === 'full'
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col">
+            <div className="w-full max-w-lg bg-card rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col">
 
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center shrink-0">
+                <div className="px-6 py-4 border-b border-border flex justify-between items-center shrink-0">
                     <div>
-                        <h2 className="text-base font-semibold text-slate-900">
+                        <h2 className="text-base font-semibold text-foreground">
                             {isEditing ? 'Editar Paciente' : 'Nuevo Paciente'}
                         </h2>
                         {!isEditing && (
-                            <p className="text-xs text-slate-500 mt-0.5">
+                            <p className="text-xs text-muted-foreground mt-0.5">
                                 {mode === 'quick' ? 'Registro rápido — completa el perfil después' : 'Perfil completo'}
                             </p>
                         )}
@@ -106,14 +106,14 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
                     <div className="flex items-center gap-3">
                         {/* Mode toggle — only for new patients */}
                         {!isEditing && (
-                            <div className="flex items-center bg-slate-100 rounded-lg p-0.5 text-xs">
+                            <div className="flex items-center bg-muted rounded-lg p-0.5 text-xs">
                                 <button
                                     type="button"
                                     onClick={() => setMode('quick')}
                                     className={`px-3 py-1.5 rounded-md font-medium transition-all duration-150 ${
                                         mode === 'quick'
-                                            ? 'bg-white text-slate-900 shadow-sm'
-                                            : 'text-slate-500 hover:text-slate-700'
+                                            ? 'bg-card text-foreground shadow-sm'
+                                            : 'text-muted-foreground hover:text-foreground'
                                     }`}
                                 >
                                     Básico
@@ -123,15 +123,15 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
                                     onClick={() => setMode('full')}
                                     className={`px-3 py-1.5 rounded-md font-medium transition-all duration-150 ${
                                         mode === 'full'
-                                            ? 'bg-white text-slate-900 shadow-sm'
-                                            : 'text-slate-500 hover:text-slate-700'
+                                            ? 'bg-card text-foreground shadow-sm'
+                                            : 'text-muted-foreground hover:text-foreground'
                                     }`}
                                 >
                                     Completo
                                 </button>
                             </div>
                         )}
-                        <button onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
+                        <button onClick={onClose} className="text-muted-foreground hover:text-foreground p-1 rounded-lg hover:bg-muted transition-colors">
                             <X className="w-5 h-5" />
                         </button>
                     </div>
@@ -194,11 +194,11 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
                             <>
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700">Email</label>
+                                        <label className="block text-sm font-medium text-foreground">Email</label>
                                         <input type="email" name="email" defaultValue={patient?.email || ''} placeholder="correo@ejemplo.com" className={inputClass} />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700">Fecha de Nacimiento</label>
+                                        <label className="block text-sm font-medium text-foreground">Fecha de Nacimiento</label>
                                         <input type="date" name="birth_date" defaultValue={patient?.birth_date?.split('T')[0] || ''} className={inputClass} />
                                     </div>
                                 </div>
@@ -215,7 +215,7 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
 
                                 {/* Address */}
                                 <div>
-                                    <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide flex items-center gap-1.5 mb-3">
+                                    <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5 mb-3">
                                         <MapPin className="w-3.5 h-3.5 text-blue-500" />
                                         Dirección
                                     </h3>
@@ -229,7 +229,7 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
 
                                 {/* Emergency Contact */}
                                 <div>
-                                    <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide flex items-center gap-1.5 mb-3">
+                                    <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5 mb-3">
                                         <Shield className="w-3.5 h-3.5 text-red-500" />
                                         Contacto de Emergencia
                                     </h3>
@@ -249,7 +249,7 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
 
                                 {/* Clinical Notes */}
                                 <div>
-                                    <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide flex items-center gap-1.5 mb-3">
+                                    <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5 mb-3">
                                         <Heart className="w-3.5 h-3.5 text-purple-500" />
                                         Notas Clínicas
                                     </h3>
@@ -264,7 +264,7 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
 
                                 {/* Portal Access */}
                                 {!isEditing && (
-                                    <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
+                                    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
                                         <label className="flex items-start gap-3 cursor-pointer">
                                             <input
                                                 type="checkbox"
@@ -272,8 +272,8 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
                                                 className="mt-0.5 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
                                             />
                                             <div>
-                                                <span className="text-sm font-medium text-slate-900">Dar acceso al portal del paciente</span>
-                                                <p className="text-xs text-slate-500 mt-0.5">Se enviará un email con las credenciales de acceso</p>
+                                                <span className="text-sm font-medium text-foreground">Dar acceso al portal del paciente</span>
+                                                <p className="text-xs text-muted-foreground mt-0.5">Se enviará un email con las credenciales de acceso</p>
                                             </div>
                                         </label>
                                     </div>
@@ -296,11 +296,11 @@ export default function PatientModal({ isOpen, onClose, onSuccess, patient }: Pa
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-slate-100 flex justify-end gap-2 shrink-0">
+                <div className="px-6 py-4 border-t border-border flex justify-end gap-2 shrink-0">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                        className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-lg hover:bg-muted transition-colors"
                     >
                         Cancelar
                     </button>

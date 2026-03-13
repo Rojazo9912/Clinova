@@ -84,19 +84,19 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
     if (generatedPassword) {
         return (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                <div className="bg-white rounded-xl p-6 w-full max-w-md text-center space-y-4">
+                <div className="bg-card rounded-xl p-6 w-full max-w-md text-center space-y-4">
                     <div className="flex justify-center">
                         <div className="h-12 w-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
                             <CheckCircle2 className="h-6 w-6" />
                         </div>
                     </div>
                     <h2 className="text-xl font-bold">¡Usuario Creado!</h2>
-                    <p className="text-slate-600 text-sm">
+                    <p className="text-muted-foreground text-sm">
                         Se ha generado una contraseña segura para este usuario. Por favor, <b>cópiala y envíasela al fisioterapeuta</b> para que pueda iniciar sesión. Solo se mostrará esta vez.
                     </p>
 
-                    <div className="bg-slate-50 border p-4 rounded-lg flex items-center justify-between">
-                        <code className="text-lg font-mono text-slate-800">{generatedPassword}</code>
+                    <div className="bg-muted border border-border p-4 rounded-lg flex items-center justify-between">
+                        <code className="text-lg font-mono text-foreground">{generatedPassword}</code>
                         <button
                             onClick={handleCopyPassword}
                             className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition"
@@ -119,12 +119,12 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-md">
+            <div className="bg-card rounded-xl p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold">
                         {user ? 'Editar Usuario' : 'Nuevo Usuario'}
                     </h2>
-                    <button onClick={onClose} className="text-slate-500 hover:text-slate-700">
+                    <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                         <X className="h-6 w-6" />
                     </button>
                 </div>
@@ -137,7 +137,7 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
                             name="full_name"
                             required
                             defaultValue={user?.full_name}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>
 
@@ -149,7 +149,7 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
                             required
                             disabled={!!user}
                             defaultValue={user?.email}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-muted bg-card text-foreground"
                         />
                     </div>
 
@@ -159,7 +159,7 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
                             type="tel"
                             name="phone"
                             defaultValue={user?.phone}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>
 
@@ -169,7 +169,7 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
                             name="role"
                             required
                             defaultValue={user?.role || ''}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         >
                             <option value="" disabled>Seleccionar rol</option>
                             {loadingRoles ? (
@@ -190,7 +190,7 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg hover:bg-slate-50"
+                            className="px-4 py-2 border border-border rounded-lg hover:bg-muted text-foreground"
                         >
                             Cancelar
                         </button>

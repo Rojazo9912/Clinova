@@ -132,7 +132,6 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                     })
                 } catch (error) {
                     // Si ya existe, continuamos con el siguiente
-                    console.log('Exercise already assigned or error:', error)
                 }
             }
 
@@ -168,10 +167,10 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">Nueva Sesión de Terapia</h2>
-                    <button onClick={onClose} className="text-slate-500 hover:text-slate-700">
+            <div className="bg-card rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div className="sticky top-0 bg-card border-b border-border p-6 flex justify-between items-center">
+                    <h2 className="text-2xl font-bold text-foreground">Nueva Sesión de Terapia</h2>
+                    <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                         <X className="h-6 w-6" />
                     </button>
                 </div>
@@ -185,7 +184,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                 name="session_date"
                                 required
                                 defaultValue={new Date().toISOString().slice(0, 16)}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                             />
                         </div>
 
@@ -197,20 +196,20 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                 required
                                 defaultValue={60}
                                 min="1"
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                             />
                         </div>
                     </div>
 
                     {/* Active Treatment Plan Banner */}
                     {activePlan && (
-                        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                        <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <ClipboardList className="w-5 h-5 text-emerald-600" />
                                     <div>
-                                        <p className="text-sm font-semibold text-emerald-900">{activePlan.title}</p>
-                                        <p className="text-xs text-emerald-700">
+                                        <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-400">{activePlan.title}</p>
+                                        <p className="text-xs text-emerald-700 dark:text-emerald-500">
                                             Sesión {(activePlan.completed_sessions || 0) + 1} de {activePlan.total_sessions}
                                             {activePlan.frequency && ` · ${activePlan.frequency}`}
                                         </p>
@@ -223,7 +222,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                         onChange={(e) => setLinkToPlan(e.target.checked)}
                                         className="w-4 h-4 text-emerald-600 rounded"
                                     />
-                                    <span className="text-xs text-emerald-700">Contar sesión</span>
+                                    <span className="text-xs text-emerald-700 dark:text-emerald-500">Contar sesión</span>
                                 </label>
                             </div>
                             <div className="mt-2 w-full bg-emerald-200 rounded-full h-1.5">
@@ -247,7 +246,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                             applyTemplate(e.target.value)
                                         }
                                     }}
-                                    className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
+                                    className="flex-1 px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                                 >
                                     <option value="">Sin plantilla</option>
                                     {templates.map(template => (
@@ -262,7 +261,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                         setNotes('')
                                         setSelectedTemplate('')
                                     }}
-                                    className="px-3 py-2 border rounded-lg hover:bg-slate-50 text-sm"
+                                    className="px-3 py-2 border border-border rounded-lg hover:bg-muted text-foreground text-sm"
                                     title="Limpiar"
                                 >
                                     <X className="w-4 h-4" />
@@ -279,7 +278,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                             required
                             rows={8}
                             placeholder="Describe el progreso del paciente, ejercicios realizados, observaciones... O selecciona una plantilla arriba."
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm bg-card text-foreground"
                         />
                         {selectedTemplate && (
                             <p className="text-xs text-blue-600 mt-1 flex items-center gap-1">
@@ -305,7 +304,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                     </div>
 
                     {/* Quick Metrics Section */}
-                    <div className="border-t pt-4">
+                    <div className="border-t border-border pt-4">
                         <div className="flex items-center justify-between mb-3">
                             <label className="block text-sm font-medium flex items-center gap-2">
                                 <Activity className="w-4 h-4 text-blue-600" />
@@ -321,7 +320,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                         </div>
 
                         {showMetrics && (
-                            <div className="grid grid-cols-3 gap-4 bg-slate-50 rounded-lg p-4">
+                            <div className="grid grid-cols-3 gap-4 bg-muted rounded-lg p-4">
                                 {/* Pain EVA */}
                                 <div className="text-center">
                                     <label className="block text-xs font-medium text-red-600 mb-2">Dolor (EVA)</label>
@@ -333,7 +332,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                         onChange={(e) => setPainLevel(parseInt(e.target.value))}
                                         className="w-full accent-red-500"
                                     />
-                                    <div className="flex justify-between text-[10px] text-slate-400 mt-1">
+                                    <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
                                         <span>0</span>
                                         <span>5</span>
                                         <span>10</span>
@@ -341,7 +340,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                     <span className={`text-lg font-bold ${painLevel !== null ? 'text-red-600' : 'text-slate-300'}`}>
                                         {painLevel !== null ? `${painLevel}/10` : '-'}
                                     </span>
-                                    <p className="text-[10px] text-slate-500 mt-0.5">
+                                    <p className="text-[10px] text-muted-foreground mt-0.5">
                                         {painLevel === null ? 'Sin registrar' : painLevel === 0 ? 'Sin dolor' : painLevel <= 3 ? 'Leve' : painLevel <= 7 ? 'Moderado' : 'Severo'}
                                     </p>
                                     {painLevel !== null && (
@@ -360,7 +359,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                         onChange={(e) => setMobilityLevel(parseInt(e.target.value))}
                                         className="w-full accent-blue-500"
                                     />
-                                    <div className="flex justify-between text-[10px] text-slate-400 mt-1">
+                                    <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
                                         <span>0</span>
                                         <span>5</span>
                                         <span>10</span>
@@ -368,7 +367,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                     <span className={`text-lg font-bold ${mobilityLevel !== null ? 'text-blue-600' : 'text-slate-300'}`}>
                                         {mobilityLevel !== null ? `${mobilityLevel}/10` : '-'}
                                     </span>
-                                    <p className="text-[10px] text-slate-500 mt-0.5">
+                                    <p className="text-[10px] text-muted-foreground mt-0.5">
                                         {mobilityLevel === null ? 'Sin registrar' : mobilityLevel <= 3 ? 'Limitada' : mobilityLevel <= 7 ? 'Moderada' : 'Completa'}
                                     </p>
                                     {mobilityLevel !== null && (
@@ -387,7 +386,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                         onChange={(e) => setStrengthLevel(parseInt(e.target.value))}
                                         className="w-full accent-green-500"
                                     />
-                                    <div className="flex justify-between text-[10px] text-slate-400 mt-1">
+                                    <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
                                         <span>0</span>
                                         <span>5</span>
                                         <span>10</span>
@@ -395,7 +394,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                     <span className={`text-lg font-bold ${strengthLevel !== null ? 'text-green-600' : 'text-slate-300'}`}>
                                         {strengthLevel !== null ? `${strengthLevel}/10` : '-'}
                                     </span>
-                                    <p className="text-[10px] text-slate-500 mt-0.5">
+                                    <p className="text-[10px] text-muted-foreground mt-0.5">
                                         {strengthLevel === null ? 'Sin registrar' : strengthLevel <= 3 ? 'Débil' : strengthLevel <= 7 ? 'Moderada' : 'Fuerte'}
                                     </p>
                                     {strengthLevel !== null && (
@@ -407,7 +406,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                     </div>
 
                     {/* Exercise Assignment Section */}
-                    <div className="border-t pt-4">
+                    <div className="border-t border-border pt-4">
                         <div className="flex items-center justify-between mb-3">
                             <label className="block text-sm font-medium">Asignar Ejercicios (Opcional)</label>
                             <button
@@ -460,10 +459,10 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
 
                         {/* Exercise Selector */}
                         {showExerciseSelector && (
-                            <div className="border rounded-lg p-4 bg-slate-50 max-h-64 overflow-y-auto">
+                            <div className="border border-border rounded-lg p-4 bg-muted max-h-64 overflow-y-auto">
                                 <div className="space-y-2">
                                     {exercises.length === 0 ? (
-                                        <p className="text-sm text-slate-500 text-center py-4">
+                                        <p className="text-sm text-muted-foreground text-center py-4">
                                             No hay ejercicios disponibles. Crea ejercicios primero.
                                         </p>
                                     ) : (
@@ -476,14 +475,14 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                                                     onClick={() => toggleExercise(exercise.id)}
                                                     className={`w-full text-left px-3 py-2 rounded-lg border transition ${
                                                         isSelected
-                                                            ? 'bg-blue-100 border-blue-300 text-blue-900'
-                                                            : 'bg-white border-slate-200 hover:bg-slate-100'
+                                                            ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700 text-blue-900 dark:text-blue-300'
+                                                            : 'bg-card border-border hover:bg-muted'
                                                     }`}
                                                 >
                                                     <div className="flex items-center gap-2">
                                                         <Dumbbell className="w-4 h-4" />
                                                         <span className="font-medium text-sm">{exercise.name}</span>
-                                                        <span className="text-xs text-slate-500">({exercise.category})</span>
+                                                        <span className="text-xs text-muted-foreground">({exercise.category})</span>
                                                     </div>
                                                 </button>
                                             )
@@ -494,11 +493,11 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
                         )}
                     </div>
 
-                    <div className="flex justify-end gap-2 pt-4 border-t">
+                    <div className="flex justify-end gap-2 pt-4 border-t border-border">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg hover:bg-slate-50"
+                            className="px-4 py-2 border border-border rounded-lg hover:bg-muted text-foreground"
                         >
                             Cancelar
                         </button>

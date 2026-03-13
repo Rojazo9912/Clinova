@@ -47,8 +47,8 @@ export default function PaymentsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold text-slate-900">Historial de Pagos</h1>
-                <p className="text-slate-600 mt-2">Revisa tus pagos y descarga recibos</p>
+                <h1 className="text-3xl font-bold text-foreground">Historial de Pagos</h1>
+                <p className="text-muted-foreground mt-2">Revisa tus pagos y descarga recibos</p>
             </div>
 
             {/* Summary Card */}
@@ -60,34 +60,34 @@ export default function PaymentsPage() {
 
             {loading ? (
                 <div className="text-center py-12">
-                    <p className="text-slate-500">Cargando...</p>
+                    <p className="text-muted-foreground">Cargando...</p>
                 </div>
             ) : payments.length === 0 ? (
-                <div className="text-center py-12 bg-white rounded-xl border">
-                    <CreditCard className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                    <p className="text-slate-600">No hay pagos registrados</p>
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
+                        <CreditCard className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground">No hay pagos registrados</p>
                 </div>
             ) : (
-                <div className="bg-white rounded-xl border overflow-hidden">
+                <div className="bg-card rounded-xl border border-border overflow-hidden">
                     <table className="w-full">
-                        <thead className="bg-slate-50 border-b">
+                        <thead className="bg-muted border-b border-border">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Fecha</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Servicio</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Método</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Monto</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Estado</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase">Acciones</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Fecha</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Servicio</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Método</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Monto</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Estado</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y">
                             {payments.map((payment) => (
-                                <tr key={payment.id} className="hover:bg-slate-50">
-                                    <td className="px-6 py-4 text-sm text-slate-900">
+                                <tr key={payment.id} className="hover:bg-muted/50">
+                                    <td className="px-6 py-4 text-sm text-foreground">
                                         {format(new Date(payment.payment_date), "d 'de' MMM, yyyy", { locale: es })}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-slate-900">{payment.service.name}</td>
-                                    <td className="px-6 py-4 text-sm text-slate-600">{getMethodText(payment.payment_method)}</td>
+                                    <td className="px-6 py-4 text-sm text-foreground">{payment.service.name}</td>
+                                    <td className="px-6 py-4 text-sm text-muted-foreground">{getMethodText(payment.payment_method)}</td>
                                     <td className="px-6 py-4 text-sm font-semibold text-slate-900">${payment.amount.toFixed(2)}</td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(payment.status)}`}>

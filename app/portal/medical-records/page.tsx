@@ -32,23 +32,23 @@ export default function MedicalRecordsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold text-slate-900">Expediente Médico</h1>
-                <p className="text-slate-600 mt-2">Historial de sesiones y tratamientos</p>
+                <h1 className="text-3xl font-bold text-foreground">Expediente Médico</h1>
+                <p className="text-muted-foreground mt-2">Historial de sesiones y tratamientos</p>
             </div>
 
             {loading ? (
                 <div className="text-center py-12">
-                    <p className="text-slate-500">Cargando...</p>
+                    <p className="text-muted-foreground">Cargando...</p>
                 </div>
             ) : records.length === 0 ? (
-                <div className="text-center py-12 bg-white rounded-xl border">
-                    <FileText className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                    <p className="text-slate-600">No hay registros médicos</p>
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
+                        <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground">No hay registros médicos</p>
                 </div>
             ) : (
                 <div className="space-y-4">
                     {records.map((record) => (
-                        <div key={record.id} className="bg-white rounded-xl border p-6">
+                        <div key={record.id} className="bg-card rounded-xl border border-border p-6">
                             <div className="flex gap-4">
                                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <FileText className="w-6 h-6 text-green-600" />
@@ -56,8 +56,8 @@ export default function MedicalRecordsPage() {
                                 <div className="flex-1">
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
-                                            <h3 className="font-semibold text-lg text-slate-900">{record.service.name}</h3>
-                                            <div className="flex items-center gap-4 mt-1 text-sm text-slate-600">
+                                            <h3 className="font-semibold text-lg text-foreground">{record.service.name}</h3>
+                                            <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
                                                 <div className="flex items-center gap-1">
                                                     <Calendar className="w-4 h-4" />
                                                     {format(new Date(record.session_date), "d 'de' MMMM, yyyy", { locale: es })}
@@ -72,22 +72,22 @@ export default function MedicalRecordsPage() {
 
                                     {record.diagnosis && (
                                         <div className="mb-3">
-                                            <h4 className="text-sm font-semibold text-slate-700 mb-1">Diagnóstico</h4>
-                                            <p className="text-sm text-slate-600">{record.diagnosis}</p>
+                                            <h4 className="text-sm font-semibold text-foreground mb-1">Diagnóstico</h4>
+                                            <p className="text-sm text-muted-foreground">{record.diagnosis}</p>
                                         </div>
                                     )}
 
                                     {record.treatment && (
                                         <div className="mb-3">
-                                            <h4 className="text-sm font-semibold text-slate-700 mb-1">Tratamiento</h4>
-                                            <p className="text-sm text-slate-600">{record.treatment}</p>
+                                            <h4 className="text-sm font-semibold text-foreground mb-1">Tratamiento</h4>
+                                            <p className="text-sm text-muted-foreground">{record.treatment}</p>
                                         </div>
                                     )}
 
                                     {record.notes && (
                                         <div>
-                                            <h4 className="text-sm font-semibold text-slate-700 mb-1">Notas</h4>
-                                            <p className="text-sm text-slate-600">{record.notes}</p>
+                                            <h4 className="text-sm font-semibold text-foreground mb-1">Notas</h4>
+                                            <p className="text-sm text-muted-foreground">{record.notes}</p>
                                         </div>
                                     )}
                                 </div>

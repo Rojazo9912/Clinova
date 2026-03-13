@@ -62,7 +62,7 @@ export default function PortalLoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 {/* Logo/Header */}
                 <div className="text-center mb-8">
@@ -71,12 +71,12 @@ export default function PortalLoginPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
-                    <h1 className="text-2xl font-bold text-slate-900">Portal del Paciente</h1>
-                    <p className="text-slate-600 mt-2">Accede a tu información médica</p>
+                    <h1 className="text-2xl font-bold text-foreground">Portal del Paciente</h1>
+                    <p className="text-muted-foreground mt-2">Accede a tu información médica</p>
                 </div>
 
                 {/* Login Card */}
-                <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+                <div className="bg-card rounded-2xl shadow-xl p-8 border border-border">
                     <form onSubmit={handleLogin} className="space-y-6">
                         {error && (
                             <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -85,7 +85,7 @@ export default function PortalLoginPage() {
                         )}
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Email
                             </label>
                             <input
@@ -93,13 +93,13 @@ export default function PortalLoginPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-card text-foreground"
                                 placeholder="tu@email.com"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Contraseña
                             </label>
                             <input
@@ -107,7 +107,7 @@ export default function PortalLoginPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-card text-foreground"
                                 placeholder="••••••••"
                             />
                         </div>
@@ -133,9 +133,9 @@ export default function PortalLoginPage() {
 
                 {/* Help Text */}
                 <div className="mt-6 text-center">
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-muted-foreground">
                         ¿No tienes acceso?{' '}
-                        <span className="text-slate-900 font-medium">Contacta a tu clínica</span>
+                        <span className="text-foreground font-medium">Contacta a tu clínica</span>
                     </p>
                 </div>
             </div>

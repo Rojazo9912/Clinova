@@ -44,14 +44,12 @@ export async function exportAppointmentToGoogleCalendar(
             },
         };
 
-        console.log('Sending event payload to GCal:', JSON.stringify(event, null, 2))
 
         const response = await calendar.events.insert({
             calendarId: 'primary',
             requestBody: event,
         });
 
-        console.log('Event successfully inserted:', response.data.htmlLink)
         return response.data;
     } catch (error: any) {
         console.error('Error exportando evento a Google Calendar:', error.message || error);

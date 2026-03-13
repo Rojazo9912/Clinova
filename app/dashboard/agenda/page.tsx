@@ -89,12 +89,6 @@ export default function AgendaPage() {
         setPatients(patientsData)
         setServices(servicesData)
 
-        console.log('📊 Agenda Data Loaded:', {
-            appointments: appointmentsData.length,
-            blocks: blockEvents.length,
-            patients: patientsData.length,
-            services: servicesData.length
-        })
     }
 
     // Handle event drop (drag & drop)
