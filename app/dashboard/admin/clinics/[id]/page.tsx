@@ -33,14 +33,14 @@ export default async function ClinicDetailsPage({ params }: { params: Promise<{ 
             <div className="flex items-center gap-4">
                 <Link
                     href="/dashboard/admin"
-                    className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                    className="p-2 hover:bg-muted rounded-full transition-colors"
                 >
-                    <ArrowLeft className="w-5 h-5 text-slate-500" />
+                    <ArrowLeft className="w-5 h-5 text-muted-foreground" />
                 </Link>
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">{clinic.name}</h2>
                     <p className="text-muted-foreground flex items-center gap-2">
-                        <span className="bg-slate-100 px-2 py-0.5 rounded text-xs font-mono">{clinic.slug}</span>
+                        <span className="bg-muted px-2 py-0.5 rounded text-xs font-mono text-muted-foreground">{clinic.slug}</span>
                         <span className="text-sm">• ID: {clinic.id}</span>
                     </p>
                 </div>
@@ -48,24 +48,24 @@ export default async function ClinicDetailsPage({ params }: { params: Promise<{ 
 
             {/* Clinic Info Cards */}
             <div className="grid gap-6 md:grid-cols-3">
-                <div className="p-6 border rounded-xl bg-white shadow-sm space-y-4">
-                    <div className="flex items-center gap-3 text-slate-500">
+                <div className="p-6 border border-border rounded-xl bg-card shadow-sm space-y-4">
+                    <div className="flex items-center gap-3 text-muted-foreground">
                         <MapPin className="w-5 h-5" />
                         <span className="font-medium">Dirección</span>
                     </div>
                     <p className="text-lg font-medium">{clinic.address || "No registrada"}</p>
                 </div>
 
-                <div className="p-6 border rounded-xl bg-white shadow-sm space-y-4">
-                    <div className="flex items-center gap-3 text-slate-500">
+                <div className="p-6 border border-border rounded-xl bg-card shadow-sm space-y-4">
+                    <div className="flex items-center gap-3 text-muted-foreground">
                         <Phone className="w-5 h-5" />
                         <span className="font-medium">Teléfono</span>
                     </div>
                     <p className="text-lg font-medium">{clinic.phone || "No registrado"}</p>
                 </div>
 
-                <div className="p-6 border rounded-xl bg-white shadow-sm space-y-4">
-                    <div className="flex items-center gap-3 text-slate-500">
+                <div className="p-6 border border-border rounded-xl bg-card shadow-sm space-y-4">
+                    <div className="flex items-center gap-3 text-muted-foreground">
                         <Mail className="w-5 h-5" />
                         <span className="font-medium">Email</span>
                     </div>
@@ -91,25 +91,26 @@ export default async function ClinicDetailsPage({ params }: { params: Promise<{ 
                     {/* User List */}
                     <div className="lg:col-span-2 space-y-4">
                         {users.length === 0 ? (
-                            <div className="p-12 border rounded-xl bg-slate-50 text-center text-slate-500">
+                            <div className="p-12 border border-border rounded-xl bg-muted/50 text-center text-muted-foreground">
                                 No hay usuarios asignados a esta clínica aún.
                             </div>
                         ) : (
                             users.map((user: any) => (
-                                <div key={user.id} className="p-4 border rounded-xl bg-white flex items-center justify-between">
+                                <div key={user.id} className="p-4 border border-border rounded-xl bg-card flex items-center justify-between">
                                     <div className="flex items-center gap-4">
                                         <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
                                             {user.full_name[0]}
                                         </div>
                                         <div>
                                             <p className="font-medium">{user.full_name}</p>
-                                            <p className="text-sm text-slate-500">{user.email}</p>
+                                            <p className="text-sm text-muted-foreground">{user.email}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${user.role === 'clinic_manager'
-                                            ? 'bg-purple-100 text-purple-700'
-                                            : 'bg-slate-100 text-slate-700'
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                            user.role === 'clinic_manager'
+                                                ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                                                : 'bg-muted text-muted-foreground'
                                             }`}>
                                             {user.role === 'clinic_manager' ? 'Gerente' : user.role}
                                         </span>
@@ -121,7 +122,7 @@ export default async function ClinicDetailsPage({ params }: { params: Promise<{ 
 
                     {/* Create User Form Side-panel */}
                     <div className="lg:col-span-1">
-                        <div className="border rounded-xl bg-white p-6 sticky top-6">
+                        <div className="border border-border rounded-xl bg-card p-6 sticky top-6">
                             <h4 className="font-bold mb-4 flex items-center gap-2">
                                 <UserPlus className="w-4 h-4" />
                                 Crear Nuevo Usuario

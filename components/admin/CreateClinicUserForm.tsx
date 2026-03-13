@@ -57,53 +57,52 @@ export default function CreateClinicUserForm({ clinicId, createAction }: { clini
             )}
 
             <input type="hidden" name="clinic_id" value={clinicId} />
-            <div className="text-xs text-gray-400">Debug Clinic ID: {clinicId || 'UNDEFINED'}</div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre Completo</label>
+                <label className="block text-sm font-medium text-foreground">Nombre Completo</label>
                 <input
                     type="text"
                     name="full_name"
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2"
+                    className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 bg-card text-foreground"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <label className="block text-sm font-medium text-foreground">Email</label>
                 <input
                     type="email"
                     name="email"
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2"
+                    className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 bg-card text-foreground"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Teléfono</label>
+                <label className="block text-sm font-medium text-foreground">Teléfono</label>
                 <input
                     type="tel"
                     name="phone"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2"
+                    className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 bg-card text-foreground"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Contraseña</label>
+                <label className="block text-sm font-medium text-foreground">Contraseña</label>
                 <input
                     type="password"
                     name="password"
                     required
                     minLength={6}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2"
+                    className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 bg-card text-foreground"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700">Rol</label>
+                <label className="block text-sm font-medium text-foreground">Rol</label>
                 <select
                     name="role"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2"
+                    className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 bg-card text-foreground"
                     defaultValue="clinic_manager"
                 >
                     <option value="clinic_manager">Gerente de Clínica</option>
