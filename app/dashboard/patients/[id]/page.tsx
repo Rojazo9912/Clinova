@@ -40,26 +40,26 @@ export default async function PatientDetailsPage({ params }: { params: Promise<{
     return (
         <div className="space-y-6">
             {/* Patient Header Card */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-6">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="flex-1">
-                        <h1 className="text-3xl font-bold text-slate-900">{patient.first_name} {patient.last_name}</h1>
-                        <div className="flex flex-wrap gap-4 mt-2 text-slate-600">
+                        <h1 className="text-3xl font-bold text-foreground">{patient.first_name} {patient.last_name}</h1>
+                        <div className="flex flex-wrap gap-4 mt-2 text-muted-foreground">
                             {patient.email && (
                                 <div className="flex items-center text-sm">
-                                    <Mail className="w-4 h-4 mr-2 text-slate-400" />
+                                    <Mail className="w-4 h-4 mr-2 text-muted-foreground" />
                                     {patient.email}
                                 </div>
                             )}
                             {patient.phone && (
                                 <div className="flex items-center text-sm">
-                                    <Phone className="w-4 h-4 mr-2 text-slate-400" />
+                                    <Phone className="w-4 h-4 mr-2 text-muted-foreground" />
                                     {patient.phone}
                                 </div>
                             )}
                             {patient.birth_date && (
                                 <div className="flex items-center text-sm">
-                                    <Calendar className="w-4 h-4 mr-2 text-slate-400" />
+                                    <Calendar className="w-4 h-4 mr-2 text-muted-foreground" />
                                     {format(new Date(patient.birth_date), "d 'de' MMMM, yyyy", { locale: es })}
                                 </div>
                             )}
@@ -83,9 +83,9 @@ export default async function PatientDetailsPage({ params }: { params: Promise<{
                     {/* Treatment Plan */}
                     <TreatmentPlanCard plans={treatmentPlans} patientId={id} />
 
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div className="p-4 border-b border-slate-100 bg-slate-50/50">
-                            <h2 className="text-lg font-semibold text-slate-800">Historial Clínico</h2>
+                    <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+                        <div className="p-4 border-b border-border bg-muted/30">
+                            <h2 className="text-lg font-semibold text-foreground">Historial Clínico</h2>
                         </div>
                         <div className="p-6">
                             <RecordList records={records} />
@@ -95,9 +95,9 @@ export default async function PatientDetailsPage({ params }: { params: Promise<{
 
                 {/* Right Column: New Consultation & Quick Actions */}
                 <div className="space-y-6">
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div className="p-4 border-b border-slate-100 bg-blue-50/50">
-                            <h2 className="text-lg font-semibold text-blue-900">Nueva Consulta</h2>
+                    <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+                        <div className="p-4 border-b border-border bg-blue-50/30 dark:bg-blue-900/10">
+                            <h2 className="text-lg font-semibold text-blue-900 dark:text-blue-300">Nueva Consulta</h2>
                         </div>
                         <div className="p-0">
                             <NewConsultationForm

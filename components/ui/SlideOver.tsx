@@ -58,20 +58,20 @@ export default function SlideOver({
             {/* Panel */}
             <div
                 className={cn(
-                    "fixed inset-y-0 right-0 z-50 w-full flex flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out",
+                    "fixed inset-y-0 right-0 z-50 w-full flex flex-col bg-card shadow-2xl transition-transform duration-300 ease-in-out",
                     widthClass,
                     isOpen ? "translate-x-0" : "translate-x-full"
                 )}
             >
                 {/* Header */}
-                <div className="flex items-start justify-between px-6 py-5 border-b border-slate-100 shrink-0">
+                <div className="flex items-start justify-between px-6 py-5 border-b border-border shrink-0">
                     <div>
-                        <h2 className="text-base font-semibold text-slate-900">{title}</h2>
-                        {subtitle && <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>}
+                        <h2 className="text-base font-semibold text-foreground">{title}</h2>
+                        {subtitle && <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>}
                     </div>
                     <button
                         onClick={onClose}
-                        className="ml-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                        className="ml-4 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
@@ -84,7 +84,7 @@ export default function SlideOver({
 
                 {/* Footer */}
                 {footer && (
-                    <div className="px-6 py-4 border-t border-slate-100 shrink-0 bg-slate-50">
+                    <div className="px-6 py-4 border-t border-border shrink-0 bg-muted/50">
                         {footer}
                     </div>
                 )}

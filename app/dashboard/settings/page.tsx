@@ -76,17 +76,17 @@ export default async function SettingsPage() {
             <div className="glass p-8 space-y-6">
                 <div className="space-y-2">
                     <h3 className="text-xl font-bold tracking-tight">Integraciones Personales</h3>
-                    <p className="text-sm text-slate-500">Conecta tus cuentas para habilitar funcionalidades automáticas.</p>
+                    <p className="text-sm text-muted-foreground">Conecta tus cuentas para habilitar funcionalidades automáticas.</p>
                 </div>
 
-                <div className="p-4 border border-slate-200 rounded-xl flex items-center justify-between bg-white">
+                <div className="p-4 border border-border rounded-xl flex items-center justify-between bg-card">
                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 shadow-sm">
+                        <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center border border-border shadow-sm">
                             <span className="text-xl">📅</span>
                         </div>
                         <div>
-                            <h4 className="font-semibold text-slate-900">Google Calendar</h4>
-                            <p className="text-xs text-slate-500">
+                            <h4 className="font-semibold text-foreground">Google Calendar</h4>
+                            <p className="text-xs text-muted-foreground">
                                 {isGoogleCalendarConnected
                                     ? 'Tu cuenta está conectada de forma segura para sincronización.'
                                     : 'Conecta tu cuenta para sincronizar las citas de Clinova con tu agenda.'}

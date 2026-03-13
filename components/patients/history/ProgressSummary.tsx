@@ -35,19 +35,19 @@ const REGION_LABELS: Record<string, string> = {
 export default function ProgressSummary({ progress }: ProgressSummaryProps) {
     if (progress.length === 0) {
         return (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h3 className="text-md font-semibold text-slate-800 mb-3 flex items-center gap-2">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-6">
+                <h3 className="text-md font-semibold text-foreground mb-3 flex items-center gap-2">
                     <Activity className="w-5 h-5 text-blue-600" />
                     Evolución del Paciente
                 </h3>
-                <p className="text-sm text-slate-500">No hay mediciones registradas aún. Registra una medición en la sección de Evolución.</p>
+                <p className="text-sm text-muted-foreground">No hay mediciones registradas aún. Registra una medición en la sección de Evolución.</p>
             </div>
         )
     }
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h3 className="text-md font-semibold text-slate-800 mb-4 flex items-center gap-2">
+        <div className="bg-card rounded-xl shadow-sm border border-border p-6">
+            <h3 className="text-md font-semibold text-foreground mb-4 flex items-center gap-2">
                 <Activity className="w-5 h-5 text-blue-600" />
                 Evolución del Paciente
             </h3>
@@ -65,27 +65,27 @@ export default function ProgressSummary({ progress }: ProgressSummaryProps) {
                     const displayChange = config.invertTrend ? -p.changePercent : p.changePercent
 
                     return (
-                        <div key={i} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                        <div key={i} className="flex items-center gap-3 p-3 bg-muted rounded-lg">
                             <div className={`p-2 rounded-lg bg-${config.color}-100`}>
                                 <Icon className={`w-4 h-4 text-${config.color}-600`} />
                             </div>
 
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-slate-900">
+                                    <span className="text-sm font-medium text-foreground">
                                         {config.label}
                                     </span>
                                     {regionLabel && (
-                                        <span className="text-xs text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded">
+                                        <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                                             {regionLabel}
                                         </span>
                                     )}
                                 </div>
                                 <div className="flex items-center gap-2 mt-0.5">
-                                    <span className="text-xs text-slate-500">
+                                    <span className="text-xs text-muted-foreground">
                                         {p.firstValue}{config.unit} → {p.lastValue}{config.unit}
                                     </span>
-                                    <span className="text-xs text-slate-400">
+                                    <span className="text-xs text-muted-foreground/70">
                                         ({p.totalMeasurements} mediciones)
                                     </span>
                                 </div>
@@ -107,7 +107,7 @@ export default function ProgressSummary({ progress }: ProgressSummaryProps) {
                                         </span>
                                     </div>
                                 ) : (
-                                    <div className="flex items-center gap-1 px-2 py-1 bg-slate-100 text-slate-600 rounded-full">
+                                    <div className="flex items-center gap-1 px-2 py-1 bg-muted text-muted-foreground rounded-full">
                                         <Minus className="w-3 h-3" />
                                         <span className="text-xs font-bold">Estable</span>
                                     </div>

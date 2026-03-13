@@ -17,15 +17,15 @@ export default function PatientTimeline({ sessions }: PatientTimelineProps) {
         return Array.from({ length: 5 }, (_, i) => (
             <Star
                 key={i}
-                className={`h-4 w-4 ${i < rating ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`}
+                className={`h-4 w-4 ${i < rating ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`}
             />
         ))
     }
 
     if (sessions.length === 0) {
         return (
-            <div className="bg-white/50 backdrop-blur-md rounded-xl border border-white/20 shadow-sm p-8 text-center">
-                <p className="text-slate-500">No hay sesiones registradas para este paciente.</p>
+            <div className="bg-card/50 backdrop-blur-md rounded-xl border border-border shadow-sm p-8 text-center">
+                <p className="text-muted-foreground">No hay sesiones registradas para este paciente.</p>
             </div>
         )
     }
@@ -38,11 +38,11 @@ export default function PatientTimeline({ sessions }: PatientTimelineProps) {
                 {sessions.map((session: any) => (
                     <div
                         key={session.id}
-                        className="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-md transition"
+                        className="bg-card rounded-xl border border-border p-6 hover:shadow-md transition"
                     >
                         <div className="flex justify-between items-start mb-4">
                             <div className="flex items-center gap-4">
-                                <div className="flex items-center gap-2 text-slate-600">
+                                <div className="flex items-center gap-2 text-muted-foreground">
                                     <Calendar className="h-4 w-4" />
                                     <span className="text-sm font-medium">
                                         {new Date(session.session_date).toLocaleDateString('es-MX', {
@@ -53,7 +53,7 @@ export default function PatientTimeline({ sessions }: PatientTimelineProps) {
                                     </span>
                                 </div>
 
-                                <div className="flex items-center gap-2 text-slate-600">
+                                <div className="flex items-center gap-2 text-muted-foreground">
                                     <Clock className="h-4 w-4" />
                                     <span className="text-sm">{session.duration_minutes} min</span>
                                 </div>
@@ -65,13 +65,13 @@ export default function PatientTimeline({ sessions }: PatientTimelineProps) {
                         </div>
 
                         <div className="mb-3">
-                            <p className="text-sm text-slate-500 mb-1">Fisioterapeuta</p>
+                            <p className="text-sm text-muted-foreground mb-1">Fisioterapeuta</p>
                             <p className="font-medium">{session.profiles?.full_name || 'No especificado'}</p>
                         </div>
 
                         <div>
-                            <p className="text-sm text-slate-500 mb-1">Notas</p>
-                            <p className="text-slate-700 whitespace-pre-wrap">{session.notes}</p>
+                            <p className="text-sm text-muted-foreground mb-1">Notas</p>
+                            <p className="text-foreground whitespace-pre-wrap">{session.notes}</p>
                         </div>
 
                         <div className="mt-4 pt-4 border-t">

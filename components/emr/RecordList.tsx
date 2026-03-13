@@ -22,8 +22,8 @@ interface RecordListProps {
 export default function RecordList({ records }: RecordListProps) {
     if (records.length === 0) {
         return (
-            <div className="text-center py-12 bg-slate-50 rounded-xl border border-dashed border-slate-300">
-                <p className="text-slate-500">No hay historial clínico registrado.</p>
+            <div className="text-center py-12 bg-muted rounded-xl border border-dashed border-border">
+                <p className="text-muted-foreground">No hay historial clínico registrado.</p>
             </div>
         )
     }
@@ -32,13 +32,13 @@ export default function RecordList({ records }: RecordListProps) {
         <div className="space-y-6">
             {records.map((record) => (
                 <div key={record.id} className="relative pl-8 pb-6 border-l-2 border-blue-100 last:pb-0">
-                    <div className="absolute top-0 left-[-9px] w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-50"></div>
+                    <div className="absolute top-0 left-[-9px] w-4 h-4 rounded-full bg-blue-500 border-4 border-background"></div>
 
-                    <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-5 hover:shadow-md transition duration-200">
+                    <div className="bg-card rounded-lg shadow-sm border border-border p-5 hover:shadow-md transition duration-200">
                         <div className="flex justify-between items-start mb-3">
                             <div>
-                                <h4 className="text-lg font-bold text-slate-800">{record.diagnosis}</h4>
-                                <p className="text-sm text-slate-500">
+                                <h4 className="text-lg font-bold text-foreground">{record.diagnosis}</h4>
+                                <p className="text-sm text-muted-foreground">
                                     {format(new Date(record.created_at), "d 'de' MMMM, yyyy 'a las' HH:mm", { locale: es })}
                                 </p>
                             </div>
@@ -49,16 +49,16 @@ export default function RecordList({ records }: RecordListProps) {
 
                         <div className="space-y-3">
                             <div>
-                                <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Tratamiento</h5>
-                                <p className="text-slate-700 bg-slate-50 p-3 rounded-md text-sm whitespace-pre-line border border-slate-100">
+                                <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Tratamiento</h5>
+                                <p className="text-foreground bg-muted p-3 rounded-md text-sm whitespace-pre-line border border-border">
                                     {record.treatment_plan}
                                 </p>
                             </div>
 
                             {record.notes && (
                                 <div>
-                                    <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Notas</h5>
-                                    <p className="text-slate-600 text-sm">
+                                    <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Notas</h5>
+                                    <p className="text-muted-foreground text-sm">
                                         {record.notes}
                                     </p>
                                 </div>

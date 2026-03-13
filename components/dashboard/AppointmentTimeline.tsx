@@ -76,7 +76,7 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
                     <div className="flex flex-col items-center justify-center py-14 px-6 text-center">
                         <div className="text-5xl mb-4 select-none">🌿</div>
                         <p className="font-bold text-foreground text-base">¡Día tranquilo!</p>
-                        <p className="text-sm text-slate-400 mt-1 max-w-xs">
+                        <p className="text-sm text-muted-foreground mt-1 max-w-xs">
                             Tu pasión mueve vidas. Cada día es una oportunidad.
                         </p>
                         <Link

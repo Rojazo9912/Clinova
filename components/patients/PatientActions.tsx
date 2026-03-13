@@ -27,14 +27,14 @@ export default function PatientActions({ patient, patientId }: PatientActionsPro
                 </Link>
                 <Link
                     href={`/dashboard/patients/${patientId}/evolution`}
-                    className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition text-sm font-medium shadow-sm flex items-center gap-2"
+                    className="px-4 py-2 bg-card border border-border text-foreground rounded-lg hover:bg-muted transition text-sm font-medium shadow-sm flex items-center gap-2"
                 >
                     <Activity className="w-4 h-4" />
                     Evolución
                 </Link>
                 <button
                     onClick={() => setShowEditModal(true)}
-                    className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition text-sm font-medium shadow-sm flex items-center gap-2"
+                    className="px-4 py-2 bg-card border border-border text-foreground rounded-lg hover:bg-muted transition text-sm font-medium shadow-sm flex items-center gap-2"
                 >
                     <Pencil className="w-4 h-4" />
                     Editar Perfil

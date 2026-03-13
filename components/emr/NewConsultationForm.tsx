@@ -92,12 +92,12 @@ export default function NewConsultationForm({ patientId, patientName, patientAge
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white/50 p-6 rounded-xl border border-white/20 shadow-sm backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Nueva Consulta</h3>
+        <form onSubmit={handleSubmit} className="space-y-4 bg-card/50 p-6 rounded-xl border border-border shadow-sm backdrop-blur-sm">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Nueva Consulta</h3>
 
             {templates.length > 0 && (
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Usar Plantilla (Opcional)</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">Usar Plantilla (Opcional)</label>
                     <div className="flex gap-2">
                         <select
                             value={selectedTemplate}
@@ -107,7 +107,7 @@ export default function NewConsultationForm({ patientId, patientName, patientAge
                                     applyTemplate(e.target.value)
                                 }
                             }}
-                            className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
+                            className="flex-1 px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         >
                             <option value="">Sin plantilla</option>
                             {templates.map(template => (
@@ -124,7 +124,7 @@ export default function NewConsultationForm({ patientId, patientName, patientAge
                                 setNotes('')
                                 setSelectedTemplate('')
                             }}
-                            className="px-3 py-2 border rounded-lg hover:bg-slate-50 text-sm"
+                            className="px-3 py-2 border border-border rounded-lg hover:bg-muted text-sm"
                             title="Limpiar todo"
                         >
                             <X className="w-4 h-4" />
@@ -140,36 +140,36 @@ export default function NewConsultationForm({ patientId, patientName, patientAge
             )}
 
             <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Diagnóstico</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Diagnóstico</label>
                 <textarea
                     value={diagnosis}
                     onChange={(e) => setDiagnosis(e.target.value)}
                     required
                     rows={3}
-                    className="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white p-2 border font-mono text-sm"
+                    className="w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-card text-foreground p-2 border font-mono text-sm"
                     placeholder="Ej. Esguince de tobillo grado 2"
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Plan de Tratamiento</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Plan de Tratamiento</label>
                 <textarea
                     value={treatmentPlan}
                     onChange={(e) => setTreatmentPlan(e.target.value)}
                     required
                     rows={4}
-                    className="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white p-2 border font-mono text-sm"
+                    className="w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-card text-foreground p-2 border font-mono text-sm"
                     placeholder="Ej. Crioterapia 15min, Ultrasonido, Ejercicios de propiocepción..."
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Notas de Evolución / Observaciones</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Notas de Evolución / Observaciones</label>
                 <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     rows={4}
-                    className="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white p-2 border font-mono text-sm"
+                    className="w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-card text-foreground p-2 border font-mono text-sm"
                     placeholder="Detalles adicionales de la sesión..."
                 />
             </div>

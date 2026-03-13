@@ -126,8 +126,8 @@ export default function TemplatesPage() {
         <div className="p-8 space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">Plantillas de Notas</h1>
-                    <p className="text-slate-600 mt-2">Crea plantillas reutilizables para documentar más rápido</p>
+                    <h1 className="text-3xl font-bold text-foreground">Plantillas de Notas</h1>
+                    <p className="text-muted-foreground mt-2">Crea plantillas reutilizables para documentar más rápido</p>
                 </div>
                 <button
                     onClick={openCreateModal}
@@ -144,7 +144,7 @@ export default function TemplatesPage() {
                     onClick={() => setFilteredCategory('')}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filteredCategory === ''
                             ? 'bg-blue-600 text-white'
-                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                            : 'bg-muted text-muted-foreground hover:bg-muted/80'
                         }`}
                 >
                     Todas
@@ -155,7 +155,7 @@ export default function TemplatesPage() {
                         onClick={() => setFilteredCategory(cat.value)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filteredCategory === cat.value
                                 ? 'bg-blue-600 text-white'
-                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                : 'bg-muted text-muted-foreground hover:bg-muted/80'
                             }`}
                     >
                         {cat.label}
@@ -166,30 +166,30 @@ export default function TemplatesPage() {
             {/* Templates Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {loading ? (
-                    <div className="col-span-full text-center py-12 text-slate-500">Cargando...</div>
+                    <div className="col-span-full text-center py-12 text-muted-foreground">Cargando...</div>
                 ) : templates.length === 0 ? (
-                    <div className="col-span-full text-center py-12 text-slate-500">
+                    <div className="col-span-full text-center py-12 text-muted-foreground">
                         No hay plantillas. Crea tu primera plantilla.
                     </div>
                 ) : (
                     templates.map(template => (
-                        <div key={template.id} className="bg-white border rounded-xl p-4 space-y-3 hover:shadow-md transition">
+                        <div key={template.id} className="bg-card border border-border rounded-xl p-4 space-y-3 hover:shadow-md transition">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
-                                    <h3 className="font-semibold text-slate-900">{template.name}</h3>
+                                    <h3 className="font-semibold text-foreground">{template.name}</h3>
                                     <span className={`inline-block mt-1 px-2 py-1 text-xs rounded-full bg-${getCategoryColor(template.category)}-100 text-${getCategoryColor(template.category)}-700`}>
                                         {CATEGORIES.find(c => c.value === template.category)?.label}
                                     </span>
                                 </div>
-                                <FileText className="w-5 h-5 text-slate-400" />
+                                <FileText className="w-5 h-5 text-muted-foreground" />
                             </div>
 
-                            <p className="text-sm text-slate-600 line-clamp-3">{template.content}</p>
+                            <p className="text-sm text-muted-foreground line-clamp-3">{template.content}</p>
 
                             {template.variables_used && template.variables_used.length > 0 && (
                                 <div className="flex flex-wrap gap-1">
                                     {template.variables_used.map(v => (
-                                        <span key={v} className="text-xs px-2 py-0.5 bg-slate-100 text-slate-600 rounded">
+                                        <span key={v} className="text-xs px-2 py-0.5 bg-muted text-muted-foreground rounded">
                                             {`{${v}}`}
                                         </span>
                                     ))}
@@ -220,12 +220,12 @@ export default function TemplatesPage() {
             {/* Create/Edit Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                        <div className="p-6 border-b flex items-center justify-between sticky top-0 bg-white">
-                            <h2 className="text-2xl font-bold">
+                    <div className="bg-card rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="p-6 border-b border-border flex items-center justify-between sticky top-0 bg-card">
+                            <h2 className="text-2xl font-bold text-foreground">
                                 {editingTemplate ? 'Editar Plantilla' : 'Nueva Plantilla'}
                             </h2>
-                            <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setIsModalOpen(false)} className="text-muted-foreground hover:text-foreground">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
@@ -233,26 +233,26 @@ export default function TemplatesPage() {
                         <form onSubmit={handleSubmit} className="p-6 space-y-6">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Nombre de la Plantilla
                                     </label>
                                     <input
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full px-3 py-2 border rounded-lg"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         required
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Categoría
                                     </label>
                                     <select
                                         value={formData.category}
                                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                        className="w-full px-3 py-2 border rounded-lg"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     >
                                         {CATEGORIES.map(cat => (
                                             <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -262,7 +262,7 @@ export default function TemplatesPage() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Contenido de la Plantilla
                                 </label>
                                 <textarea
@@ -277,7 +277,7 @@ export default function TemplatesPage() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Variables Disponibles (click para insertar)
                                 </label>
                                 <div className="flex flex-wrap gap-2">
@@ -286,7 +286,7 @@ export default function TemplatesPage() {
                                             key={v.name}
                                             type="button"
                                             onClick={() => insertVariable(v.name)}
-                                            className="px-3 py-1.5 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition"
+                                            className="px-3 py-1.5 text-sm bg-muted hover:bg-muted/80 text-muted-foreground rounded-lg transition"
                                         >
                                             {`{${v.name}}`} - {v.label}
                                         </button>
@@ -302,7 +302,7 @@ export default function TemplatesPage() {
                                         onChange={(e) => setFormData({ ...formData, is_shared: e.target.checked })}
                                         className="w-4 h-4 text-blue-600 rounded"
                                     />
-                                    <span className="text-sm text-slate-700">Compartir con el equipo de la clínica</span>
+                                    <span className="text-sm text-foreground">Compartir con el equipo de la clínica</span>
                                 </label>
                             </div>
 
@@ -316,7 +316,7 @@ export default function TemplatesPage() {
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-4 py-2 border rounded-lg hover:bg-slate-50"
+                                    className="px-4 py-2 border border-border rounded-lg hover:bg-muted"
                                 >
                                     Cancelar
                                 </button>

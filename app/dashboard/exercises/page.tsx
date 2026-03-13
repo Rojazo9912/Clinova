@@ -136,8 +136,8 @@ export default function ExercisesPage() {
         <div className="p-8 space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900">Biblioteca de Ejercicios</h1>
-                    <p className="text-slate-600 mt-2">Gestiona ejercicios para asignar a tus pacientes</p>
+                    <h1 className="text-3xl font-bold text-foreground">Biblioteca de Ejercicios</h1>
+                    <p className="text-muted-foreground mt-2">Gestiona ejercicios para asignar a tus pacientes</p>
                 </div>
                 <button
                     onClick={openCreateModal}
@@ -158,19 +158,19 @@ export default function ExercisesPage() {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Buscar ejercicios..."
-                        className="w-full pl-10 pr-4 py-2 border rounded-lg"
+                        className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground"
                     />
                 </div>
 
                 {/* Category Filter */}
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Categoría</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Categoría</label>
                     <div className="flex flex-wrap gap-2">
                         <button
                             onClick={() => setFilteredCategory('')}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filteredCategory === ''
                                     ? 'bg-blue-600 text-white'
-                                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
                                 }`}
                         >
                             Todas
@@ -181,7 +181,7 @@ export default function ExercisesPage() {
                                 onClick={() => setFilteredCategory(cat.value)}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filteredCategory === cat.value
                                         ? 'bg-blue-600 text-white'
-                                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
                                     }`}
                             >
                                 {cat.label}
@@ -192,13 +192,13 @@ export default function ExercisesPage() {
 
                 {/* Difficulty Filter */}
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Dificultad</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Dificultad</label>
                     <div className="flex gap-2">
                         <button
                             onClick={() => setFilteredDifficulty('')}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filteredDifficulty === ''
                                     ? 'bg-blue-600 text-white'
-                                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
                                 }`}
                         >
                             Todas
@@ -209,7 +209,7 @@ export default function ExercisesPage() {
                                 onClick={() => setFilteredDifficulty(diff.value)}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filteredDifficulty === diff.value
                                         ? 'bg-blue-600 text-white'
-                                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
                                     }`}
                             >
                                 {diff.label}
@@ -222,9 +222,9 @@ export default function ExercisesPage() {
             {/* Exercises Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {loading ? (
-                    <div className="col-span-full text-center py-12 text-slate-500">Cargando...</div>
+                    <div className="col-span-full text-center py-12 text-muted-foreground">Cargando...</div>
                 ) : exercises.length === 0 ? (
-                    <div className="col-span-full text-center py-12 text-slate-500">
+                    <div className="col-span-full text-center py-12 text-muted-foreground">
                         No hay ejercicios. Crea tu primer ejercicio.
                     </div>
                 ) : (
@@ -233,7 +233,7 @@ export default function ExercisesPage() {
                         const diffInfo = getDifficultyInfo(exercise.difficulty)
 
                         return (
-                            <div key={exercise.id} className="bg-white border rounded-xl overflow-hidden hover:shadow-md transition">
+                            <div key={exercise.id} className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-md transition">
                                 {exercise.image_url && (
                                     <div className="h-40 bg-slate-100 overflow-hidden">
                                         <img
@@ -246,7 +246,7 @@ export default function ExercisesPage() {
 
                                 <div className="p-4 space-y-3">
                                     <div>
-                                        <h3 className="font-semibold text-slate-900">{exercise.name}</h3>
+                                        <h3 className="font-semibold text-foreground">{exercise.name}</h3>
                                         <div className="flex gap-2 mt-2">
                                             <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
                                                 {catInfo?.label}
@@ -257,9 +257,9 @@ export default function ExercisesPage() {
                                         </div>
                                     </div>
 
-                                    <p className="text-sm text-slate-600 line-clamp-3">{exercise.description}</p>
+                                    <p className="text-sm text-muted-foreground line-clamp-3">{exercise.description}</p>
 
-                                    <div className="flex items-center gap-4 text-xs text-slate-500">
+                                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                         {exercise.duration_minutes && (
                                             <span>⏱️ {exercise.duration_minutes} min</span>
                                         )}
@@ -297,39 +297,39 @@ export default function ExercisesPage() {
             {/* Create/Edit Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                        <div className="p-6 border-b flex items-center justify-between sticky top-0 bg-white">
-                            <h2 className="text-2xl font-bold">
+                    <div className="bg-card rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="p-6 border-b border-border flex items-center justify-between sticky top-0 bg-card">
+                            <h2 className="text-2xl font-bold text-foreground">
                                 {editingExercise ? 'Editar Ejercicio' : 'Nuevo Ejercicio'}
                             </h2>
-                            <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setIsModalOpen(false)} className="text-muted-foreground hover:text-foreground">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
 
                         <form onSubmit={handleSubmit} className="p-6 space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Nombre del Ejercicio
                                 </label>
                                 <input
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="w-full px-3 py-2 border rounded-lg"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     required
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Categoría
                                     </label>
                                     <select
                                         value={formData.category}
                                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                        className="w-full px-3 py-2 border rounded-lg"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     >
                                         {CATEGORIES.map(cat => (
                                             <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -338,13 +338,13 @@ export default function ExercisesPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Dificultad
                                     </label>
                                     <select
                                         value={formData.difficulty}
                                         onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
-                                        className="w-full px-3 py-2 border rounded-lg"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     >
                                         {DIFFICULTIES.map(diff => (
                                             <option key={diff.value} value={diff.value}>{diff.label}</option>
@@ -354,14 +354,14 @@ export default function ExercisesPage() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Descripción e Instrucciones
                                 </label>
                                 <textarea
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     rows={8}
-                                    className="w-full px-3 py-2 border rounded-lg"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     placeholder="Describe paso a paso cómo realizar el ejercicio..."
                                     required
                                 />
@@ -369,67 +369,67 @@ export default function ExercisesPage() {
 
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Duración (min)
                                     </label>
                                     <input
                                         type="number"
                                         value={formData.duration_minutes}
                                         onChange={(e) => setFormData({ ...formData, duration_minutes: parseInt(e.target.value) || 0 })}
-                                        className="w-full px-3 py-2 border rounded-lg"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         min="0"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Repeticiones
                                     </label>
                                     <input
                                         type="text"
                                         value={formData.repetitions}
                                         onChange={(e) => setFormData({ ...formData, repetitions: e.target.value })}
-                                        className="w-full px-3 py-2 border rounded-lg"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         placeholder="10-15"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Series
                                     </label>
                                     <input
                                         type="number"
                                         value={formData.sets}
                                         onChange={(e) => setFormData({ ...formData, sets: parseInt(e.target.value) || 0 })}
-                                        className="w-full px-3 py-2 border rounded-lg"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         min="0"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     URL de Imagen
                                 </label>
                                 <input
                                     type="url"
                                     value={formData.image_url}
                                     onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                                    className="w-full px-3 py-2 border rounded-lg"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     placeholder="https://..."
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     URL de Video (opcional)
                                 </label>
                                 <input
                                     type="url"
                                     value={formData.video_url}
                                     onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
-                                    className="w-full px-3 py-2 border rounded-lg"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     placeholder="https://youtube.com/..."
                                 />
                             </div>
@@ -442,7 +442,7 @@ export default function ExercisesPage() {
                                         onChange={(e) => setFormData({ ...formData, is_shared: e.target.checked })}
                                         className="w-4 h-4 text-blue-600 rounded"
                                     />
-                                    <span className="text-sm text-slate-700">Compartir con el equipo de la clínica</span>
+                                    <span className="text-sm text-foreground">Compartir con el equipo de la clínica</span>
                                 </label>
                             </div>
 
@@ -456,7 +456,7 @@ export default function ExercisesPage() {
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-4 py-2 border rounded-lg hover:bg-slate-50"
+                                    className="px-4 py-2 border border-border rounded-lg hover:bg-muted"
                                 >
                                     Cancelar
                                 </button>

@@ -74,9 +74,9 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
 
     return (
         <>
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div className="p-4 border-b border-slate-100 bg-emerald-50/50 flex justify-between items-center">
-                    <h2 className="text-lg font-semibold text-emerald-900 flex items-center gap-2">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+                <div className="p-4 border-b border-border bg-emerald-50/30 dark:bg-emerald-900/10 flex justify-between items-center">
+                    <h2 className="text-lg font-semibold text-emerald-900 dark:text-emerald-400 flex items-center gap-2">
                         <ClipboardList className="w-5 h-5" />
                         Plan de Tratamiento
                     </h2>
@@ -89,10 +89,10 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                     </button>
                 </div>
 
-                <div className="divide-y divide-slate-100">
+                <div className="divide-y divide-border">
                     {plans.length === 0 ? (
-                        <div className="p-8 text-center text-slate-400">
-                            <ClipboardList className="w-10 h-10 mx-auto mb-3 text-slate-300" />
+                        <div className="p-8 text-center text-muted-foreground">
+                            <ClipboardList className="w-10 h-10 mx-auto mb-3 text-muted-foreground/50" />
                             <p className="text-sm">Sin planes de tratamiento</p>
                             <p className="text-xs mt-1">Crea un plan para estructurar el tratamiento del paciente</p>
                         </div>
@@ -109,16 +109,16 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                                     {/* Plan Header */}
                                     <button
                                         onClick={() => setExpandedPlan(isExpanded ? null : plan.id)}
-                                        className="w-full p-4 text-left hover:bg-slate-50 transition flex items-center gap-3"
+                                        className="w-full p-4 text-left hover:bg-muted transition flex items-center gap-3"
                                     >
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <span className="font-semibold text-slate-800 truncate">{plan.title}</span>
+                                                <span className="font-semibold text-foreground truncate">{plan.title}</span>
                                                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusConfig.bg} ${statusConfig.color}`}>
                                                     {statusConfig.label}
                                                 </span>
                                             </div>
-                                            <div className="flex items-center gap-4 text-xs text-slate-500">
+                                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
                                                 <span>{plan.completed_sessions}/{plan.total_sessions} sesiones</span>
                                                 {plan.frequency && <span>{FREQUENCY_LABELS[plan.frequency] || plan.frequency}</span>}
                                                 {totalGoals > 0 && <span>{goalsAchieved}/{totalGoals} objetivos</span>}
@@ -140,32 +140,32 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                                                     strokeDasharray={`${progress}, 100`}
                                                 />
                                             </svg>
-                                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-700">
+                                            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-foreground">
                                                 {progress}%
                                             </span>
                                         </div>
 
-                                        {isExpanded ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                                        {isExpanded ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
                                     </button>
 
                                     {/* Expanded Details */}
                                     {isExpanded && (
-                                        <div className="px-4 pb-4 space-y-4 border-t border-slate-100 pt-4 bg-slate-50/30">
+                                        <div className="px-4 pb-4 space-y-4 border-t border-border pt-4 bg-muted/20">
                                             {/* Diagnosis */}
                                             {plan.diagnosis && (
                                                 <div>
-                                                    <label className="text-xs font-medium text-slate-500 uppercase tracking-wide">Diagnóstico</label>
-                                                    <p className="text-sm text-slate-700 mt-1">{plan.diagnosis}</p>
+                                                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Diagnóstico</label>
+                                                    <p className="text-sm text-foreground mt-1">{plan.diagnosis}</p>
                                                 </div>
                                             )}
 
                                             {/* Progress bar */}
                                             <div>
                                                 <div className="flex justify-between text-xs mb-1.5">
-                                                    <span className="text-slate-600 font-medium">Progreso de sesiones</span>
-                                                    <span className="text-slate-500">{plan.completed_sessions} de {plan.total_sessions}</span>
+                                                    <span className="text-muted-foreground font-medium">Progreso de sesiones</span>
+                                                    <span className="text-muted-foreground">{plan.completed_sessions} de {plan.total_sessions}</span>
                                                 </div>
-                                                <div className="w-full bg-slate-200 rounded-full h-2.5">
+                                                <div className="w-full bg-muted rounded-full h-2.5">
                                                     <div
                                                         className="bg-emerald-500 h-2.5 rounded-full transition-all duration-500"
                                                         style={{ width: `${Math.min(progress, 100)}%` }}
@@ -176,26 +176,26 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                                             {/* Details grid */}
                                             <div className="grid grid-cols-2 gap-3">
                                                 {plan.start_date && (
-                                                    <div className="flex items-center gap-2 text-sm text-slate-600">
-                                                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                        <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                                                         Inicio: {new Date(plan.start_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}
                                                     </div>
                                                 )}
                                                 {plan.estimated_end_date && (
-                                                    <div className="flex items-center gap-2 text-sm text-slate-600">
-                                                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                        <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                                                         Fin est.: {new Date(plan.estimated_end_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}
                                                     </div>
                                                 )}
                                                 {plan.package_price && (
-                                                    <div className="flex items-center gap-2 text-sm text-slate-600">
-                                                        <DollarSign className="w-3.5 h-3.5 text-slate-400" />
+                                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                        <DollarSign className="w-3.5 h-3.5 text-muted-foreground" />
                                                         Paquete: ${Number(plan.package_price).toLocaleString()}
                                                     </div>
                                                 )}
                                                 {plan.package_price && (
-                                                    <div className="flex items-center gap-2 text-sm text-slate-600">
-                                                        <DollarSign className="w-3.5 h-3.5 text-slate-400" />
+                                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                        <DollarSign className="w-3.5 h-3.5 text-muted-foreground" />
                                                         Pagado: ${Number(plan.paid_amount).toLocaleString()}
                                                     </div>
                                                 )}
@@ -213,12 +213,12 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                                                                 key={goal.id}
                                                                 onClick={() => handleGoalToggle(plan.id, goal.id, !goal.achieved)}
                                                                 className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition ${
-                                                                    goal.achieved ? 'bg-emerald-50 text-emerald-700' : 'bg-white text-slate-700 hover:bg-slate-100'
+                                                                    goal.achieved ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' : 'bg-card text-foreground hover:bg-muted'
                                                                 }`}
                                                             >
                                                                 {goal.achieved
                                                                     ? <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                                                                    : <Circle className="w-4 h-4 text-slate-300 shrink-0" />
+                                                                    : <Circle className="w-4 h-4 text-muted-foreground shrink-0" />
                                                                 }
                                                                 <span className={goal.achieved ? 'line-through' : ''}>{goal.description}</span>
                                                             </button>
@@ -230,8 +230,8 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                                             {/* Notes */}
                                             {plan.notes && (
                                                 <div>
-                                                    <label className="text-xs font-medium text-slate-500 uppercase tracking-wide">Notas</label>
-                                                    <p className="text-sm text-slate-600 mt-1">{plan.notes}</p>
+                                                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Notas</label>
+                                                    <p className="text-sm text-muted-foreground mt-1">{plan.notes}</p>
                                                 </div>
                                             )}
 
@@ -272,14 +272,14 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
 
                                             {/* Discharge form */}
                                             {showDischarge === plan.id && (
-                                                <div className="bg-blue-50 rounded-lg p-4 space-y-3 border border-blue-200">
-                                                    <h4 className="text-sm font-semibold text-blue-900">Dar de Alta al Paciente</h4>
+                                                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 space-y-3 border border-blue-200 dark:border-blue-800">
+                                                    <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-300">Dar de Alta al Paciente</h4>
                                                     <div>
-                                                        <label className="block text-xs font-medium text-slate-700 mb-1">Motivo del alta</label>
+                                                        <label className="block text-xs font-medium text-foreground mb-1">Motivo del alta</label>
                                                         <select
                                                             value={dischargeReason}
                                                             onChange={(e) => setDischargeReason(e.target.value)}
-                                                            className="w-full rounded-lg border border-slate-300 p-2 text-sm"
+                                                            className="w-full rounded-lg border border-border p-2 text-sm bg-card text-foreground"
                                                         >
                                                             {Object.entries(DISCHARGE_REASONS).map(([key, label]) => (
                                                                 <option key={key} value={key}>{label}</option>
@@ -287,19 +287,19 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                                                         </select>
                                                     </div>
                                                     <div>
-                                                        <label className="block text-xs font-medium text-slate-700 mb-1">Notas de alta</label>
+                                                        <label className="block text-xs font-medium text-foreground mb-1">Notas de alta</label>
                                                         <textarea
                                                             value={dischargeNotes}
                                                             onChange={(e) => setDischargeNotes(e.target.value)}
                                                             rows={2}
                                                             placeholder="Resumen de evolución, recomendaciones..."
-                                                            className="w-full rounded-lg border border-slate-300 p-2 text-sm resize-none"
+                                                            className="w-full rounded-lg border border-border p-2 text-sm resize-none bg-card text-foreground"
                                                         />
                                                     </div>
                                                     <div className="flex gap-2">
                                                         <button
                                                             onClick={() => setShowDischarge(null)}
-                                                            className="px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg hover:bg-slate-50"
+                                                            className="px-3 py-1.5 text-xs bg-card border border-border rounded-lg hover:bg-muted"
                                                         >
                                                             Cancelar
                                                         </button>

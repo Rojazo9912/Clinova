@@ -27,7 +27,7 @@ export default function MetricCard({
     const isNegative = trend === 'down' || (change !== undefined && change < 0)
 
     return (
-        <div className={`rounded-2xl p-5 bg-gradient-to-br ${bgFrom} ${bgTo} shadow-sm hover:shadow-md transition-all duration-200 relative overflow-hidden`}>
+        <div className={`rounded-2xl p-5 bg-gradient-to-br ${bgFrom} ${bgTo} dark:from-card dark:to-card dark:border dark:border-border shadow-sm hover:shadow-md transition-all duration-200 relative overflow-hidden`}>
             {/* Emoji decoration */}
             <div className="absolute top-3 right-4 text-3xl opacity-80 select-none">
                 {emoji}

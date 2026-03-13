@@ -76,10 +76,10 @@ export default function ClinicalSnapshotBanner({
 
             {/* Last EVA score */}
             {painMetric && (
-                <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-sm text-slate-700">
+                <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-border bg-card text-sm text-foreground">
                     <Flame className="h-4 w-4 text-orange-500" />
                     <span className="font-medium">EVA</span>
-                    <span className="text-slate-400">{painMetric.firstValue} → </span>
+                    <span className="text-muted-foreground">{painMetric.firstValue} → </span>
                     <span className={`font-bold ${painMetric.lastValue <= 3 ? 'text-emerald-600' : painMetric.lastValue <= 6 ? 'text-amber-600' : 'text-red-600'}`}>
                         {painMetric.lastValue}/10
                     </span>
@@ -88,17 +88,17 @@ export default function ClinicalSnapshotBanner({
 
             {/* Sessions count */}
             {sessionsCount > 0 && (
-                <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-sm text-slate-700">
+                <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-border bg-card text-sm text-foreground">
                     <Layers className="h-4 w-4 text-blue-500" />
                     <span className="font-semibold">{sessionsCount}</span>
-                    <span className="text-slate-500">{sessionsCount === 1 ? 'sesión' : 'sesiones'}</span>
+                    <span className="text-muted-foreground">{sessionsCount === 1 ? 'sesión' : 'sesiones'}</span>
                 </div>
             )}
 
             {/* Last visit */}
             {lastSeen && (
-                <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-sm text-slate-600">
-                    <CalendarDays className="h-4 w-4 text-slate-400" />
+                <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-border bg-card text-sm text-muted-foreground">
+                    <CalendarDays className="h-4 w-4 text-muted-foreground" />
                     <span>Última visita {lastSeen}</span>
                 </div>
             )}

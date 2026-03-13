@@ -11,12 +11,12 @@ export default function PageHeader({ title, description, children, emoji }: Page
     return (
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
-                <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
                     {emoji && <span className="text-2xl">{emoji}</span>}
                     {title}
                 </h1>
                 {description && (
-                    <p className="text-sm text-slate-500 mt-1">{description}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{description}</p>
                 )}
             </div>
             {children && <div className="flex gap-3 items-center">{children}</div>}

@@ -80,34 +80,34 @@ export default function UsersPage() {
                 </button>
             </PageHeader>
 
-            <div className="bg-white/50 backdrop-blur-md rounded-xl border border-white/20 shadow-sm overflow-hidden">
+            <div className="bg-card/50 backdrop-blur-md rounded-xl border border-border shadow-sm overflow-hidden">
                 <table className="w-full text-left">
-                    <thead className="bg-slate-50 border-b">
+                    <thead className="bg-muted border-b border-border">
                         <tr>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Nombre</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Email</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Teléfono</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Rol</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Acciones</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Nombre</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Email</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Teléfono</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Rol</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border">
                         {loading ? (
                             <tr>
-                                <td colSpan={5} className="px-6 py-8 text-center text-slate-500">Cargando...</td>
+                                <td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">Cargando...</td>
                             </tr>
                         ) : users.length === 0 ? (
                             <tr>
-                                <td colSpan={5} className="px-6 py-8 text-center text-slate-500">No hay usuarios registrados.</td>
+                                <td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">No hay usuarios registrados.</td>
                             </tr>
                         ) : (
                             users.map((user) => (
-                                <tr key={user.id} className="hover:bg-slate-50/50">
-                                    <td className="px-6 py-4 font-medium text-slate-900">{user.full_name}</td>
-                                    <td className="px-6 py-4 text-slate-600">{user.email}</td>
-                                    <td className="px-6 py-4 text-slate-600">{user.phone || '-'}</td>
+                                <tr key={user.id} className="hover:bg-muted/50">
+                                    <td className="px-6 py-4 font-medium text-foreground">{user.full_name}</td>
+                                    <td className="px-6 py-4 text-muted-foreground">{user.email}</td>
+                                    <td className="px-6 py-4 text-muted-foreground">{user.phone || '-'}</td>
                                     <td className="px-6 py-4">
-                                        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-xs font-medium">
                                             {getRoleName(user.role)}
                                         </span>
                                     </td>

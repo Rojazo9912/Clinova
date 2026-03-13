@@ -342,7 +342,7 @@ export default function AgendaPage() {
                                 <Send className="h-4 w-4" />
                                 Reenviar Confirmación
                             </button>
-                            <p className="text-xs text-slate-500 mt-2 text-center">
+                            <p className="text-xs text-muted-foreground mt-2 text-center">
                                 Envía WhatsApp y Email al paciente
                             </p>
                         </div>
@@ -360,32 +360,32 @@ export default function AgendaPage() {
             >
                 {selectedEvent ? (
                     <div className="p-6 space-y-5">
-                        <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl">
-                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                        <div className="flex items-center gap-3 p-4 bg-muted rounded-xl">
+                            <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
                                 <User className="h-5 w-5 text-blue-600" />
                             </div>
                             <div>
-                                <p className="text-xs text-slate-500">Paciente</p>
-                                <p className="font-medium text-slate-900">{selectedEvent.resource?.patientName}</p>
+                                <p className="text-xs text-muted-foreground">Paciente</p>
+                                <p className="font-medium text-foreground">{selectedEvent.resource?.patientName}</p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="p-4 bg-slate-50 rounded-xl">
-                                <p className="text-xs text-slate-500 mb-1">Servicio</p>
-                                <p className="text-sm font-medium text-slate-900">{selectedEvent.resource?.serviceName || '—'}</p>
+                            <div className="p-4 bg-muted rounded-xl">
+                                <p className="text-xs text-muted-foreground mb-1">Servicio</p>
+                                <p className="text-sm font-medium text-foreground">{selectedEvent.resource?.serviceName || '—'}</p>
                             </div>
-                            <div className="p-4 bg-slate-50 rounded-xl">
-                                <p className="text-xs text-slate-500 mb-1">Estado</p>
-                                <p className="text-sm font-medium capitalize text-slate-900">{selectedEvent.resource?.status}</p>
+                            <div className="p-4 bg-muted rounded-xl">
+                                <p className="text-xs text-muted-foreground mb-1">Estado</p>
+                                <p className="text-sm font-medium capitalize text-foreground">{selectedEvent.resource?.status}</p>
                             </div>
                         </div>
 
-                        <div className="p-4 bg-slate-50 rounded-xl">
-                            <p className="text-xs text-slate-500 mb-1 flex items-center gap-1">
+                        <div className="p-4 bg-muted rounded-xl">
+                            <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
                                 <Clock className="h-3 w-3" /> Horario
                             </p>
-                            <p className="text-sm font-medium text-slate-900">
+                            <p className="text-sm font-medium text-foreground">
                                 {selectedEvent.start.toLocaleString('es-MX', { hour: '2-digit', minute: '2-digit' })} – {selectedEvent.end.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
                             </p>
                         </div>
@@ -403,13 +403,13 @@ export default function AgendaPage() {
                         )}
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                            <label className="block text-sm font-medium text-foreground mb-1.5">
                                 Paciente *
                             </label>
                             <select
                                 value={formData.patientId}
                                 onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
-                                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-white"
+                                className="w-full px-3 py-2.5 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-card text-foreground"
                                 required
                             >
                                 <option value="">Seleccionar paciente...</option>
@@ -422,13 +422,13 @@ export default function AgendaPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                            <label className="block text-sm font-medium text-foreground mb-1.5">
                                 Servicio *
                             </label>
                             <select
                                 value={formData.serviceId}
                                 onChange={(e) => setFormData({ ...formData, serviceId: e.target.value })}
-                                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-white"
+                                className="w-full px-3 py-2.5 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-card text-foreground"
                                 required
                             >
                                 <option value="">Seleccionar servicio...</option>
@@ -441,13 +441,13 @@ export default function AgendaPage() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                            <label className="block text-sm font-medium text-foreground mb-1.5">
                                 Notas (opcional)
                             </label>
                             <textarea
                                 value={formData.notes}
                                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm resize-none"
+                                className="w-full px-3 py-2.5 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm resize-none bg-card text-foreground"
                                 rows={3}
                                 placeholder="Observaciones, indicaciones especiales..."
                             />

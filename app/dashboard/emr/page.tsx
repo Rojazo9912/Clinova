@@ -71,15 +71,15 @@ export default function EMRPage() {
             </PageHeader>
 
             {/* Patient Search */}
-            <div className="bg-white/50 backdrop-blur-md rounded-xl border border-white/20 shadow-sm p-6">
+            <div className="bg-card/50 backdrop-blur-md rounded-xl border border-border shadow-sm p-6">
                 <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
                     <input
                         type="text"
                         placeholder="Buscar paciente por nombre o email..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground placeholder:text-muted-foreground"
                     />
                 </div>
 
@@ -89,10 +89,10 @@ export default function EMRPage() {
                             <button
                                 key={patient.id}
                                 onClick={() => handleSelectPatient(patient)}
-                                className="w-full text-left px-4 py-3 bg-white rounded-lg hover:bg-blue-50 transition border"
+                                className="w-full text-left px-4 py-3 bg-card rounded-lg hover:bg-muted transition border border-border"
                             >
-                                <p className="font-medium">{patient.first_name} {patient.last_name}</p>
-                                <p className="text-sm text-slate-600">{patient.email}</p>
+                                <p className="font-medium text-foreground">{patient.first_name} {patient.last_name}</p>
+                                <p className="text-sm text-muted-foreground">{patient.email}</p>
                             </button>
                         ))}
                     </div>
@@ -102,11 +102,11 @@ export default function EMRPage() {
             {/* Selected Patient Info & Timeline */}
             {selectedPatient && (
                 <div className="space-y-6">
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-                        <h3 className="text-2xl font-bold text-slate-900">
+                    <div className="bg-gradient-to-r from-blue-50 dark:from-blue-900/20 to-indigo-50 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800">
+                        <h3 className="text-2xl font-bold text-foreground">
                             {selectedPatient.first_name} {selectedPatient.last_name}
                         </h3>
-                        <div className="mt-2 flex gap-6 text-sm text-slate-600">
+                        <div className="mt-2 flex gap-6 text-sm text-muted-foreground">
                             <span>📧 {selectedPatient.email || 'Sin email'}</span>
                             <span>📞 {selectedPatient.phone || 'Sin teléfono'}</span>
                         </div>
@@ -117,7 +117,7 @@ export default function EMRPage() {
             )}
 
             {!selectedPatient && (
-                <div className="text-center py-12 text-slate-500">
+                <div className="text-center py-12 text-muted-foreground">
                     <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>Busca un paciente para ver su expediente clínico</p>
                 </div>

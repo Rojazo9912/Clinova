@@ -66,37 +66,37 @@ export default function PhysiotherapistsPage() {
                 </button>
             </PageHeader>
 
-            <div className="bg-white/50 backdrop-blur-md rounded-xl border border-white/20 shadow-sm overflow-hidden">
+            <div className="bg-card/50 backdrop-blur-md rounded-xl border border-border shadow-sm overflow-hidden">
                 <table className="w-full text-left">
-                    <thead className="bg-slate-50 border-b">
+                    <thead className="bg-muted border-b border-border">
                         <tr>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Nombre</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Email</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Teléfono</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Especialidades</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Licencia</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Acciones</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Nombre</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Email</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Teléfono</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Especialidades</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Licencia</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border">
                         {loading ? (
                             <tr>
-                                <td colSpan={6} className="px-6 py-8 text-center text-slate-500">Cargando...</td>
+                                <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">Cargando...</td>
                             </tr>
                         ) : physios.length === 0 ? (
                             <tr>
-                                <td colSpan={6} className="px-6 py-8 text-center text-slate-500">No hay fisioterapeutas registrados.</td>
+                                <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">No hay fisioterapeutas registrados.</td>
                             </tr>
                         ) : (
                             physios.map((physio) => (
-                                <tr key={physio.id} className="hover:bg-slate-50/50">
-                                    <td className="px-6 py-4 font-medium text-slate-900">{physio.full_name}</td>
-                                    <td className="px-6 py-4 text-slate-600">{physio.email || '-'}</td>
-                                    <td className="px-6 py-4 text-slate-600">{physio.phone || '-'}</td>
-                                    <td className="px-6 py-4 text-slate-600">
+                                <tr key={physio.id} className="hover:bg-muted/50">
+                                    <td className="px-6 py-4 font-medium text-foreground">{physio.full_name}</td>
+                                    <td className="px-6 py-4 text-muted-foreground">{physio.email || '-'}</td>
+                                    <td className="px-6 py-4 text-muted-foreground">{physio.phone || '-'}</td>
+                                    <td className="px-6 py-4 text-muted-foreground">
                                         {physio.specialties?.join(', ') || '-'}
                                     </td>
-                                    <td className="px-6 py-4 text-slate-600">{physio.license_number || '-'}</td>
+                                    <td className="px-6 py-4 text-muted-foreground">{physio.license_number || '-'}</td>
                                     <td className="px-6 py-4 flex gap-2">
                                         <button
                                             onClick={() => handleEdit(physio)}
