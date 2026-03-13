@@ -8,6 +8,7 @@ import PatientModal from '@/components/patients/PatientModal'
 import Link from 'next/link'
 import PageHeader from '@/components/ui/PageHeader'
 import { Key, ShieldOff, Bell, BellOff, UserX } from 'lucide-react'
+import { toast } from 'sonner'
 import { togglePatientReminders } from '@/lib/actions/reminders'
 
 interface Patient {
@@ -24,11 +25,11 @@ interface Patient {
 }
 
 function getActivityStatus(lastSessionDate: string | null | undefined) {
-    if (!lastSessionDate) return { label: 'Sin sesiones', color: 'text-slate-400 bg-slate-100', days: null }
+    if (!lastSessionDate) return { label: 'Sin sesiones', color: 'text-muted-foreground bg-muted', days: null }
     const days = Math.floor((Date.now() - new Date(lastSessionDate).getTime()) / (1000 * 60 * 60 * 24))
-    if (days <= 30) return { label: `Hace ${days}d`, color: 'text-green-700 bg-green-50', days }
-    if (days <= 60) return { label: `Hace ${days}d`, color: 'text-amber-700 bg-amber-50', days }
-    return { label: `Hace ${days}d`, color: 'text-red-700 bg-red-50', days }
+    if (days <= 30) return { label: `Hace ${days}d`, color: 'text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20', days }
+    if (days <= 60) return { label: `Hace ${days}d`, color: 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20', days }
+    return { label: `Hace ${days}d`, color: 'text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20', days }
 }
 
 export default function PatientsPage() {
@@ -67,7 +68,7 @@ export default function PatientsPage() {
         if (result.success) {
             setRefreshKey(k => k + 1)
         } else {
-            alert(result.message)
+            toast.error(result.message)
             setPatients(prev => prev.map(p =>
                 p.id === patientId ? { ...p, grantingAccess: false } : p
             ))
@@ -79,7 +80,7 @@ export default function PatientsPage() {
             await togglePatientReminders(patientId, !currentValue)
             setRefreshKey(prev => prev + 1)
         } catch (error: any) {
-            alert('Error: ' + error.message)
+            toast.error(error.message || 'Error inesperado')
         }
     }
 
@@ -98,7 +99,7 @@ export default function PatientsPage() {
                 <input
                     type="text"
                     placeholder="Buscar por nombre o email..."
-                    className="w-full max-w-sm px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
+                    className="w-full max-w-sm px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground placeholder:text-muted-foreground"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
@@ -106,8 +107,8 @@ export default function PatientsPage() {
                     onClick={() => setFilterInactive(f => !f)}
                     className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg border transition ${
                         filterInactive
-                            ? 'bg-amber-50 border-amber-300 text-amber-700'
-                            : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                            ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400'
+                            : 'bg-card border-border text-muted-foreground hover:border-border'
                     }`}
                 >
                     <UserX className="w-3.5 h-3.5" />
@@ -115,32 +116,32 @@ export default function PatientsPage() {
                 </button>
             </div>
 
-            <div className="bg-white/50 backdrop-blur-md rounded-xl border border-white/20 shadow-sm overflow-hidden">
+            <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
                 <table className="w-full text-left">
-                    <thead className="bg-slate-50 border-b">
+                    <thead className="bg-muted border-b border-border">
                         <tr>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Nombre</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Email</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Teléfono</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Portal</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Clínica</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Último contacto</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Recordatorios</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Acciones</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Nombre</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Email</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Teléfono</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Portal</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Clínica</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Último contacto</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Recordatorios</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border">
                         {loading ? (
                             <tr>
-                                <td colSpan={8} className="px-6 py-8 text-center text-slate-500">Cargando...</td>
+                                <td colSpan={8} className="px-6 py-8 text-center text-muted-foreground">Cargando...</td>
                             </tr>
                         ) : patients.filter(p => !filterInactive || (getActivityStatus(p.last_session_date).days === null || (getActivityStatus(p.last_session_date).days ?? 0) > 30)).length === 0 ? (
                             <tr>
                                 <td colSpan={8} className="px-6 py-16 text-center">
                                     <div className="flex flex-col items-center gap-2">
                                         <span className="text-4xl select-none">🔍</span>
-                                        <p className="font-semibold text-slate-700">Sin resultados</p>
-                                        <p className="text-sm text-slate-400">
+                                        <p className="font-semibold text-foreground">Sin resultados</p>
+                                        <p className="text-sm text-muted-foreground">
                                             {search ? `No hay pacientes que coincidan con "${search}"` : 'No hay pacientes registrados aún'}
                                         </p>
                                     </div>
@@ -150,10 +151,10 @@ export default function PatientsPage() {
                             patients
                                 .filter(p => !filterInactive || (getActivityStatus(p.last_session_date).days === null || (getActivityStatus(p.last_session_date).days ?? 0) > 30))
                                 .map((patient) => (
-                                <tr key={patient.id} className="hover:bg-slate-50/50">
-                                    <td className="px-6 py-4 font-medium text-slate-900">{patient.first_name} {patient.last_name}</td>
-                                    <td className="px-6 py-4 text-slate-600">{patient.email || '-'}</td>
-                                    <td className="px-6 py-4 text-slate-600">{patient.phone || '-'}</td>
+                                <tr key={patient.id} className="hover:bg-muted/50">
+                                    <td className="px-6 py-4 font-medium text-foreground">{patient.first_name} {patient.last_name}</td>
+                                    <td className="px-6 py-4 text-muted-foreground">{patient.email || '-'}</td>
+                                    <td className="px-6 py-4 text-muted-foreground">{patient.phone || '-'}</td>
                                     <td className="px-6 py-4">
                                         {patient.hasPortalAccess ? (
                                             <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-green-700 bg-green-50 rounded-full">
@@ -174,13 +175,13 @@ export default function PatientsPage() {
                                                 )}
                                             </button>
                                         ) : (
-                                            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs text-slate-500">
+                                            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground">
                                                 <ShieldOff className="w-3 h-3" />
                                                 Sin email
                                             </span>
                                         )}
                                     </td>
-                                    <td className="px-6 py-4 text-xs text-slate-500">
+                                    <td className="px-6 py-4 text-xs text-muted-foreground">
                                         {(patient as any).clinics?.name || '-'}
                                     </td>
                                     <td className="px-6 py-4">
@@ -198,7 +199,7 @@ export default function PatientsPage() {
                                             onClick={() => handleToggleReminders(patient.id, patient.reminders_enabled ?? true)}
                                             className={`inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full transition ${patient.reminders_enabled !== false
                                                 ? 'text-green-700 bg-green-50 hover:bg-green-100'
-                                                : 'text-slate-500 bg-slate-100 hover:bg-slate-200'
+                                                : 'text-muted-foreground bg-muted hover:bg-muted/80'
                                                 }`}
                                         >
                                             {patient.reminders_enabled !== false ? (

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { createRole, updateRole } from '@/lib/actions/roles'
 import { X, Shield } from 'lucide-react'
 import { PERMISSIONS } from '@/lib/auth/permissions'
+import { toast } from 'sonner'
 
 interface RoleModalProps {
     isOpen: boolean
@@ -124,7 +125,7 @@ export default function RoleModal({ isOpen, onClose, onSuccess, role }: RoleModa
             onSuccess()
         } catch (error) {
             console.error(error)
-            alert('Error al guardar rol')
+            toast.error('Error al guardar rol')
         } finally {
             setLoading(false)
         }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getReminderSettings, updateReminderSettings, getReminderTemplates, updateReminderTemplate } from '@/lib/actions/reminders'
 import { Bell, Clock, MessageSquare, Mail, Save } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface ReminderSettings {
     reminder_times: number[]
@@ -51,9 +52,9 @@ export default function RemindersSettingsPage() {
         setSaving(true)
         try {
             await updateReminderSettings(settings)
-            alert('Configuración guardada exitosamente')
+            toast.success('Configuración guardada exitosamente')
         } catch (error: any) {
-            alert('Error: ' + error.message)
+            toast.error(error.message || 'Error inesperado')
         }
         setSaving(false)
     }
@@ -68,9 +69,9 @@ export default function RemindersSettingsPage() {
                 subject: template.subject || undefined,
                 message: template.message
             })
-            alert('Plantilla guardada exitosamente')
+            toast.success('Plantilla guardada exitosamente')
         } catch (error: any) {
-            alert('Error: ' + error.message)
+            toast.error(error.message || 'Error inesperado')
         }
         setSaving(false)
     }

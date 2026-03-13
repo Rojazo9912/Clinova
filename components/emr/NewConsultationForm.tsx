@@ -5,6 +5,7 @@ import { createMedicalRecord } from '@/lib/actions/medical-records'
 import { getNoteTemplates, NoteTemplate } from '@/lib/actions/note-templates'
 import { useRouter } from 'next/navigation'
 import { FileText, X } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface NewConsultationFormProps {
     patientId: string
@@ -84,7 +85,7 @@ export default function NewConsultationForm({ patientId, patientName, patientAge
             if (onSuccess) onSuccess()
         } catch (error) {
             console.error(error)
-            alert('Error al guardar la consulta')
+            toast.error('Error al guardar la consulta')
         } finally {
             setLoading(false)
         }

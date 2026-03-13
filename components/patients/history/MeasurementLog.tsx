@@ -64,7 +64,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                 }
             } else if (view === 'bodymap') {
                 if (bodyPoints.length === 0) {
-                    toast?.error?.('Registra al menos un punto en el mapa') || alert('Registra al menos un punto en el mapa')
+                    toast.error('Registra al menos un punto en el mapa')
                     setLoading(false)
                     return
                 }
@@ -86,14 +86,14 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
             const result = await addMeasurement(data)
 
             if (result.success) {
-                toast?.success?.('Medición guardada correctamente') || alert('Medición guardada correctamente')
+                toast.success('Medición guardada correctamente')
                 setNotes('')
                 if (view === 'bodymap') setBodyPoints([])
             } else {
-                toast?.error?.(result.message) || alert(result.message)
+                toast.error(result.message)
             }
         } catch (err) {
-            toast?.error?.('Error al guardar') || alert('Error al guardar')
+            toast.error('Error al guardar')
         } finally {
             setLoading(false)
         }

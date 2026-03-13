@@ -14,10 +14,10 @@ interface Appointment {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; classes: string }> = {
-    confirmed:  { label: 'Confirmada',  classes: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-    pending:    { label: 'Pendiente',   classes: 'bg-amber-100 text-amber-700 border-amber-200' },
-    cancelled:  { label: 'Cancelada',  classes: 'bg-red-100 text-red-600 border-red-200' },
-    completed:  { label: 'Completada', classes: 'bg-slate-100 text-slate-500 border-slate-200' },
+    confirmed:  { label: 'Confirmada',  classes: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-700' },
+    pending:    { label: 'Pendiente',   classes: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-700' },
+    cancelled:  { label: 'Cancelada',  classes: 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-700' },
+    completed:  { label: 'Completada', classes: 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-600' },
 }
 
 const AVATAR_COLORS = [
@@ -49,14 +49,14 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
     const confirmedCount = appointments.filter(a => a.status === 'confirmed').length
 
     return (
-        <div className="rounded-2xl bg-white border border-slate-100 shadow-sm overflow-hidden">
+        <div className="rounded-2xl bg-card border border-border shadow-sm overflow-hidden">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="px-6 py-4 border-b border-border flex items-center justify-between">
                 <div>
-                    <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                         🗓️ Pacientes de hoy
                     </h3>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className="text-xs text-muted-foreground mt-0.5">
                         {appointments.length === 0
                             ? 'Sin citas programadas'
                             : `${appointments.length} citas · ${confirmedCount} confirmadas`}
@@ -71,11 +71,11 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
             </div>
 
             {/* List */}
-            <div className="divide-y divide-slate-50">
+            <div className="divide-y divide-border">
                 {appointments.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-14 px-6 text-center">
                         <div className="text-5xl mb-4 select-none">🌿</div>
-                        <p className="font-bold text-slate-700 text-base">¡Día tranquilo!</p>
+                        <p className="font-bold text-foreground text-base">¡Día tranquilo!</p>
                         <p className="text-sm text-slate-400 mt-1 max-w-xs">
                             Tu pasión mueve vidas. Cada día es una oportunidad.
                         </p>
@@ -102,10 +102,10 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
                                 href={href}
                                 className={`flex items-center gap-4 px-6 py-4 transition-colors group relative ${
                                     happening
-                                        ? 'bg-blue-50/70 hover:bg-blue-50'
+                                        ? 'bg-blue-50/70 dark:bg-blue-900/20 hover:bg-blue-50 dark:hover:bg-blue-900/30'
                                         : past
-                                        ? 'opacity-55 hover:opacity-75 hover:bg-slate-50'
-                                        : 'hover:bg-slate-50'
+                                        ? 'opacity-55 hover:opacity-75 hover:bg-muted'
+                                        : 'hover:bg-muted'
                                 }`}
                             >
                                 {/* Happening now accent */}
@@ -116,7 +116,7 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
                                 {/* Time */}
                                 <div className="w-12 flex-shrink-0 text-center">
                                     <span className={`text-sm font-bold tabular-nums ${
-                                        happening ? 'text-blue-600' : past ? 'text-slate-400' : 'text-slate-700'
+                                        happening ? 'text-blue-600 dark:text-blue-400' : past ? 'text-muted-foreground' : 'text-foreground'
                                     }`}>
                                         {format(new Date(apt.start_time), 'HH:mm')}
                                     </span>
@@ -135,10 +135,10 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
 
                                 {/* Patient info */}
                                 <div className="flex-1 min-w-0">
-                                    <p className={`text-sm font-semibold truncate ${past ? 'text-slate-500' : 'text-slate-900'}`}>
+                                    <p className={`text-sm font-semibold truncate ${past ? 'text-muted-foreground' : 'text-foreground'}`}>
                                         {apt.patient_name}
                                     </p>
-                                    <p className="text-xs text-slate-400 truncate mt-0.5">{apt.service_name}</p>
+                                    <p className="text-xs text-muted-foreground truncate mt-0.5">{apt.service_name}</p>
                                 </div>
 
                                 {/* Status + chevron */}
@@ -146,7 +146,7 @@ export default function AppointmentTimeline({ appointments }: { appointments: Ap
                                     <span className={`hidden sm:inline-flex text-xs font-medium px-2 py-0.5 rounded-full border ${status.classes}`}>
                                         {status.label}
                                     </span>
-                                    <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-slate-500 transition-colors" />
+                                    <ChevronRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors" />
                                 </div>
                             </Link>
                         )

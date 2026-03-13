@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createPhysiotherapist, updatePhysiotherapist } from '@/lib/actions/physiotherapists'
 import { X } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface PhysiotherapistModalProps {
     isOpen: boolean
@@ -31,7 +32,7 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
 
             onSuccess()
         } catch (error) {
-            alert('Error al guardar fisioterapeuta')
+            toast.error('Error al guardar fisioterapeuta')
         } finally {
             setLoading(false)
         }

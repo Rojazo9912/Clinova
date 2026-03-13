@@ -10,6 +10,7 @@ import { SlotInfo } from 'react-big-calendar'
 import { X, Plus, Calendar as CalendarIcon, User, Clock, Ban, Repeat, Send } from 'lucide-react'
 import { resendAppointmentConfirmation } from '@/lib/actions/notifications'
 import SlideOver from '@/components/ui/SlideOver'
+import { toast } from 'sonner'
 
 interface CalendarEvent {
     id: string
@@ -100,7 +101,7 @@ export default function AgendaPage() {
     const handleEventDrop = useCallback(async (eventId: string, start: Date, end: Date) => {
         // Prevent moving GCal blocks or normal blocks
         if (eventId.toString().startsWith('block-') || eventId.toString().startsWith('gcal-')) {
-            alert('No puedes mover bloqueos de calendario.')
+            toast.warning('No puedes mover bloqueos de calendario.')
             return
         }
 
@@ -110,7 +111,7 @@ export default function AgendaPage() {
             await loadData()
         } catch (error) {
             console.error('Error updating appointment:', error)
-            alert('Error al reagendar la cita')
+            toast.error('Error al reagendar la cita')
         } finally {
             setLoading(false)
         }
@@ -119,7 +120,7 @@ export default function AgendaPage() {
     // Handle event resize
     const handleEventResize = useCallback(async (eventId: string, start: Date, end: Date) => {
         if (eventId.toString().startsWith('block-') || eventId.toString().startsWith('gcal-')) {
-            alert('No puedes redimensionar bloqueos de calendario.')
+            toast.warning('No puedes redimensionar bloqueos de calendario.')
             return
         }
 
@@ -129,7 +130,7 @@ export default function AgendaPage() {
             await loadData()
         } catch (error) {
             console.error('Error resizing appointment:', error)
-            alert('Error al cambiar la duración')
+            toast.error('Error al cambiar la duración')
         } finally {
             setLoading(false)
         }
@@ -152,7 +153,7 @@ export default function AgendaPage() {
         )
 
         if (isGcalConflict) {
-            alert('Este horario se cruza con un evento de tu Google Calendar.')
+            toast.warning('Este horario se cruza con un evento de Google Calendar.')
             return
         }
 
@@ -160,7 +161,7 @@ export default function AgendaPage() {
         const availability = await checkTimeSlotAvailability(slotInfo.start, slotInfo.end)
 
         if (!availability.available) {
-            alert(`Este horario está bloqueado: ${availability.conflictingBlock?.reason || 'No disponible'}`)
+            toast.error(`Horario bloqueado: ${availability.conflictingBlock?.reason || 'No disponible'}`)
             return
         }
 
@@ -178,13 +179,13 @@ export default function AgendaPage() {
         try {
             const result = await resendAppointmentConfirmation(selectedEvent.id)
             if (result.success) {
-                alert('✅ Confirmación enviada exitosamente')
+                toast.success('Confirmación enviada exitosamente')
             } else {
-                alert(`❌ Error: ${result.error}`)
+                toast.error(result.error || 'Error al enviar confirmación')
             }
         } catch (error) {
             console.error('Error resending confirmation:', error)
-            alert('❌ Error al enviar confirmación')
+            toast.error('Error al enviar confirmación')
         }
     }
 
@@ -222,9 +223,10 @@ export default function AgendaPage() {
             })
             await loadData()
             setIsModalOpen(false)
+            toast.success('Cita creada exitosamente')
         } catch (error) {
             console.error('Error creating appointment:', error)
-            alert('Error al crear la cita')
+            toast.error('Error al crear la cita')
         } finally {
             setLoading(false)
         }

@@ -10,6 +10,7 @@ import {
     User, Stethoscope, Heart, Activity, ClipboardList, AlertTriangle,
     ChevronRight, ChevronLeft, Check, Plus, Trash2, Target, Globe
 } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface IntakeEvaluationFormProps {
     patientId: string
@@ -216,7 +217,7 @@ Funcionalidad: ${functionalLevel}/10
             router.refresh()
         } catch (error) {
             console.error('Error saving intake evaluation:', error)
-            alert('Error al guardar la evaluación')
+            toast.error('Error al guardar la evaluación')
         } finally {
             setLoading(false)
         }

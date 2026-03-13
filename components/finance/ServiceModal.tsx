@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createService } from '@/lib/actions/finance'
 import { X } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface ServiceModalProps {
     isOpen: boolean
@@ -22,9 +23,10 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
         try {
             const formData = new FormData(e.currentTarget)
             await createService(formData)
+            toast.success('Servicio creado exitosamente')
             onSuccess()
         } catch (error) {
-            alert('Error al crear servicio')
+            toast.error('Error al crear servicio')
         } finally {
             setLoading(false)
         }

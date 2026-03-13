@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { recordPayment, getServices } from '@/lib/actions/finance'
 import { searchPatients } from '@/lib/actions/patients'
 import { X } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface PaymentModalProps {
     isOpen: boolean
@@ -47,9 +48,10 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
         try {
             const formData = new FormData(e.currentTarget)
             await recordPayment(formData)
+            toast.success('Pago registrado exitosamente')
             onSuccess()
         } catch (error) {
-            alert('Error al registrar pago')
+            toast.error('Error al registrar pago')
         } finally {
             setLoading(false)
         }

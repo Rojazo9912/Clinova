@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getExercises, createExercise, updateExercise, deleteExercise, Exercise } from '@/lib/actions/exercises'
 import { Dumbbell, Plus, Edit, Trash2, X, Search } from 'lucide-react'
+import { toast } from 'sonner'
 
 const CATEGORIES = [
     { value: 'mobility', label: '🏃 Movilidad', color: 'blue' },
@@ -113,7 +114,7 @@ export default function ExercisesPage() {
             setIsModalOpen(false)
             setRefreshKey(prev => prev + 1)
         } catch (error: any) {
-            alert('Error: ' + error.message)
+            toast.error(error.message || 'Error inesperado')
         }
     }
 
@@ -124,7 +125,7 @@ export default function ExercisesPage() {
             await deleteExercise(id)
             setRefreshKey(prev => prev + 1)
         } catch (error: any) {
-            alert('Error: ' + error.message)
+            toast.error(error.message || 'Error inesperado')
         }
     }
 

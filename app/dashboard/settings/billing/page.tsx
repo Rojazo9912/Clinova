@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Check, CreditCard, AlertTriangle, ShieldCheck } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function BillingPage() {
     const [loading, setLoading] = useState(false)
@@ -27,11 +28,11 @@ export default function BillingPage() {
             if (data.url) {
                 window.location.href = data.url
             } else {
-                alert('Error al iniciar pago')
+                toast.error('Error al iniciar pago')
             }
         } catch (error) {
             console.error(error)
-            alert('Error al conectar con el servidor')
+            toast.error('Error al conectar con el servidor')
         } finally {
             setLoading(false)
         }

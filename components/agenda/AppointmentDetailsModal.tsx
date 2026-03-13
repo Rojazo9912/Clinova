@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { sendAppointmentReminder } from '@/lib/actions/notifications'
+import { toast } from 'sonner'
 
 interface AppointmentDetailsModalProps {
     isOpen: boolean
@@ -19,13 +20,13 @@ export default function AppointmentDetailsModal({ isOpen, onClose, event }: Appo
         try {
             const result = await sendAppointmentReminder(event.id)
             if (result.success) {
-                alert('Recordatorio enviado con éxito')
+                toast.success('Recordatorio enviado con éxito')
             } else {
-                alert('Error al enviar recordatorio: ' + (result.error || 'Desconocido'))
+                toast.error('Error al enviar recordatorio: ' + (result.error || 'Desconocido'))
             }
         } catch (error) {
             console.error(error)
-            alert('Error al enviar')
+            toast.error('Error al enviar recordatorio')
         } finally {
             setSending(false)
         }

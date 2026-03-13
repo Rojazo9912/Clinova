@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getNoteTemplates, createNoteTemplate, updateNoteTemplate, deleteNoteTemplate, NoteTemplate } from '@/lib/actions/note-templates'
 import { FileText, Plus, Edit, Trash2, Copy, X } from 'lucide-react'
+import { toast } from 'sonner'
 
 const CATEGORIES = [
     { value: 'diagnosis', label: '🔍 Diagnóstico', color: 'blue' },
@@ -81,7 +82,7 @@ export default function TemplatesPage() {
             setIsModalOpen(false)
             setRefreshKey(prev => prev + 1)
         } catch (error: any) {
-            alert('Error: ' + error.message)
+            toast.error(error.message || 'Error inesperado')
         }
     }
 
@@ -92,7 +93,7 @@ export default function TemplatesPage() {
             await deleteNoteTemplate(id)
             setRefreshKey(prev => prev + 1)
         } catch (error: any) {
-            alert('Error: ' + error.message)
+            toast.error(error.message || 'Error inesperado')
         }
     }
 

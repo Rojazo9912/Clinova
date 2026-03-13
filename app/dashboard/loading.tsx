@@ -13,7 +13,7 @@ export default function DashboardLoading() {
             {/* Metrics skeleton */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {[...Array(4)].map((_, i) => (
-                    <div key={i} className="rounded-xl border bg-white shadow-sm p-6 space-y-3">
+                    <div key={i} className="rounded-2xl border border-slate-100 bg-white shadow-sm p-5 space-y-3">
                         <div className="flex justify-between">
                             <div className="h-4 w-28 bg-slate-200 rounded" />
                             <div className="h-4 w-4 bg-slate-200 rounded" />

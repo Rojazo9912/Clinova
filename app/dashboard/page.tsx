@@ -51,8 +51,8 @@ export default async function DashboardPage() {
             {/* Greeting */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <p className="text-sm font-medium text-slate-400 capitalize">{today}</p>
-                    <h1 className="text-3xl font-extrabold text-slate-900 mt-0.5">
+                    <p className="text-sm font-medium text-muted-foreground capitalize">{today}</p>
+                    <h1 className="text-3xl font-extrabold text-foreground mt-0.5">
                         {getGreeting()}, {firstName}! {getGreetingEmoji()}
                     </h1>
                 </div>

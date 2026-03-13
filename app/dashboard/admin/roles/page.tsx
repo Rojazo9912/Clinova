@@ -5,6 +5,7 @@ import { getRoles, deleteRole } from '@/lib/actions/roles'
 import RoleModal from '@/components/roles/RoleModal'
 import PageHeader from '@/components/ui/PageHeader'
 import { Trash2, Edit, Shield } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface Role {
     code: string
@@ -42,7 +43,7 @@ export default function RolesPage() {
             await deleteRole(code)
             setRefreshKey(k => k + 1)
         } catch (error) {
-            alert('Error al eliminar rol')
+            toast.error('Error al eliminar rol')
         }
     }
 

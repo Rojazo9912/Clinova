@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createAppointment } from '@/lib/actions/appointments'
+import { toast } from 'sonner'
 import PatientCombobox from '@/components/patients/PatientCombobox'
 
 interface AppointmentModalProps {
@@ -19,7 +20,7 @@ export default function AppointmentModal({ isOpen, onClose, refreshCalendar }: A
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         if (!patientId) {
-            alert('Por favor selecciona un paciente')
+            toast.warning('Por favor selecciona un paciente')
             return
         }
         setLoading(true)

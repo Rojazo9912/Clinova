@@ -19,7 +19,7 @@ function InnerShell({ children, permissions, userName, userInitials }: Dashboard
     const [mobileOpen, setMobileOpen] = useState(false)
 
     return (
-        <div className="h-full relative bg-[#FEF9F2]">
+        <div className="h-full relative bg-background">
             {/* Desktop Sidebar (fixed) */}
             <div className={cn(
                 "hidden md:flex md:flex-col md:fixed md:inset-y-0 z-[80] transition-all duration-300 ease-in-out",
@@ -33,10 +33,10 @@ function InnerShell({ children, permissions, userName, userInitials }: Dashboard
             </div>
 
             {/* Mobile: top bar */}
-            <div className="md:hidden fixed top-0 left-0 right-0 z-[80] h-14 bg-white border-b border-slate-200 flex items-center px-4 gap-3">
+            <div className="md:hidden fixed top-0 left-0 right-0 z-[80] h-14 bg-card border-b border-border flex items-center px-4 gap-3">
                 <button
                     onClick={() => setMobileOpen(true)}
-                    className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors"
+                    className="p-2 rounded-xl text-muted-foreground hover:bg-muted transition-colors"
                 >
                     <Menu className="h-5 w-5" />
                 </button>
@@ -44,7 +44,7 @@ function InnerShell({ children, permissions, userName, userInitials }: Dashboard
                     <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
                         <span className="font-bold text-white text-sm">C</span>
                     </div>
-                    <span className="text-base font-bold text-slate-800">Clinova</span>
+                    <span className="text-base font-bold text-foreground">Clinova</span>
                 </div>
             </div>
 
@@ -64,7 +64,7 @@ function InnerShell({ children, permissions, userName, userInitials }: Dashboard
                 <div className="absolute top-3 right-3 z-10">
                     <button
                         onClick={() => setMobileOpen(false)}
-                        className="p-2 rounded-xl bg-white/10 text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                        className="p-2 rounded-xl bg-background/10 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     >
                         <X className="h-4 w-4" />
                     </button>

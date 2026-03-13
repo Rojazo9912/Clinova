@@ -8,6 +8,7 @@ import UserModal from '@/components/users/UserModal'
 
 import PageHeader from '@/components/ui/PageHeader'
 import { Trash2, Edit } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface User {
     id: string
@@ -53,7 +54,7 @@ export default function UsersPage() {
             await deleteUser(id)
             setRefreshKey(k => k + 1)
         } catch (error) {
-            alert('Error al eliminar usuario')
+            toast.error('Error al eliminar usuario')
         }
     }
 

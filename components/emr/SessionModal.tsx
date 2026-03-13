@@ -7,6 +7,7 @@ import { getExercises, assignExerciseToPatient, Exercise } from '@/lib/actions/e
 import { addMeasurement } from '@/lib/actions/clinical-measurements'
 import { getActivePlanForPatient, incrementPlanSession } from '@/lib/actions/treatment-plans'
 import { X, FileText, Dumbbell, Plus, CheckCircle2, Activity, ClipboardList } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface SessionModalProps {
     isOpen: boolean
@@ -159,7 +160,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
             setStrengthLevel(null)
             onSuccess()
         } catch (error) {
-            alert('Error al crear sesión')
+            toast.error('Error al crear sesión')
         } finally {
             setLoading(false)
         }

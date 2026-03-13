@@ -5,6 +5,7 @@ import { getPhysiotherapists, deletePhysiotherapist } from '@/lib/actions/physio
 import PhysiotherapistModal from '@/components/physiotherapists/PhysiotherapistModal'
 import PageHeader from '@/components/ui/PageHeader'
 import { Trash2, Edit } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface Physiotherapist {
     id: string
@@ -45,7 +46,7 @@ export default function PhysiotherapistsPage() {
             await deletePhysiotherapist(id)
             setRefreshKey(k => k + 1)
         } catch (error) {
-            alert('Error al eliminar fisioterapeuta')
+            toast.error('Error al eliminar fisioterapeuta')
         }
     }
 

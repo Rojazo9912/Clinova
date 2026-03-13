@@ -35,27 +35,27 @@ export default function MetricCard({
 
             {/* Friendly subtitle above title */}
             {friendlyText && (
-                <p className="text-xs font-medium text-slate-500 mb-0.5">{friendlyText}</p>
+                <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5">{friendlyText}</p>
             )}
 
-            <p className="text-sm font-semibold text-slate-700 pr-10">{title}</p>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-200 pr-10">{title}</p>
 
             {/* Value */}
-            <p className="text-3xl font-extrabold text-slate-900 mt-2 leading-none">{value}</p>
+            <p className="text-3xl font-extrabold text-slate-900 dark:text-white mt-2 leading-none">{value}</p>
 
             {/* Change + subtitle */}
             <div className="flex items-center gap-2 mt-2 text-xs">
                 {change !== undefined && (
                     <span className={`flex items-center gap-0.5 font-semibold px-1.5 py-0.5 rounded-full ${
-                        isPositive ? 'bg-green-100 text-green-700' :
-                        isNegative ? 'bg-red-100 text-red-600' :
-                        'bg-slate-100 text-slate-500'
+                        isPositive ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' :
+                        isNegative ? 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400' :
+                        'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
                     }`}>
                         {isPositive ? '▲' : isNegative ? '▼' : '●'} {Math.abs(change)}%
                     </span>
                 )}
                 {subtitle && (
-                    <span className="text-slate-500">{subtitle}</span>
+                    <span className="text-slate-500 dark:text-slate-400">{subtitle}</span>
                 )}
             </div>
         </div>

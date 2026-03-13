@@ -6,6 +6,7 @@ import { getRoles } from '@/lib/actions/roles'
 import { useEffect } from 'react'
 
 import { X, CheckCircle2, Copy } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface UserModalProps {
     isOpen: boolean
@@ -62,7 +63,7 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
                 }
             }
         } catch (error: any) {
-            alert(error.message || 'Error al guardar usuario')
+            toast.error(error.message || 'Error al guardar usuario')
         } finally {
             setLoading(false)
         }
@@ -71,7 +72,7 @@ export default function UserModal({ isOpen, onClose, onSuccess, user }: UserModa
     const handleCopyPassword = () => {
         if (generatedPassword) {
             navigator.clipboard.writeText(generatedPassword)
-            alert('¡Contraseña copiada al portapapeles!')
+            toast.success('¡Contraseña copiada al portapapeles!')
         }
     }
 
