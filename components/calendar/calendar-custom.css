@@ -181,3 +181,137 @@
 .rbc-addons-dnd .rbc-addons-dnd-resize-ns-icon:hover {
     background-color: rgba(255, 255, 255, 0.8);
 }
+
+/* ==============================
+   DARK MODE OVERRIDES
+   (next-themes adds .dark on <html>)
+   ============================== */
+
+/* Calendar container */
+.dark .rbc-calendar {
+    background-color: hsl(var(--card));
+    color: hsl(var(--foreground));
+}
+
+/* Day/column headers */
+.dark .rbc-header {
+    color: hsl(var(--muted-foreground));
+    border-bottom-color: hsl(var(--border));
+    background-color: hsl(var(--card));
+}
+
+.dark .rbc-header + .rbc-header {
+    border-left-color: hsl(var(--border));
+}
+
+/* Month view */
+.dark .rbc-month-view {
+    border-color: hsl(var(--border));
+    background-color: hsl(var(--card));
+}
+
+.dark .rbc-month-row {
+    border-top-color: hsl(var(--border));
+}
+
+.dark .rbc-month-row + .rbc-month-row {
+    border-top-color: hsl(var(--border));
+}
+
+.dark .rbc-day-bg + .rbc-day-bg {
+    border-left-color: hsl(var(--border));
+}
+
+/* Today highlight */
+.dark .rbc-today {
+    background-color: hsl(var(--primary) / 0.08);
+}
+
+/* Off-range days */
+.dark .rbc-off-range {
+    color: hsl(var(--muted-foreground) / 0.5);
+}
+
+.dark .rbc-off-range-bg {
+    background-color: hsl(var(--muted) / 0.4);
+}
+
+/* Time gutter */
+.dark .rbc-time-gutter .rbc-label {
+    color: hsl(var(--muted-foreground));
+}
+
+.dark .rbc-time-view {
+    border-color: hsl(var(--border));
+    background-color: hsl(var(--card));
+}
+
+.dark .rbc-time-header {
+    border-bottom-color: hsl(var(--border));
+}
+
+.dark .rbc-time-header-content {
+    border-left-color: hsl(var(--border));
+}
+
+.dark .rbc-time-header-gutter {
+    background-color: hsl(var(--card));
+}
+
+.dark .rbc-time-content {
+    border-top-color: hsl(var(--border));
+}
+
+.dark .rbc-time-content > * + * > * {
+    border-left-color: hsl(var(--border));
+}
+
+.dark .rbc-timeslot-group {
+    border-bottom-color: hsl(var(--border));
+    border-left-color: hsl(var(--border));
+}
+
+.dark .rbc-day-slot .rbc-time-slot {
+    border-top-color: hsl(var(--border) / 0.4);
+}
+
+/* All-day section */
+.dark .rbc-allday-cell {
+    background-color: hsl(var(--card));
+}
+
+/* Date numbers */
+.dark .rbc-date-cell {
+    color: hsl(var(--foreground));
+}
+
+.dark .rbc-date-cell.rbc-now a {
+    color: hsl(var(--primary));
+    font-weight: 700;
+}
+
+/* Show more link */
+.dark .rbc-show-more {
+    color: hsl(var(--primary));
+    background-color: transparent;
+}
+
+.dark .rbc-show-more:hover {
+    background-color: hsl(var(--primary) / 0.15);
+}
+
+/* Slot selection */
+.dark .rbc-slot-selection {
+    background-color: hsl(var(--primary) / 0.2);
+    border-color: hsl(var(--primary));
+}
+
+/* Drag-over */
+.dark .rbc-addons-dnd .rbc-addons-dnd-over {
+    background-color: hsl(var(--primary) / 0.15) !important;
+}
+
+/* Day cell backgrounds */
+.dark .rbc-row-bg .rbc-day-bg {
+    background-color: hsl(var(--card));
+}

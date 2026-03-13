@@ -155,7 +155,7 @@ export default function AdvancedCalendar({
     }), [])
 
     return (
-        <div className="h-[calc(100vh-200px)] bg-white rounded-xl border shadow-sm p-4">
+        <div className="h-[calc(100vh-200px)] bg-card rounded-xl border border-border shadow-sm p-4">
             <DnDCalendar
                 localizer={localizer}
                 events={events}
@@ -203,7 +203,7 @@ export default function AdvancedCalendar({
 // Custom Toolbar Component
 function CustomToolbar({ label, onNavigate, onView, view }: any) {
     return (
-        <div className="flex items-center justify-between mb-4 pb-4 border-b">
+        <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
             <div className="flex items-center gap-2">
                 <button
                     onClick={() => onNavigate('TODAY')}
@@ -213,44 +213,44 @@ function CustomToolbar({ label, onNavigate, onView, view }: any) {
                 </button>
                 <button
                     onClick={() => onNavigate('PREV')}
-                    className="px-3 py-2 border rounded-lg hover:bg-gray-50 transition"
+                    className="px-3 py-2 border border-border rounded-lg hover:bg-muted transition text-foreground"
                 >
                     ←
                 </button>
                 <button
                     onClick={() => onNavigate('NEXT')}
-                    className="px-3 py-2 border rounded-lg hover:bg-gray-50 transition"
+                    className="px-3 py-2 border border-border rounded-lg hover:bg-muted transition text-foreground"
                 >
                     →
                 </button>
             </div>
 
-            <h2 className="text-xl font-semibold">{label}</h2>
+            <h2 className="text-xl font-semibold text-foreground">{label}</h2>
 
-            <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+            <div className="flex gap-1 bg-muted rounded-lg p-1">
                 <button
                     onClick={() => onView('day')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'day'
-                        ? 'bg-white shadow-sm'
-                        : 'hover:bg-gray-200'
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition text-foreground ${view === 'day'
+                        ? 'bg-card shadow-sm'
+                        : 'hover:bg-muted/70'
                         }`}
                 >
                     Día
                 </button>
                 <button
                     onClick={() => onView('week')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'week'
-                        ? 'bg-white shadow-sm'
-                        : 'hover:bg-gray-200'
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition text-foreground ${view === 'week'
+                        ? 'bg-card shadow-sm'
+                        : 'hover:bg-muted/70'
                         }`}
                 >
                     Semana
                 </button>
                 <button
                     onClick={() => onView('month')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'month'
-                        ? 'bg-white shadow-sm'
-                        : 'hover:bg-gray-200'
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition text-foreground ${view === 'month'
+                        ? 'bg-card shadow-sm'
+                        : 'hover:bg-muted/70'
                         }`}
                 >
                     Mes
