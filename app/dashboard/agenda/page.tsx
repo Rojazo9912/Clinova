@@ -249,7 +249,7 @@ export default function AgendaPage() {
                         onClick={() => setIsBlockMode(!isBlockMode)}
                         className={`px-4 py-2 rounded-lg transition flex items-center gap-2 border ${isBlockMode
                             ? 'bg-red-100 text-red-700 border-red-200 hover:bg-red-200'
-                            : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                            : 'bg-card text-foreground border-border hover:bg-muted'
                             }`}
                     >
                         <Ban className={`h-4 w-4 ${isBlockMode ? 'text-red-600' : 'text-gray-500'}`} />
@@ -279,27 +279,27 @@ export default function AgendaPage() {
             )}
 
             {/* Legend */}
-            <div className="flex items-center gap-4 p-4 bg-white rounded-lg border">
-                <span className="text-sm font-medium">Estados:</span>
+            <div className="flex items-center gap-4 p-4 bg-card rounded-lg border border-border">
+                <span className="text-sm font-medium text-foreground">Estados:</span>
                 <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-green-500"></div>
-                    <span className="text-sm">Confirmada</span>
+                    <span className="text-sm text-foreground">Confirmada</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-orange-500"></div>
-                    <span className="text-sm">Pendiente</span>
+                    <span className="text-sm text-foreground">Pendiente</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-red-500"></div>
-                    <span className="text-sm">Cancelada</span>
+                    <span className="text-sm text-foreground">Cancelada</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-gray-500"></div>
-                    <span className="text-sm">Completada</span>
+                    <span className="text-sm text-foreground">Completada</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-gray-500 border-2 border-dashed border-gray-600 opacity-50"></div>
-                    <span className="text-sm">Bloqueado</span>
+                    <span className="text-sm text-foreground">Bloqueado</span>
                 </div>
             </div>
 
