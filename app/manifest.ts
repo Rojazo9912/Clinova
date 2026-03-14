@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'FisioNova',
-        short_name: 'FisioNova',
+        name: 'AxoMed',
+        short_name: 'AxoMed',
         description: 'Gestión Inteligente para Clínicas de Fisioterapia',
         start_url: '/',
         display: 'standalone',

@@ -63,7 +63,7 @@ export async function createPhysiotherapist(formData: FormData) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
-    const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'https://fisionova-production.up.railway.app'
+    const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'https://axomed-production.up.railway.app'
 
     if (!serviceRoleKey) {
         throw new Error('Error de configuración: SUPABASE_SERVICE_ROLE_KEY faltante')

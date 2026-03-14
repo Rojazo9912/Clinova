@@ -75,7 +75,7 @@ export default function NewClinicPage() {
                             value={clinicName}
                             onChange={handleNameChange}
                             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            placeholder="Ej. Clínica FisioNova Centro"
+                            placeholder="Ej. Clínica AxoMed Centro"
                         />
                         {state?.error?.name && <p className="text-sm text-destructive">{state.error.name}</p>}
                     </div>
@@ -90,7 +90,7 @@ export default function NewClinicPage() {
                             value={slug}
                             onChange={handleSlugChange}
                             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            placeholder="Ej. fisionova-centro"
+                            placeholder="Ej. axomed-centro"
                         />
                         <p className="text-xs text-muted-foreground">Solo letras minúsculas, números y guiones. Sin espacios.</p>
                         {state?.error?.slug && <p className="text-sm text-destructive">{state.error.slug}</p>}

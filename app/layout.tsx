@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FisioNova",
+  title: "AxoMed",
   description: "Gestión Inteligente para Clínicas de Fisioterapia",
   manifest: "/manifest.webmanifest",
 };
