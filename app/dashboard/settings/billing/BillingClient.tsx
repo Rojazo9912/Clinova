@@ -14,6 +14,7 @@ interface Props {
 export default function BillingClient({ subscription, showSuccess, showCanceled }: Props) {
     const [loading, setLoading] = useState(false)
     const [managingLoading, setManagingLoading] = useState(false)
+    const [billingCycle, setBillingCycle] = useState<'monthly' | 'quarterly' | 'annual'>('monthly')
     const isActive = subscription.status === 'active'
 
     const renewalDate = subscription.currentPeriodEnd
@@ -27,7 +28,11 @@ export default function BillingClient({ subscription, showSuccess, showCanceled 
     async function handleSubscribe() {
         setLoading(true)
         try {
-            const res = await fetch('/api/stripe/checkout', { method: 'POST' })
+            const res = await fetch('/api/stripe/checkout', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ billingCycle })
+            })
             const data = await res.json()
             if (data.url) {
                 window.location.href = data.url
@@ -141,9 +146,34 @@ export default function BillingClient({ subscription, showSuccess, showCanceled 
                                 <div className="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-lg">
                                     RECOMENDADO
                                 </div>
-                                <h3 className="font-bold text-lg text-foreground">Plan Pro</h3>
-                                <p className="text-3xl font-bold text-foreground mt-2">
-                                    $999 <span className="text-sm font-normal text-muted-foreground">/mes</span>
+                                <div className="flex items-center justify-between">
+                                    <h3 className="font-bold text-lg text-foreground">Plan Pro</h3>
+                                    <div className="flex bg-muted rounded-lg p-1 shadow-inner">
+                                        <button
+                                            onClick={() => setBillingCycle('monthly')}
+                                            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${billingCycle === 'monthly' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                                        >
+                                            Mensual
+                                        </button>
+                                        <button
+                                            onClick={() => setBillingCycle('quarterly')}
+                                            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${billingCycle === 'quarterly' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                                        >
+                                            Trimestral
+                                        </button>
+                                        <button
+                                            onClick={() => setBillingCycle('annual')}
+                                            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all relative ${billingCycle === 'annual' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                                        >
+                                            Anual
+                                            <span className="absolute -top-2.5 -right-2.5 bg-green-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold shadow-sm whitespace-nowrap">
+                                                -2 meses
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <p className="text-3xl font-bold text-foreground mt-4">
+                                    {billingCycle === 'monthly' ? '$1,500' : billingCycle === 'quarterly' ? '$4,500' : '$15,000'} <span className="text-sm font-normal text-muted-foreground">/{billingCycle === 'monthly' ? 'mes' : billingCycle === 'quarterly' ? '3 meses' : 'año'}</span>
                                 </p>
                                 <ul className="mt-6 space-y-3">
                                     <li className="flex items-center gap-2 text-sm text-muted-foreground"><Check className="h-4 w-4 text-blue-600" /> Clínicas Ilimitadas</li>

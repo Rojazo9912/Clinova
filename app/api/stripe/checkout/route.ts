@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import { stripe } from '@/lib/stripe'
 import { createClient } from '@/lib/supabase/server'
 
-export async function POST() {
+export async function POST(req: Request) {
     try {
         const supabase = await createClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -36,9 +36,19 @@ export async function POST() {
             return NextResponse.json({ url: portalSession.url })
         }
 
-        const priceId = process.env.STRIPE_PRICE_ID
+        const body = await req.json().catch(() => ({}))
+        const { billingCycle = 'monthly' } = body
+
+        let priceId = process.env.STRIPE_PRICE_MONTHLY
+        
+        if (billingCycle === 'annual') {
+            priceId = process.env.STRIPE_PRICE_ANNUAL
+        } else if (billingCycle === 'quarterly') {
+            priceId = process.env.STRIPE_PRICE_QUARTERLY
+        }
+
         if (!priceId) {
-            console.error('STRIPE_PRICE_ID is not configured')
+            console.error(`Stripe price not configured for cycle: ${billingCycle}`)
             return new NextResponse('Stripe price not configured', { status: 500 })
         }
 
