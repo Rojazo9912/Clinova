@@ -96,7 +96,7 @@ export async function createQuickAppointment(data: {
             .single()
 
         if (!profile?.clinic_id) throw new Error('No clinic found')
-        const clinicName = (profile.clinics as any)?.name || 'Clinova'
+        const clinicName = (profile.clinics as any)?.name || 'AxoMed'
 
         const startIso = new Date(data.startTime).toISOString()
         const endIso = new Date(data.endTime).toISOString()
@@ -143,7 +143,7 @@ export async function createQuickAppointment(data: {
                 serviceName ? `Servicio: ${serviceName}` : null,
                 serviceDescription ? `Descripción: ${serviceDescription}` : null,
                 `Clínica: ${clinicName}`,
-                'Cita creada desde la Agenda de Clinova.',
+                'Cita creada desde la Agenda de AxoMed.',
             ].filter(Boolean).join('\n')
         })
 
@@ -209,13 +209,13 @@ export async function getGoogleCalendarBlocks(startDate: Date, endDate: Date) {
     // Llamar a nuestra función de sincronización que interactúa con Google APIs
     const gcalEvents = await fetchGoogleCalendarEvents(user.id, startDate, endDate)
 
-    // Formatear los eventos al formato que espera react-big-calendar y la Agenda de Clinova
+    // Formatear los eventos al formato que espera react-big-calendar y la Agenda de AxoMed
     return gcalEvents
         .filter((event: any) => {
-            // No importar eventos que fueron creados por la propia Clinova 
+            // No importar eventos que fueron creados por la propia AxoMed 
             // (evita tener la cita y el bloqueo idénticos encimados)
             const desc = event.description || ''
-            return !desc.includes('Cita creada desde la Agenda de Clinova')
+            return !desc.includes('Cita creada desde la Agenda de AxoMed')
         })
         .map((event: any) => ({
             id: event.id,

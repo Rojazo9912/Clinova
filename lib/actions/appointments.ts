@@ -110,7 +110,7 @@ export async function createAppointment(data: {
             `Paciente: ${patientName}`,
             serviceName ? `Servicio: ${serviceName}` : null,
             serviceDescription ? `Descripción: ${serviceDescription}` : null,
-            'Cita creada desde Clinova.',
+            'Cita creada desde AxoMed.',
         ].filter(Boolean).join('\n')
     }).catch(console.error)
 }

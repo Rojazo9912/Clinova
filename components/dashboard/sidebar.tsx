@@ -161,7 +161,7 @@ export function DashboardSidebar({ permissions = [], userInitials = 'U', userNam
                     </div>
                     {!isCollapsed && (
                         <span className="text-lg font-bold text-foreground tracking-tight">
-                            Clinova
+                            AxoMed
                         </span>
                     )}
                 </Link>

@@ -58,7 +58,7 @@ async function main() {
     }
 
     const link = `http://localhost:3000/citas/confirmar/${appointment.confirmation_token}`
-    const prodLink = `https://clinova-v2.up.railway.app/citas/confirmar/${appointment.confirmation_token}`
+    const prodLink = `https://axomed-v2.up.railway.app/citas/confirmar/${appointment.confirmation_token}`
 
     const patient = Array.isArray(appointment.patients) ? appointment.patients[0] : appointment.patients
     const clinic = Array.isArray(appointment.clinics) ? appointment.clinics[0] : appointment.clinics

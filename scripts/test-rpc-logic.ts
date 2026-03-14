@@ -10,7 +10,7 @@ const supabase = createClient(
 )
 
 async function testRpc() {
-    const email = 'admin@clinova.com'
+    const email = 'admin@axomed.com'
     console.log(`Testing RPC for: ${email}`)
 
     // 1. Get User ID

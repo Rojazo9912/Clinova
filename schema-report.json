@@ -3,9 +3,9 @@
     "status": "exists",
     "sample_row": {
       "id": "283a0771-1e42-4233-8164-f1a440cc1368",
-      "name": "Clinova Administración",
-      "slug": "clinova-admin",
-      "email": "admin@clinova.com",
+      "name": "AxoMed Administración",
+      "slug": "axomed-admin",
+      "email": "admin@axomed.com",
       "phone": null,
       "website": null,
       "address": null,

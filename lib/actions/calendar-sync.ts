@@ -35,7 +35,7 @@ export async function exportAppointmentToGoogleCalendar(
 
         const event = {
             summary: appointmentData.title,
-            description: appointmentData.description || 'Cita generada desde Clinova.',
+            description: appointmentData.description || 'Cita generada desde AxoMed.',
             start: {
                 dateTime: appointmentData.start.toISOString(),
             },

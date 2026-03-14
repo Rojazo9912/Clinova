@@ -89,7 +89,7 @@ export default async function SettingsPage() {
                             <p className="text-xs text-muted-foreground">
                                 {isGoogleCalendarConnected
                                     ? 'Tu cuenta está conectada de forma segura para sincronización.'
-                                    : 'Conecta tu cuenta para sincronizar las citas de Clinova con tu agenda.'}
+                                    : 'Conecta tu cuenta para sincronizar las citas de AxoMed con tu agenda.'}
                             </p>
                         </div>
                     </div>

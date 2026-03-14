@@ -136,7 +136,7 @@ export async function GET(request: Request) {
 
                             // Append confirmation link if token exists
                             if (apt.confirmation_token) {
-                                message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\nhttps://clinova-v2.up.railway.app/citas/confirmar/${apt.confirmation_token}`
+                                message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\nhttps://axomed-v2.up.railway.app/citas/confirmar/${apt.confirmation_token}`
                             }
 
                             await sendWhatsAppMessage(patient.phone, message)

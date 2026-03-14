@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { ArrowLeft, ShieldCheck } from 'lucide-react'
 
 export const metadata = {
-    title: 'Aviso de Privacidad | Clinova',
-    description: 'Aviso de privacidad de Clinova conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.',
+    title: 'Aviso de Privacidad | AxoMed',
+    description: 'Aviso de privacidad de AxoMed conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.',
 }
 
 export default function PrivacidadPage() {
@@ -52,13 +52,13 @@ export default function PrivacidadPage() {
                     <section>
                         <h2 className="text-xl font-bold text-foreground mb-3">1. Identidad y Domicilio del Responsable</h2>
                         <p className="text-muted-foreground">
-                            <strong className="text-foreground">Clinova</strong> (en adelante "el Responsable") es responsable
+                            <strong className="text-foreground">AxoMed</strong> (en adelante "el Responsable") es responsable
                             del tratamiento de sus datos personales. Para cualquier asunto relacionado con este Aviso de Privacidad,
                             puede contactarnos en:
                         </p>
                         <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border text-muted-foreground text-sm space-y-1">
                             <p><strong className="text-foreground">Correo electrónico:</strong>{' '}
-                                <a href="mailto:privacidad@clinova.mx" className="text-blue-600 hover:underline">privacidad@clinova.mx</a>
+                                <a href="mailto:privacidad@axomed.mx" className="text-blue-600 hover:underline">privacidad@axomed.mx</a>
                             </p>
                             <p><strong className="text-foreground">País:</strong> México</p>
                         </div>
@@ -150,7 +150,7 @@ export default function PrivacidadPage() {
                         </div>
                         <p className="text-muted-foreground mt-4">
                             Para ejercer sus derechos ARCO, envíe su solicitud a{' '}
-                            <a href="mailto:privacidad@clinova.mx" className="text-blue-600 hover:underline">privacidad@clinova.mx</a>
+                            <a href="mailto:privacidad@axomed.mx" className="text-blue-600 hover:underline">privacidad@axomed.mx</a>
                             {' '}con su nombre, descripción clara de la solicitud y copia de identificación oficial.
                             Responderemos en un plazo máximo de 20 días hábiles.
                         </p>
@@ -215,8 +215,8 @@ export default function PrivacidadPage() {
                         </p>
                         <p className="text-muted-foreground mt-2">
                             Contacto directo:{' '}
-                            <a href="mailto:privacidad@clinova.mx" className="text-blue-600 hover:underline font-medium">
-                                privacidad@clinova.mx
+                            <a href="mailto:privacidad@axomed.mx" className="text-blue-600 hover:underline font-medium">
+                                privacidad@axomed.mx
                             </a>
                         </p>
                     </section>
@@ -224,7 +224,7 @@ export default function PrivacidadPage() {
 
                 {/* Footer nav */}
                 <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row gap-4 items-center justify-between text-sm text-muted-foreground">
-                    <p>© 2026 Clinova. Todos los derechos reservados.</p>
+                    <p>© 2026 AxoMed. Todos los derechos reservados.</p>
                     <div className="flex gap-6">
                         <Link href="/terminos" className="hover:text-foreground transition">Términos de Uso</Link>
                         <Link href="/privacidad" className="hover:text-foreground transition font-medium text-foreground">Aviso de Privacidad</Link>

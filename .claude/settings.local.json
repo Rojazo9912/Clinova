@@ -7,16 +7,16 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(npx next build:*)",
-      "Bash(ls -la /c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/.env*)",
-      "Bash(git -C /c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova ls-files .env.local)",
-      "Bash(iconv -f UTF-16LE -t UTF-8 \"/c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/lib/database.types.ts\")",
+      "Bash(ls -la /c/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/.env*)",
+      "Bash(git -C /c/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed ls-files .env.local)",
+      "Bash(iconv -f UTF-16LE -t UTF-8 \"/c/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/lib/database.types.ts\")",
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run build)",
       "Bash(npx tsc --noEmit)",
       "Bash(grep -v \"businessAlert\\\\|BusinessAlert\\\\|//.*alert\")",
-      "Bash(grep -r \"bg-white\\\\|text-slate-900\\\\|bg-slate-50\" /c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/components/*.tsx)",
-      "Bash(ls -la /c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/tailwind*)",
+      "Bash(grep -r \"bg-white\\\\|text-slate-900\\\\|bg-slate-50\" /c/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/*.tsx)",
+      "Bash(ls -la /c/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/tailwind*)",
       "Bash(npm install next-themes)",
-      "Bash(ls \"c:\\\\Users\\\\Migue\\\\OneDrive\\\\Documentos\\\\Desarrollos\\\\Clinova\\\\supabase\\\\migrations\"\" 2>/dev/null || echo \"no migrations dir \")"
+      "Bash(ls \"c:\\\\Users\\\\Migue\\\\OneDrive\\\\Documentos\\\\Desarrollos\\\\AxoMed\\\\supabase\\\\migrations\"\" 2>/dev/null || echo \"no migrations dir \")"
     ]
   }
 }

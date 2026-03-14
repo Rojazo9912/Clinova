@@ -70,7 +70,7 @@ export default function BillingClient({ subscription, showSuccess, showCanceled 
                     <ShieldCheck className="h-5 w-5 flex-shrink-0" />
                     <div>
                         <p className="font-semibold">¡Pago exitoso!</p>
-                        <p className="text-sm">Tu suscripción está activa. Gracias por confiar en Clinova.</p>
+                        <p className="text-sm">Tu suscripción está activa. Gracias por confiar en AxoMed.</p>
                     </div>
                 </div>
             )}
@@ -165,7 +165,7 @@ export default function BillingClient({ subscription, showSuccess, showCanceled 
                             <ShieldCheck className="h-16 w-16 text-green-500 mx-auto mb-4" />
                             <h3 className="text-xl font-bold text-foreground">¡Eres miembro Pro!</h3>
                             <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-                                Tienes acceso ilimitado a todas las funciones de Clinova.
+                                Tienes acceso ilimitado a todas las funciones de AxoMed.
                                 {renewalDate && ` Tu próxima facturación es el ${renewalDate}.`}
                             </p>
                             <button

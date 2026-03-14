@@ -15,7 +15,7 @@ export async function sendPhysioWelcomeEmail(data: PhysioWelcomeEmailData) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     try {
         const { error } = await resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL || 'noreply@clinova.com',
+            from: process.env.RESEND_FROM_EMAIL || 'noreply@axomed.com',
             to: data.to,
             subject: `Bienvenido al equipo de ${data.clinicName}`,
             html: `

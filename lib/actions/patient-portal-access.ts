@@ -97,7 +97,7 @@ export async function grantPortalAccess(patientId: string) {
         await sendPatientWelcomeEmail({
             to: patient.email,
             patientName: `${patient.first_name} ${patient.last_name}`,
-            clinicName: clinic?.name || 'Clinova',
+            clinicName: clinic?.name || 'AxoMed',
             email: patient.email,
             tempPassword: tempPassword,
             portalUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/portal`

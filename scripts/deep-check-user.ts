@@ -10,7 +10,7 @@ const supabase = createClient(
 )
 
 async function deepCheck() {
-    const email = 'admin@clinova.com'
+    const email = 'admin@axomed.com'
     console.log(`Deep check for: ${email}`)
 
     // List ALL users

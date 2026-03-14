@@ -39,7 +39,7 @@ export default function LoginPage() {
     return (
         <div className="glass rounded-xl p-8 space-y-6">
             <div className="space-y-2 text-center">
-                <h1 className="text-3xl font-bold tracking-tighter text-blue-600 dark:text-blue-400">Clinova</h1>
+                <h1 className="text-3xl font-bold tracking-tighter text-blue-600 dark:text-blue-400">AxoMed</h1>
                 <p className="text-muted-foreground">Inicia sesión para continuar</p>
             </div>
 

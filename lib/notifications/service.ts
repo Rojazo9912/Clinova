@@ -60,7 +60,7 @@ export async function sendAppointmentReminder(data: AppointmentNotification) {
 
                 if (data.confirmationToken) {
                     // Use standard link instead of button
-                    const confirmLink = `https://clinova-v2.up.railway.app/citas/confirmar/${data.confirmationToken}`
+                    const confirmLink = `https://axomed-v2.up.railway.app/citas/confirmar/${data.confirmationToken}`
                     message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\n${confirmLink}`
                 }
 

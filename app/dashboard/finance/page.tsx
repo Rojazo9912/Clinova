@@ -225,7 +225,7 @@ export default function FinancePage() {
                                 }))
 
                                 generateFinancialReport({
-                                    clinicName: 'Clinova',
+                                    clinicName: 'AxoMed',
                                     startDate: startDate.toLocaleDateString('es-MX'),
                                     endDate: endDate.toLocaleDateString('es-MX'),
                                     totalRevenue: report.total,

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clinova-v2-cache-v1';
+const CACHE_NAME = 'axomed-v2-cache-v1';
 
 self.addEventListener('install', (event) => {
     event.waitUntil(

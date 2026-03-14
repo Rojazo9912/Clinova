@@ -10,7 +10,7 @@ const supabase = createClient(
 )
 
 async function checkAdminRole() {
-    const email = 'admin@clinova.com'
+    const email = 'admin@axomed.com'
     console.log(`Checking role for: ${email}`)
 
     const { data: { users } } = await supabase.auth.admin.listUsers()

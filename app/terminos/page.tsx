@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { ArrowLeft, FileText } from 'lucide-react'
 
 export const metadata = {
-    title: 'Términos de Uso | Clinova',
-    description: 'Términos y condiciones de uso de la plataforma Clinova para clínicas de fisioterapia.',
+    title: 'Términos de Uso | AxoMed',
+    description: 'Términos y condiciones de uso de la plataforma AxoMed para clínicas de fisioterapia.',
 }
 
 export default function TerminosPage() {
@@ -40,7 +40,7 @@ export default function TerminosPage() {
                     {/* Intro */}
                     <section>
                         <p>
-                            Bienvenido a <strong>Clinova</strong> (en adelante "la Plataforma"), un sistema de gestión clínica
+                            Bienvenido a <strong>AxoMed</strong> (en adelante "la Plataforma"), un sistema de gestión clínica
                             desarrollado para clínicas de fisioterapia y profesionales de la salud en México. Al acceder o utilizar
                             la Plataforma, usted acepta quedar vinculado por los presentes Términos de Uso. Si no está de acuerdo
                             con alguno de estos términos, le pedimos no utilizar la Plataforma.
@@ -51,7 +51,7 @@ export default function TerminosPage() {
                     <section>
                         <h2 className="text-xl font-bold text-foreground mb-3">1. Definiciones</h2>
                         <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                            <li><strong className="text-foreground">Plataforma:</strong> El sistema Clinova, incluyendo su aplicación web, APIs y servicios asociados.</li>
+                            <li><strong className="text-foreground">Plataforma:</strong> El sistema AxoMed, incluyendo su aplicación web, APIs y servicios asociados.</li>
                             <li><strong className="text-foreground">Clínica:</strong> La persona física o moral que contrata el uso de la Plataforma para gestión clínica.</li>
                             <li><strong className="text-foreground">Usuario:</strong> Cualquier fisioterapeuta, recepcionista, administrador u otro personal que acceda a la Plataforma.</li>
                             <li><strong className="text-foreground">Paciente:</strong> La persona cuyos datos e historial clínico son gestionados a través de la Plataforma.</li>
@@ -63,7 +63,7 @@ export default function TerminosPage() {
                     <section>
                         <h2 className="text-xl font-bold text-foreground mb-3">2. Descripción del Servicio</h2>
                         <p className="text-muted-foreground">
-                            Clinova proporciona a clínicas de fisioterapia herramientas para la gestión de pacientes, agenda de citas,
+                            AxoMed proporciona a clínicas de fisioterapia herramientas para la gestión de pacientes, agenda de citas,
                             expedientes clínicos electrónicos, planes de tratamiento, control de finanzas y comunicación con pacientes.
                             La Plataforma opera como un servicio de software por suscripción (SaaS).
                         </p>
@@ -102,7 +102,7 @@ export default function TerminosPage() {
                         <h2 className="text-xl font-bold text-foreground mb-3">5. Propiedad Intelectual</h2>
                         <p className="text-muted-foreground">
                             Todos los derechos de propiedad intelectual sobre la Plataforma, incluyendo su software, diseño, logotipos
-                            y contenidos propios, pertenecen a Clinova. Queda prohibida su reproducción, distribución o modificación
+                            y contenidos propios, pertenecen a AxoMed. Queda prohibida su reproducción, distribución o modificación
                             sin autorización expresa por escrito. Los datos clínicos pertenecen a la Clínica y sus pacientes.
                         </p>
                     </section>
@@ -121,9 +121,9 @@ export default function TerminosPage() {
                     <section>
                         <h2 className="text-xl font-bold text-foreground mb-3">7. Disponibilidad del Servicio</h2>
                         <p className="text-muted-foreground">
-                            Clinova se compromete a mantener una disponibilidad del servicio del 99% mensual. Sin embargo, no garantiza
+                            AxoMed se compromete a mantener una disponibilidad del servicio del 99% mensual. Sin embargo, no garantiza
                             disponibilidad ininterrumpida. Podrán realizarse mantenimientos programados con notificación previa a los usuarios.
-                            Clinova no será responsable por interrupciones causadas por terceros (proveedores de internet, servicios en la nube, etc.).
+                            AxoMed no será responsable por interrupciones causadas por terceros (proveedores de internet, servicios en la nube, etc.).
                         </p>
                     </section>
 
@@ -131,9 +131,9 @@ export default function TerminosPage() {
                     <section>
                         <h2 className="text-xl font-bold text-foreground mb-3">8. Limitación de Responsabilidad</h2>
                         <p className="text-muted-foreground">
-                            Clinova no es responsable de decisiones médicas o clínicas tomadas con base en la información gestionada
+                            AxoMed no es responsable de decisiones médicas o clínicas tomadas con base en la información gestionada
                             a través de la Plataforma. La responsabilidad clínica recae exclusivamente en los profesionales de salud
-                            que utilizan el sistema. En ningún caso la responsabilidad de Clinova excederá el monto pagado por la
+                            que utilizan el sistema. En ningún caso la responsabilidad de AxoMed excederá el monto pagado por la
                             Clínica en los últimos 3 meses de suscripción.
                         </p>
                     </section>
@@ -156,7 +156,7 @@ export default function TerminosPage() {
                         <h2 className="text-xl font-bold text-foreground mb-3">10. Terminación</h2>
                         <p className="text-muted-foreground">
                             Cualquiera de las partes podrá dar por terminada la relación dando aviso con 30 días de anticipación.
-                            Clinova podrá suspender el acceso de forma inmediata en caso de incumplimiento grave de estos Términos.
+                            AxoMed podrá suspender el acceso de forma inmediata en caso de incumplimiento grave de estos Términos.
                             Al término del servicio, la Clínica tendrá 30 días para exportar sus datos antes de su eliminación definitiva.
                         </p>
                     </section>
@@ -165,7 +165,7 @@ export default function TerminosPage() {
                     <section>
                         <h2 className="text-xl font-bold text-foreground mb-3">11. Modificaciones</h2>
                         <p className="text-muted-foreground">
-                            Clinova podrá modificar estos Términos en cualquier momento. Los cambios serán notificados a los usuarios
+                            AxoMed podrá modificar estos Términos en cualquier momento. Los cambios serán notificados a los usuarios
                             registrados con al menos 15 días de anticipación. El uso continuado de la Plataforma tras la notificación
                             implica la aceptación de los nuevos Términos.
                         </p>
@@ -186,8 +186,8 @@ export default function TerminosPage() {
                         <h2 className="text-xl font-bold text-foreground mb-3">13. Contacto</h2>
                         <p className="text-muted-foreground">
                             Para consultas relacionadas con estos Términos de Uso, puede contactarnos en:{' '}
-                            <a href="mailto:legal@clinova.mx" className="text-blue-600 hover:underline font-medium">
-                                legal@clinova.mx
+                            <a href="mailto:legal@axomed.mx" className="text-blue-600 hover:underline font-medium">
+                                legal@axomed.mx
                             </a>
                         </p>
                     </section>
@@ -195,7 +195,7 @@ export default function TerminosPage() {
 
                 {/* Footer nav */}
                 <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row gap-4 items-center justify-between text-sm text-muted-foreground">
-                    <p>© 2026 Clinova. Todos los derechos reservados.</p>
+                    <p>© 2026 AxoMed. Todos los derechos reservados.</p>
                     <div className="flex gap-6">
                         <Link href="/terminos" className="hover:text-foreground transition font-medium text-foreground">Términos de Uso</Link>
                         <Link href="/privacidad" className="hover:text-foreground transition">Aviso de Privacidad</Link>

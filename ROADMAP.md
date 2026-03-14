@@ -1,4 +1,4 @@
-# 🗺️ Roadmap - Clinova v2
+# 🗺️ Roadmap - AxoMed v2
 
 ## ✅ Funcionalidades Completadas
 

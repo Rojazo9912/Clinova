@@ -44,7 +44,7 @@ function InnerShell({ children, permissions, userName, userInitials }: Dashboard
                     <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
                         <span className="font-bold text-white text-sm">C</span>
                     </div>
-                    <span className="text-base font-bold text-foreground">Clinova</span>
+                    <span className="text-base font-bold text-foreground">AxoMed</span>
                 </div>
             </div>
 
