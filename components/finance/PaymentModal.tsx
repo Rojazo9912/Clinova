@@ -59,10 +59,10 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-md">
+            <div className="bg-card rounded-xl p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold">Registrar Pago</h2>
-                    <button onClick={onClose} className="text-slate-500 hover:text-slate-700">
+                    <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                         <X className="h-6 w-6" />
                     </button>
                 </div>
@@ -75,7 +75,7 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Nombre o email del paciente"
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                         {patients.length > 0 && (
                             <select
@@ -97,7 +97,7 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
                         <label className="block text-sm font-medium mb-1">Servicio</label>
                         <select
                             name="service_id"
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         >
                             <option value="">Sin servicio específico</option>
                             {services.map((s: any) => (
@@ -117,7 +117,7 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
                             step="0.01"
                             min="0"
                             placeholder="0.00"
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>
 
@@ -126,7 +126,7 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
                         <select
                             name="payment_method"
                             required
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         >
                             <option value="cash">Efectivo</option>
                             <option value="card">Tarjeta</option>
@@ -140,7 +140,7 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
                         <textarea
                             name="notes"
                             rows={2}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>
 
@@ -148,7 +148,7 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg hover:bg-slate-50"
+                            className="px-4 py-2 border border-border rounded-lg hover:bg-muted text-foreground"
                         >
                             Cancelar
                         </button>

@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import Stripe from 'stripe'
+import { stripe } from '@/lib/stripe'
 import { createClient } from '@/lib/supabase/server'
 
-
-export async function POST(req: Request) {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-        apiVersion: '2026-01-28.clover',
-    })
-
+export async function POST() {
     try {
         const supabase = await createClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -17,14 +12,13 @@ export async function POST(req: Request) {
             return new NextResponse('Unauthorized', { status: 401 })
         }
 
-        const { data: clinic } = await supabase
+        const { data: profile } = await supabase
             .from('profiles')
-            .select('clinics(*)')
+            .select('clinic_id, clinics(id, name, stripe_customer_id, stripe_subscription_id, subscription_status)')
             .eq('id', user.id)
             .single()
 
-        // @ts-ignore
-        const clinicData = clinic?.clinics as any
+        const clinicData = profile?.clinics as any
 
         if (!clinicData) {
             return new NextResponse('Clinic not found', { status: 404 })
@@ -33,28 +27,35 @@ export async function POST(req: Request) {
         const headersList = await headers()
         const origin = headersList.get('origin') || process.env.NEXT_PUBLIC_SITE_URL
 
+        // Already active → redirect to customer portal instead of new checkout
+        if (clinicData.subscription_status === 'active' && clinicData.stripe_customer_id) {
+            const portalSession = await stripe.billingPortal.sessions.create({
+                customer: clinicData.stripe_customer_id,
+                return_url: `${origin}/dashboard/settings/billing`,
+            })
+            return NextResponse.json({ url: portalSession.url })
+        }
+
+        const priceId = process.env.STRIPE_PRICE_ID
+        if (!priceId) {
+            console.error('STRIPE_PRICE_ID is not configured')
+            return new NextResponse('Stripe price not configured', { status: 500 })
+        }
+
         const session = await stripe.checkout.sessions.create({
-            customer: clinicData.stripe_customer_id || undefined, // If existing customer
-            line_items: [
-                {
-                    price: 'price_1QjXXXX', // Replace with dynamic price ID from request body or hardcode for MVP
-                    quantity: 1,
-                },
-            ],
+            customer: clinicData.stripe_customer_id || undefined,
+            customer_email: clinicData.stripe_customer_id ? undefined : user.email,
+            line_items: [{ price: priceId, quantity: 1 }],
             mode: 'subscription',
             success_url: `${origin}/dashboard/settings/billing?success=true`,
             cancel_url: `${origin}/dashboard/settings/billing?canceled=true`,
-            metadata: {
-                clinicId: clinicData.id,
-                userId: user.id
-            },
+            metadata: { clinicId: clinicData.id, userId: user.id },
             client_reference_id: clinicData.id,
-            customer_email: user.email,
         })
 
         return NextResponse.json({ url: session.url })
     } catch (err: any) {
-        console.error(err)
+        console.error('[checkout]', err)
         return new NextResponse('Internal Server Error', { status: 500 })
     }
 }

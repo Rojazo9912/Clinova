@@ -108,10 +108,10 @@ export default function Home() {
             © 2026 FisioNova. Todos los derechos reservados.
           </p>
           <div className="flex gap-4">
-            <Link href="#" className="text-sm font-medium hover:underline underline-offset-4">
+            <Link href="/terminos" className="text-sm font-medium hover:underline underline-offset-4">
               Términos
             </Link>
-            <Link href="#" className="text-sm font-medium hover:underline underline-offset-4">
+            <Link href="/privacidad" className="text-sm font-medium hover:underline underline-offset-4">
               Privacidad
             </Link>
           </div>

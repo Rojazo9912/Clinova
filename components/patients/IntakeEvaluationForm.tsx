@@ -223,22 +223,22 @@ Funcionalidad: ${functionalLevel}/10
         }
     }
 
-    const inputClass = "mt-1 block w-full rounded-lg border border-slate-300 shadow-sm p-2.5 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+    const inputClass = "mt-1 block w-full rounded-lg border border-border shadow-sm p-2.5 bg-card text-foreground text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
 
     return (
         <div className="max-w-4xl mx-auto">
             {/* Progress Steps */}
-            <div className="flex items-center justify-between mb-8 bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+            <div className="flex items-center justify-between mb-8 bg-card rounded-xl shadow-sm border border-border p-4">
                 {steps.map((s, i) => (
                     <button
                         key={s.key}
                         onClick={() => setStep(s.key)}
                         className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition ${
                             step === s.key
-                                ? 'bg-blue-100 text-blue-700'
+                                ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                                 : i < currentIdx
-                                    ? 'text-emerald-600 hover:bg-emerald-50'
-                                    : 'text-slate-400 hover:bg-slate-50'
+                                    ? 'text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'
+                                    : 'text-muted-foreground hover:bg-muted'
                         }`}
                     >
                         <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
@@ -246,7 +246,7 @@ Funcionalidad: ${functionalLevel}/10
                                 ? 'bg-blue-600 text-white'
                                 : i < currentIdx
                                     ? 'bg-emerald-500 text-white'
-                                    : 'bg-slate-200 text-slate-500'
+                                    : 'bg-muted text-muted-foreground'
                         }`}>
                             {i < currentIdx ? <Check className="w-3.5 h-3.5" /> : i + 1}
                         </div>
@@ -255,19 +255,19 @@ Funcionalidad: ${functionalLevel}/10
                 ))}
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
                 <div className="p-6 md:p-8 space-y-6">
 
                     {/* STEP 1: Motivo de Consulta */}
                     {step === 'motivo' && (
                         <>
                             <div>
-                                <h3 className="text-xl font-bold text-slate-900 mb-1">Motivo de Consulta</h3>
-                                <p className="text-sm text-slate-500">¿Por qué viene el paciente? ¿Qué le duele?</p>
+                                <h3 className="text-xl font-bold text-foreground mb-1">Motivo de Consulta</h3>
+                                <p className="text-sm text-muted-foreground">¿Por qué viene el paciente? ¿Qué le duele?</p>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Motivo principal *</label>
+                                <label className="block text-sm font-medium text-foreground">Motivo principal *</label>
                                 <textarea
                                     value={chiefComplaint}
                                     onChange={(e) => setChiefComplaint(e.target.value)}
@@ -279,7 +279,7 @@ Funcionalidad: ${functionalLevel}/10
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Zona afectada</label>
+                                    <label className="block text-sm font-medium text-foreground">Zona afectada</label>
                                     <select value={painArea} onChange={(e) => setPainArea(e.target.value)} className={inputClass}>
                                         <option value="">Seleccionar zona</option>
                                         {BODY_AREAS.map(area => (
@@ -288,7 +288,7 @@ Funcionalidad: ${functionalLevel}/10
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Tipo de inicio</label>
+                                    <label className="block text-sm font-medium text-foreground">Tipo de inicio</label>
                                     <select value={symptomOnset} onChange={(e) => setSymptomOnset(e.target.value)} className={inputClass}>
                                         <option value="">Seleccionar</option>
                                         <option value="agudo">Agudo (&lt; 2 semanas)</option>
@@ -300,11 +300,11 @@ Funcionalidad: ${functionalLevel}/10
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Fecha aproximada de inicio</label>
+                                    <label className="block text-sm font-medium text-foreground">Fecha aproximada de inicio</label>
                                     <input type="date" value={onsetDate} onChange={(e) => setOnsetDate(e.target.value)} className={inputClass} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Comportamiento del dolor</label>
+                                    <label className="block text-sm font-medium text-foreground">Comportamiento del dolor</label>
                                     <select value={symptomType} onChange={(e) => setSymptomType(e.target.value)} className={inputClass}>
                                         <option value="">Seleccionar</option>
                                         <option value="constante">Constante</option>
@@ -317,22 +317,22 @@ Funcionalidad: ${functionalLevel}/10
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">¿Qué lo empeora? (factores agravantes)</label>
+                                <label className="block text-sm font-medium text-foreground">¿Qué lo empeora? (factores agravantes)</label>
                                 <input value={aggravatingFactors} onChange={(e) => setAggravatingFactors(e.target.value)} placeholder="Ej: sentarse mucho, cargar peso, subir escaleras..." className={inputClass} />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">¿Qué lo mejora? (factores atenuantes)</label>
+                                <label className="block text-sm font-medium text-foreground">¿Qué lo mejora? (factores atenuantes)</label>
                                 <input value={relievingFactors} onChange={(e) => setRelievingFactors(e.target.value)} placeholder="Ej: reposo, calor, medicamento, posición..." className={inputClass} />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Tratamiento previo</label>
+                                    <label className="block text-sm font-medium text-foreground">Tratamiento previo</label>
                                     <input value={previousTreatment} onChange={(e) => setPreviousTreatment(e.target.value)} placeholder="Ej: Fisioterapia, quiropráctico, medicamentos..." className={inputClass} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Referido por</label>
+                                    <label className="block text-sm font-medium text-foreground">Referido por</label>
                                     <input value={referredBy} onChange={(e) => setReferredBy(e.target.value)} placeholder="Dr. nombre, autorreferido..." className={inputClass} />
                                 </div>
                             </div>
@@ -343,8 +343,8 @@ Funcionalidad: ${functionalLevel}/10
                     {step === 'antecedentes' && (
                         <>
                             <div>
-                                <h3 className="text-xl font-bold text-slate-900 mb-1">Antecedentes</h3>
-                                <p className="text-sm text-slate-500">Historia médica, hábitos y estilo de vida</p>
+                                <h3 className="text-xl font-bold text-foreground mb-1">Antecedentes</h3>
+                                <p className="text-sm text-muted-foreground">Historia médica, hábitos y estilo de vida</p>
                             </div>
 
                             <div>
@@ -357,8 +357,8 @@ Funcionalidad: ${functionalLevel}/10
                                             onClick={() => toggleCondition(condition)}
                                             className={`px-3 py-1.5 rounded-full text-sm font-medium border transition ${
                                                 conditions.includes(condition)
-                                                    ? 'bg-blue-100 border-blue-300 text-blue-700'
-                                                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                                                    ? 'bg-blue-100 border-blue-300 text-blue-700 dark:bg-blue-900/30 dark:border-blue-600 dark:text-blue-300'
+                                                    : 'bg-card border-border text-foreground hover:bg-muted'
                                             }`}
                                         >
                                             {condition}
@@ -368,28 +368,28 @@ Funcionalidad: ${functionalLevel}/10
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Cirugías previas</label>
+                                <label className="block text-sm font-medium text-foreground">Cirugías previas</label>
                                 <input value={surgeries} onChange={(e) => setSurgeries(e.target.value)} placeholder="Ej: Artroscopia rodilla der. (2022), Apendicectomía (2018)..." className={inputClass} />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Medicamentos actuales</label>
+                                    <label className="block text-sm font-medium text-foreground">Medicamentos actuales</label>
                                     <input value={medications} onChange={(e) => setMedications(e.target.value)} placeholder="Ej: Ibuprofeno 400mg, Omeprazol..." className={inputClass} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Alergias</label>
+                                    <label className="block text-sm font-medium text-foreground">Alergias</label>
                                     <input value={allergies} onChange={(e) => setAllergies(e.target.value)} placeholder="Ej: Penicilina, AINES, Ninguna..." className={inputClass} />
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Ocupación</label>
+                                    <label className="block text-sm font-medium text-foreground">Ocupación</label>
                                     <input value={occupation} onChange={(e) => setOccupation(e.target.value)} placeholder="Ej: Oficinista, albañil, ama de casa..." className={inputClass} />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Nivel de actividad física</label>
+                                    <label className="block text-sm font-medium text-foreground">Nivel de actividad física</label>
                                     <select value={physicalActivity} onChange={(e) => setPhysicalActivity(e.target.value)} className={inputClass}>
                                         <option value="sedentario">Sedentario</option>
                                         <option value="leve">Leve (camina)</option>
@@ -403,12 +403,12 @@ Funcionalidad: ${functionalLevel}/10
                             <div className="flex items-center gap-3">
                                 <label className="flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox" checked={smoking} onChange={(e) => setSmoking(e.target.checked)} className="w-4 h-4 rounded text-blue-600" />
-                                    <span className="text-sm text-slate-700">Tabaquismo</span>
+                                    <span className="text-sm text-foreground">Tabaquismo</span>
                                 </label>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Antecedentes familiares relevantes</label>
+                                <label className="block text-sm font-medium text-foreground">Antecedentes familiares relevantes</label>
                                 <input value={familyHistory} onChange={(e) => setFamilyHistory(e.target.value)} placeholder="Ej: Madre con artritis reumatoide, padre con diabetes..." className={inputClass} />
                             </div>
                         </>
@@ -418,12 +418,12 @@ Funcionalidad: ${functionalLevel}/10
                     {step === 'exploracion' && (
                         <>
                             <div>
-                                <h3 className="text-xl font-bold text-slate-900 mb-1">Exploración Física</h3>
-                                <p className="text-sm text-slate-500">Hallazgos de la evaluación manual y visual</p>
+                                <h3 className="text-xl font-bold text-foreground mb-1">Exploración Física</h3>
+                                <p className="text-sm text-muted-foreground">Hallazgos de la evaluación manual y visual</p>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Evaluación postural</label>
+                                <label className="block text-sm font-medium text-foreground">Evaluación postural</label>
                                 <textarea
                                     value={posture}
                                     onChange={(e) => setPosture(e.target.value)}
@@ -434,7 +434,7 @@ Funcionalidad: ${functionalLevel}/10
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Palpación</label>
+                                <label className="block text-sm font-medium text-foreground">Palpación</label>
                                 <textarea
                                     value={palpation}
                                     onChange={(e) => setPalpation(e.target.value)}
@@ -445,9 +445,9 @@ Funcionalidad: ${functionalLevel}/10
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-3">
+                                <label className="block text-sm font-medium text-foreground mb-3">
                                     Pruebas Especiales
-                                    <span className="text-xs text-slate-400 ml-2">(toca para marcar resultado)</span>
+                                    <span className="text-xs text-muted-foreground ml-2">(toca para marcar resultado)</span>
                                 </label>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                     {SPECIAL_TESTS.map(test => {
@@ -469,9 +469,9 @@ Funcionalidad: ${functionalLevel}/10
                                                     }
                                                 }}
                                                 className={`px-3 py-2 rounded-lg text-sm text-left border transition ${
-                                                    result === 'positivo' ? 'bg-red-50 border-red-300 text-red-700' :
-                                                    result === 'negativo' ? 'bg-green-50 border-green-300 text-green-700' :
-                                                    'bg-white border-slate-200 text-slate-500 hover:bg-slate-50'
+                                                    result === 'positivo' ? 'bg-red-50 border-red-300 text-red-700 dark:bg-red-900/20 dark:border-red-700 dark:text-red-400' :
+                                                    result === 'negativo' ? 'bg-green-50 border-green-300 text-green-700 dark:bg-green-900/20 dark:border-green-700 dark:text-green-400' :
+                                                    'bg-card border-border text-muted-foreground hover:bg-muted'
                                                 }`}
                                             >
                                                 <span className="font-medium">{test.name}</span>
@@ -485,7 +485,7 @@ Funcionalidad: ${functionalLevel}/10
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Observaciones adicionales</label>
+                                <label className="block text-sm font-medium text-foreground">Observaciones adicionales</label>
                                 <textarea
                                     value={observations}
                                     onChange={(e) => setObservations(e.target.value)}
@@ -501,8 +501,8 @@ Funcionalidad: ${functionalLevel}/10
                     {step === 'valoracion' && (
                         <>
                             <div>
-                                <h3 className="text-xl font-bold text-slate-900 mb-1">Valoración Funcional</h3>
-                                <p className="text-sm text-slate-500">Escalas de referencia para seguimiento de evolución</p>
+                                <h3 className="text-xl font-bold text-foreground mb-1">Valoración Funcional</h3>
+                                <p className="text-sm text-muted-foreground">Escalas de referencia para seguimiento de evolución</p>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -593,12 +593,12 @@ Funcionalidad: ${functionalLevel}/10
                     {step === 'plan' && (
                         <>
                             <div>
-                                <h3 className="text-xl font-bold text-slate-900 mb-1">Diagnóstico y Plan</h3>
-                                <p className="text-sm text-slate-500">Conclusión clínica y plan de acción</p>
+                                <h3 className="text-xl font-bold text-foreground mb-1">Diagnóstico y Plan</h3>
+                                <p className="text-sm text-muted-foreground">Conclusión clínica y plan de acción</p>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Diagnóstico fisioterapéutico *</label>
+                                <label className="block text-sm font-medium text-foreground">Diagnóstico fisioterapéutico *</label>
                                 <textarea
                                     value={diagnosis}
                                     onChange={(e) => setDiagnosis(e.target.value)}
@@ -609,7 +609,7 @@ Funcionalidad: ${functionalLevel}/10
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Enfoque de tratamiento</label>
+                                <label className="block text-sm font-medium text-foreground">Enfoque de tratamiento</label>
                                 <textarea
                                     value={treatmentApproach}
                                     onChange={(e) => setTreatmentApproach(e.target.value)}
@@ -637,7 +637,7 @@ Funcionalidad: ${functionalLevel}/10
                                 {createPlan && (
                                     <div className="space-y-4 pt-2 border-t border-emerald-200">
                                         <div>
-                                            <label className="block text-sm font-medium text-slate-700">Nombre del plan *</label>
+                                            <label className="block text-sm font-medium text-foreground">Nombre del plan *</label>
                                             <input
                                                 value={planTitle}
                                                 onChange={(e) => setPlanTitle(e.target.value)}
@@ -648,7 +648,7 @@ Funcionalidad: ${functionalLevel}/10
 
                                         <div className="grid grid-cols-3 gap-4">
                                             <div>
-                                                <label className="block text-sm font-medium text-slate-700">Sesiones</label>
+                                                <label className="block text-sm font-medium text-foreground">Sesiones</label>
                                                 <input
                                                     type="number" min="1" max="100"
                                                     value={totalSessions}
@@ -657,7 +657,7 @@ Funcionalidad: ${functionalLevel}/10
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-slate-700">Frecuencia</label>
+                                                <label className="block text-sm font-medium text-foreground">Frecuencia</label>
                                                 <select value={frequency} onChange={(e) => setFrequency(e.target.value)} className={inputClass}>
                                                     <option value="diario">Diario</option>
                                                     <option value="2x_semana">2x por semana</option>
@@ -666,7 +666,7 @@ Funcionalidad: ${functionalLevel}/10
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-slate-700">Precio paquete</label>
+                                                <label className="block text-sm font-medium text-foreground">Precio paquete</label>
                                                 <input
                                                     type="number" min="0" step="0.01"
                                                     value={packagePrice}
@@ -686,7 +686,7 @@ Funcionalidad: ${functionalLevel}/10
                                             {goals.length > 0 && (
                                                 <div className="space-y-1.5 mb-2">
                                                     {goals.map(goal => (
-                                                        <div key={goal.id} className="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-emerald-200">
+                                                        <div key={goal.id} className="flex items-center gap-2 bg-card rounded-lg px-3 py-2 border border-emerald-200 dark:border-emerald-800">
                                                             <Target className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                                                             <span className="text-sm flex-1">{goal.description}</span>
                                                             <button type="button" onClick={() => setGoals(goals.filter(g => g.id !== goal.id))} className="text-slate-400 hover:text-red-500">
@@ -715,7 +715,7 @@ Funcionalidad: ${functionalLevel}/10
 
                             {/* Portal Access */}
                             {patientEmail && !hasPortalAccess && (
-                                <div className={`rounded-xl p-5 border-2 transition ${grantAccess ? 'bg-blue-50 border-blue-300' : 'bg-slate-50 border-slate-200'}`}>
+                                <div className={`rounded-xl p-5 border-2 transition ${grantAccess ? 'bg-blue-50 border-blue-300 dark:bg-blue-950 dark:border-blue-700' : 'bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700'}`}>
                                     <label className="flex items-center gap-3 cursor-pointer">
                                         <input
                                             type="checkbox"
@@ -724,11 +724,11 @@ Funcionalidad: ${functionalLevel}/10
                                             className="w-5 h-5 rounded text-blue-600"
                                         />
                                         <div>
-                                            <span className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                                            <span className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                                                 <Globe className="w-4 h-4 text-blue-500" />
                                                 Activar Portal del Paciente
                                             </span>
-                                            <p className="text-xs text-slate-500">
+                                            <p className="text-xs text-slate-500 dark:text-slate-400">
                                                 Se enviará un correo a <strong>{patientEmail}</strong> con sus credenciales de acceso al portal
                                             </p>
                                         </div>
@@ -750,11 +750,11 @@ Funcionalidad: ${functionalLevel}/10
                 </div>
 
                 {/* Navigation */}
-                <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between">
+                <div className="p-4 border-t border-border bg-muted/50 flex justify-between">
                     <button
                         onClick={() => setStep(steps[currentIdx - 1]?.key || step)}
                         disabled={currentIdx === 0}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-lg hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                         <ChevronLeft className="w-4 h-4" />
                         Anterior

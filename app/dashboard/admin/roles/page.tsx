@@ -64,36 +64,36 @@ export default function RolesPage() {
                 </button>
             </PageHeader>
 
-            <div className="bg-white/50 backdrop-blur-md rounded-xl border border-white/20 shadow-sm overflow-hidden">
+            <div className="bg-card backdrop-blur-md rounded-xl border border-border shadow-sm overflow-hidden">
                 <table className="w-full text-left">
-                    <thead className="bg-slate-50 border-b">
+                    <thead className="bg-muted border-b">
                         <tr>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Nombre</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Código</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Permisos</th>
-                            <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Acciones</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Nombre</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Código</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Permisos</th>
+                            <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border">
                         {loading && roles.length === 0 ? (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-slate-500">Cargando...</td>
+                                <td colSpan={4} className="px-6 py-8 text-center text-muted-foreground">Cargando...</td>
                             </tr>
                         ) : roles.length === 0 ? (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-slate-500">No hay roles registrados.</td>
+                                <td colSpan={4} className="px-6 py-8 text-center text-muted-foreground">No hay roles registrados.</td>
                             </tr>
                         ) : (
                             roles.map((role) => (
-                                <tr key={role.code} className="hover:bg-slate-50/50">
-                                    <td className="px-6 py-4 font-medium text-slate-900 flex items-center gap-2">
+                                <tr key={role.code} className="hover:bg-muted/50 transition">
+                                    <td className="px-6 py-4 font-medium text-foreground flex items-center gap-2">
                                         {role.name}
                                         {role.is_system && (
-                                            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">Sistema</span>
+                                            <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded text-xs">Sistema</span>
                                         )}
                                     </td>
-                                    <td className="px-6 py-4 text-slate-600 font-mono text-xs">{role.code}</td>
-                                    <td className="px-6 py-4 text-sm text-slate-600">
+                                    <td className="px-6 py-4 text-muted-foreground font-mono text-xs">{role.code}</td>
+                                    <td className="px-6 py-4 text-sm text-muted-foreground">
                                         {role.permissions.includes('*')
                                             ? 'Acceso Total'
                                             : `${role.permissions.length} permisos`}

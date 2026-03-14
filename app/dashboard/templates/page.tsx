@@ -270,7 +270,7 @@ export default function TemplatesPage() {
                                     value={formData.content}
                                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                     rows={15}
-                                    className="w-full px-3 py-2 border rounded-lg font-mono text-sm"
+                                    className="w-full px-3 py-2 border border-border rounded-lg font-mono text-sm bg-card text-foreground"
                                     placeholder="Escribe tu plantilla aquí. Usa {variable} para insertar variables dinámicas."
                                     required
                                 />

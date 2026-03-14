@@ -53,10 +53,10 @@ export default function PatientCombobox({ value, onChange }: PatientComboboxProp
     return (
         <div className="relative" ref={wrapperRef}>
             <div
-                className="w-full flex items-center justify-between border rounded-md px-3 py-2 bg-slate-50 cursor-pointer"
+                className="w-full flex items-center justify-between border border-border rounded-md px-3 py-2 bg-card cursor-pointer"
                 onClick={() => setOpen(!open)}
             >
-                <span className={value ? "text-slate-900" : "text-slate-500"}>
+                <span className={value ? "text-foreground" : "text-muted-foreground"}>
                     {value
                         ? `${selectedPatient?.first_name} ${selectedPatient?.last_name}`
                         : "Seleccionar paciente..."}
@@ -65,25 +65,25 @@ export default function PatientCombobox({ value, onChange }: PatientComboboxProp
             </div>
 
             {open && (
-                <div className="absolute top-full left-0 w-full mt-1 bg-white border border-slate-200 rounded-md shadow-lg z-50 max-h-60 overflow-auto">
-                    <div className="p-2 border-b sticky top-0 bg-white">
+                <div className="absolute top-full left-0 w-full mt-1 bg-card border border-border rounded-md shadow-lg z-50 max-h-60 overflow-auto">
+                    <div className="p-2 border-b border-border sticky top-0 bg-card">
                         <input
                             type="text"
                             placeholder="Buscar..."
-                            className="w-full px-2 py-1 border rounded focus:outline-none focus:border-blue-500"
+                            className="w-full px-2 py-1 border border-border rounded focus:outline-none focus:border-blue-500 bg-card text-foreground"
                             value={query}
                             onChange={e => setQuery(e.target.value)}
                             autoFocus
                         />
                     </div>
-                    {loading && <div className="p-2 text-sm text-slate-500 text-center">Buscando...</div>}
+                    {loading && <div className="p-2 text-sm text-muted-foreground text-center">Buscando...</div>}
                     {!loading && patients.length === 0 && (
-                        <div className="p-2 text-sm text-slate-500 text-center">No se encontraron resultados.</div>
+                        <div className="p-2 text-sm text-muted-foreground text-center">No se encontraron resultados.</div>
                     )}
                     {!loading && patients.map((patient) => (
                         <div
                             key={patient.id}
-                            className="px-3 py-2 text-sm hover:bg-slate-100 cursor-pointer flex items-center justify-between"
+                            className="px-3 py-2 text-sm hover:bg-muted cursor-pointer flex items-center justify-between"
                             onClick={() => {
                                 onChange(patient.id)
                                 setOpen(false)
@@ -91,8 +91,8 @@ export default function PatientCombobox({ value, onChange }: PatientComboboxProp
                             }}
                         >
                             <div>
-                                <div className="font-medium text-slate-900">{patient.first_name} {patient.last_name}</div>
-                                <div className="text-xs text-slate-500">{patient.email}</div>
+                                <div className="font-medium text-foreground">{patient.first_name} {patient.last_name}</div>
+                                <div className="text-xs text-muted-foreground">{patient.email}</div>
                             </div>
                             {value === patient.id && <Check className="h-4 w-4 text-blue-600" />}
                         </div>

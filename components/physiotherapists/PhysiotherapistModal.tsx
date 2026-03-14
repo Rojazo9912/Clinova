@@ -40,12 +40,12 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-card rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold">
                         {physiotherapist ? 'Editar Fisioterapeuta' : 'Nuevo Fisioterapeuta'}
                     </h2>
-                    <button onClick={onClose} className="text-slate-500 hover:text-slate-700">
+                    <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                         <X className="h-6 w-6" />
                     </button>
                 </div>
@@ -59,7 +59,7 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
                                 name="full_name"
                                 required
                                 defaultValue={physiotherapist?.full_name}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                             />
                         </div>
 
@@ -71,7 +71,7 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
                                 required
                                 disabled={!!physiotherapist?.email}
                                 defaultValue={physiotherapist?.email || ''}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-muted bg-card text-foreground"
                             />
                         </div>
 
@@ -81,7 +81,7 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
                                 type="tel"
                                 name="phone"
                                 defaultValue={physiotherapist?.phone}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                             />
                         </div>
 
@@ -91,7 +91,7 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
                                 type="text"
                                 name="license_number"
                                 defaultValue={physiotherapist?.license_number}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                             />
                         </div>
                     </div>
@@ -103,7 +103,7 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
                             name="specialties"
                             placeholder="Ej: Deportiva, Neurológica, Pediátrica"
                             defaultValue={physiotherapist?.specialties?.join(', ')}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>
 
@@ -113,7 +113,7 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
                             name="bio"
                             rows={4}
                             defaultValue={physiotherapist?.bio}
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>
 
@@ -121,7 +121,7 @@ export default function PhysiotherapistModal({ isOpen, onClose, onSuccess, physi
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg hover:bg-slate-50"
+                            className="px-4 py-2 border border-border rounded-lg hover:bg-muted text-foreground"
                         >
                             Cancelar
                         </button>

@@ -71,7 +71,7 @@ export default function UpdatePasswordPage() {
         return (
             <div className="flex items-center justify-center mt-20">
                 <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-                <span className="ml-3 text-slate-600">Verificando invitación...</span>
+                <span className="ml-3 text-muted-foreground">Verificando invitación...</span>
             </div>
         )
     }
@@ -111,7 +111,7 @@ export default function UpdatePasswordPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="w-full rounded-md border bg-white/50 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full rounded-md border border-border bg-card/50 px-4 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="••••••••"
                     />
                 </div>
@@ -124,7 +124,7 @@ export default function UpdatePasswordPage() {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
-                        className="w-full rounded-md border bg-white/50 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full rounded-md border border-border bg-card/50 px-4 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="••••••••"
                     />
                 </div>

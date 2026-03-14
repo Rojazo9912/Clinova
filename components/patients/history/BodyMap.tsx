@@ -73,7 +73,7 @@ export default function BodyMap({ points, onChange, readOnly = false }: BodyMapP
 
     const getZoneColor = (zoneId: string) => {
         const point = points.find(p => p.id === zoneId)
-        if (!point) return 'fill-slate-200 hover:fill-slate-300'
+        if (!point) return 'fill-slate-200 dark:fill-slate-600 hover:fill-slate-300 dark:hover:fill-slate-500'
 
         // Heatmap colors
         if (point.intensity <= 3) return 'fill-yellow-200'
@@ -112,7 +112,7 @@ export default function BodyMap({ points, onChange, readOnly = false }: BodyMapP
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="relative w-full aspect-[4/3] max-w-lg mx-auto bg-slate-50/50 rounded-lg border border-slate-100">
+                <div className="relative w-full aspect-[4/3] max-w-lg mx-auto bg-muted/30 rounded-lg border border-border">
                     <svg viewBox="0 0 200 100" className="w-full h-full drop-shadow-sm">
                         {/* Front Body Silhouette (Abstract) */}
                         <g transform="translate(0,0)">
@@ -181,7 +181,7 @@ export default function BodyMap({ points, onChange, readOnly = false }: BodyMapP
                     </svg>
 
                     {/* Legend */}
-                    <div className="absolute bottom-2 left-2 flex gap-2 text-[10px] text-slate-500 bg-white/80 p-1 rounded backdrop-blur-sm">
+                    <div className="absolute bottom-2 left-2 flex gap-2 text-[10px] text-muted-foreground bg-card/80 p-1 rounded backdrop-blur-sm">
                         <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-200"></span> Leve</div>
                         <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-orange-400"></span> Mod.</div>
                         <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span> Intenso</div>

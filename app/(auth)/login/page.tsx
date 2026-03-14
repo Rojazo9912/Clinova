@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Loader2 } from 'lucide-react'
+import Link from 'next/link'
 
 export default function LoginPage() {
     const router = useRouter()
@@ -83,6 +84,13 @@ export default function LoginPage() {
                     {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Entrar'}
                 </button>
             </form>
+
+            <p className="text-xs text-center text-muted-foreground">
+                Al iniciar sesión aceptas nuestros{' '}
+                <Link href="/terminos" className="underline hover:text-foreground transition" target="_blank">Términos de Uso</Link>
+                {' '}y{' '}
+                <Link href="/privacidad" className="underline hover:text-foreground transition" target="_blank">Aviso de Privacidad</Link>.
+            </p>
         </div>
     )
 }

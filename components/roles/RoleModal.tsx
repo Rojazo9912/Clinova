@@ -133,13 +133,13 @@ export default function RoleModal({ isOpen, onClose, onSuccess, role }: RoleModa
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-card rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold flex items-center gap-2">
                         <Shield className="h-6 w-6 text-blue-600" />
                         {role ? 'Editar Rol' : 'Nuevo Rol'}
                     </h2>
-                    <button onClick={onClose} className="text-slate-500 hover:text-slate-700">
+                    <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                         <X className="h-6 w-6" />
                     </button>
                 </div>
@@ -153,7 +153,7 @@ export default function RoleModal({ isOpen, onClose, onSuccess, role }: RoleModa
                                 name="name"
                                 required
                                 defaultValue={role?.name}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                                 placeholder="Ej. Recepcionista"
                             />
                         </div>
@@ -165,12 +165,12 @@ export default function RoleModal({ isOpen, onClose, onSuccess, role }: RoleModa
                                 required
                                 disabled={!!role}
                                 defaultValue={role?.code}
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-muted bg-card text-foreground"
                                 placeholder="Ej. receptionist"
                                 pattern="[a-z0-9_]+"
                                 title="Solo letras minúsculas, números y guiones bajos"
                             />
-                            <p className="text-xs text-slate-500 mt-1">Único, sin espacios. No se puede cambiar después.</p>
+                            <p className="text-xs text-muted-foreground mt-1">Único, sin espacios. No se puede cambiar después.</p>
                         </div>
                     </div>
 
@@ -178,9 +178,9 @@ export default function RoleModal({ isOpen, onClose, onSuccess, role }: RoleModa
                         <h3 className="font-semibold mb-3">Permisos</h3>
                         <div className="space-y-4">
                             {PERMISSION_GROUPS.map((group) => (
-                                <div key={group.name} className="bg-slate-50 p-3 rounded-lg">
+                                <div key={group.name} className="bg-muted p-3 rounded-lg">
                                     <div className="flex justify-between items-center mb-2">
-                                        <h4 className="font-medium text-sm text-slate-700">{group.name}</h4>
+                                        <h4 className="font-medium text-sm text-foreground">{group.name}</h4>
                                         <button
                                             type="button"
                                             onClick={() => toggleAll(group.permissions.map(p => p.value))}
@@ -191,7 +191,7 @@ export default function RoleModal({ isOpen, onClose, onSuccess, role }: RoleModa
                                     </div>
                                     <div className="grid grid-cols-2 gap-2">
                                         {group.permissions.map((perm) => (
-                                            <label key={perm.value} className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer hover:text-slate-900">
+                                            <label key={perm.value} className="flex items-center gap-2 text-sm text-foreground cursor-pointer hover:text-foreground/80">
                                                 <input
                                                     type="checkbox"
                                                     checked={selectedPermissions.includes(perm.value)}
@@ -211,7 +211,7 @@ export default function RoleModal({ isOpen, onClose, onSuccess, role }: RoleModa
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg hover:bg-slate-50"
+                            className="px-4 py-2 border border-border rounded-lg hover:bg-muted text-foreground"
                         >
                             Cancelar
                         </button>

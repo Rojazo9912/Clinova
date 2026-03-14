@@ -40,7 +40,7 @@ export default function EvolutionChart({
                     <CardTitle>{title}</CardTitle>
                     <CardDescription>No hay datos registrados aún.</CardDescription>
                 </CardHeader>
-                <CardContent className="h-[200px] flex items-center justify-center text-slate-400">
+                <CardContent className="h-[200px] flex items-center justify-center text-muted-foreground">
                     Sin mediciones
                 </CardContent>
             </Card>

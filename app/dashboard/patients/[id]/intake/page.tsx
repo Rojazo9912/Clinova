@@ -22,12 +22,12 @@ export default async function IntakePage({ params }: { params: Promise<{ id: str
             <div className="flex items-center gap-4">
                 <Link
                     href={`/dashboard/patients/${id}`}
-                    className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition"
+                    className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     Volver al perfil
                 </Link>
-                <h1 className="text-2xl font-bold text-slate-900">
+                <h1 className="text-2xl font-bold text-foreground">
                     Evaluación Inicial — {patient.first_name} {patient.last_name}
                 </h1>
             </div>

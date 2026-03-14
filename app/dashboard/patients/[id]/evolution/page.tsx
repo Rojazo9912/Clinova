@@ -21,15 +21,15 @@ export default async function EvolutionPage({ params }: { params: { id: string }
             <div className="flex items-center gap-4 mb-6">
                 <Link
                     href={`/dashboard/patients/${resolvedParams.id}`}
-                    className="p-2 hover:bg-slate-100 rounded-full transition text-slate-500"
+                    className="p-2 hover:bg-muted rounded-full transition text-muted-foreground"
                 >
                     <ArrowLeft className="w-5 h-5" />
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+                    <h1 className="text-2xl font-bold text-foreground tracking-tight">
                         Evolución Clínica
                     </h1>
-                    <p className="text-slate-500 text-sm">
+                    <p className="text-muted-foreground text-sm">
                         {patient.first_name} {patient.last_name}
                     </p>
                 </div>

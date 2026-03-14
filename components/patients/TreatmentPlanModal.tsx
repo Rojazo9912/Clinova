@@ -70,14 +70,14 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
         }
     }
 
-    const inputClass = "mt-1 block w-full rounded-lg border border-slate-300 shadow-sm p-2.5 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+    const inputClass = "mt-1 block w-full rounded-lg border border-border shadow-sm p-2.5 bg-card text-foreground text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col">
-                <div className="p-5 border-b border-slate-200 bg-gradient-to-r from-emerald-50 to-teal-50 flex justify-between items-center shrink-0">
-                    <h2 className="text-lg font-bold text-slate-900">Nuevo Plan de Tratamiento</h2>
-                    <button onClick={onClose} className="text-slate-400 hover:text-slate-600 p-1">
+            <div className="w-full max-w-2xl bg-card rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col">
+                <div className="p-5 border-b border-border bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 flex justify-between items-center shrink-0">
+                    <h2 className="text-lg font-bold text-foreground">Nuevo Plan de Tratamiento</h2>
+                    <button onClick={onClose} className="text-muted-foreground hover:text-foreground p-1">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
@@ -110,11 +110,11 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                         </div>
 
                         {/* Session Package */}
-                        <div className="bg-blue-50 rounded-lg p-4 space-y-4">
-                            <h3 className="text-sm font-semibold text-blue-900">Paquete de Sesiones</h3>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 space-y-4">
+                            <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-300">Paquete de Sesiones</h3>
                             <div className="grid grid-cols-3 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Total sesiones *</label>
+                                    <label className="block text-sm font-medium text-foreground">Total sesiones *</label>
                                     <input
                                         type="number"
                                         name="total_sessions"
@@ -126,7 +126,7 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Frecuencia</label>
+                                    <label className="block text-sm font-medium text-foreground">Frecuencia</label>
                                     <select name="frequency" className={inputClass}>
                                         <option value="">Sin definir</option>
                                         <option value="diario">Diario</option>
@@ -137,7 +137,7 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700">Precio paquete</label>
+                                    <label className="block text-sm font-medium text-foreground">Precio paquete</label>
                                     <input
                                         type="number"
                                         name="package_price"
@@ -153,7 +153,7 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                         {/* Dates */}
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Fecha inicio</label>
+                                <label className="block text-sm font-medium text-foreground">Fecha inicio</label>
                                 <input
                                     type="date"
                                     name="start_date"
@@ -162,14 +162,14 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Fecha estimada fin</label>
+                                <label className="block text-sm font-medium text-foreground">Fecha estimada fin</label>
                                 <input type="date" name="estimated_end_date" className={inputClass} />
                             </div>
                         </div>
 
                         {/* Goals */}
                         <div>
-                            <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2 mb-3">
+                            <h3 className="text-sm font-semibold text-foreground flex items-center gap-2 mb-3">
                                 <Target className="w-4 h-4 text-emerald-600" />
                                 Objetivos del Tratamiento
                             </h3>
@@ -177,9 +177,9 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                             {goals.length > 0 && (
                                 <div className="space-y-2 mb-3">
                                     {goals.map((goal) => (
-                                        <div key={goal.id} className="flex items-center gap-2 bg-emerald-50 rounded-lg px-3 py-2">
+                                        <div key={goal.id} className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg px-3 py-2">
                                             <Target className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                                            <span className="text-sm text-slate-700 flex-1">{goal.description}</span>
+                                            <span className="text-sm text-foreground flex-1">{goal.description}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => removeGoal(goal.id)}
@@ -223,11 +223,11 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                     </form>
                 </div>
 
-                <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-2 shrink-0">
+                <div className="p-4 border-t border-border bg-muted flex justify-end gap-2 shrink-0">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50"
+                        className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-lg hover:bg-muted/80"
                     >
                         Cancelar
                     </button>

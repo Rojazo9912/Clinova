@@ -152,7 +152,7 @@ export default function ExercisesPage() {
             <div className="space-y-4">
                 {/* Search */}
                 <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                     <input
                         type="text"
                         value={searchQuery}
@@ -235,7 +235,7 @@ export default function ExercisesPage() {
                         return (
                             <div key={exercise.id} className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-md transition">
                                 {exercise.image_url && (
-                                    <div className="h-40 bg-slate-100 overflow-hidden">
+                                    <div className="h-40 bg-muted overflow-hidden">
                                         <img
                                             src={exercise.image_url}
                                             alt={exercise.name}

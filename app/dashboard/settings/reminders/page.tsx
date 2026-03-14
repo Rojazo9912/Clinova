@@ -108,12 +108,12 @@ export default function RemindersSettingsPage() {
     return (
         <div className="p-8 space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-slate-900">Configuración de Recordatorios</h1>
-                <p className="text-slate-600 mt-2">Personaliza cómo y cuándo se envían los recordatorios</p>
+                <h1 className="text-3xl font-bold text-foreground">Configuración de Recordatorios</h1>
+                <p className="text-muted-foreground mt-2">Personaliza cómo y cuándo se envían los recordatorios</p>
             </div>
 
             {/* Settings Section */}
-            <div className="bg-white rounded-xl border p-6 space-y-6">
+            <div className="bg-card rounded-xl border border-border p-6 space-y-6">
                 <div className="flex items-center gap-2">
                     <Clock className="w-5 h-5 text-blue-600" />
                     <h2 className="text-xl font-semibold">Configuración General</h2>
@@ -121,7 +121,7 @@ export default function RemindersSettingsPage() {
 
                 {/* Reminder Times */}
                 <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-3">
+                    <label className="block text-sm font-medium text-foreground mb-3">
                         Tiempos de Recordatorio
                     </label>
                     <div className="flex gap-4">
@@ -133,11 +133,11 @@ export default function RemindersSettingsPage() {
                                     onChange={() => toggleReminderTime(hours)}
                                     className="w-4 h-4 text-blue-600 rounded"
                                 />
-                                <span className="text-sm text-slate-700">{hours}h antes</span>
+                                <span className="text-sm text-foreground">{hours}h antes</span>
                             </label>
                         ))}
                     </div>
-                    <p className="text-xs text-slate-500 mt-2">
+                    <p className="text-xs text-muted-foreground mt-2">
                         Selecciona uno o más tiempos para enviar recordatorios
                     </p>
                 </div>
@@ -145,13 +145,13 @@ export default function RemindersSettingsPage() {
                 {/* Send Window */}
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                        <label className="block text-sm font-medium text-foreground mb-2">
                             Hora de inicio
                         </label>
                         <select
                             value={settings.send_start_hour}
                             onChange={(e) => setSettings({ ...settings, send_start_hour: parseInt(e.target.value) })}
-                            className="w-full px-3 py-2 border rounded-lg"
+                            className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                         >
                             {Array.from({ length: 24 }, (_, i) => (
                                 <option key={i} value={i}>{i}:00</option>
@@ -159,13 +159,13 @@ export default function RemindersSettingsPage() {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                        <label className="block text-sm font-medium text-foreground mb-2">
                             Hora de fin
                         </label>
                         <select
                             value={settings.send_end_hour}
                             onChange={(e) => setSettings({ ...settings, send_end_hour: parseInt(e.target.value) })}
-                            className="w-full px-3 py-2 border rounded-lg"
+                            className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                         >
                             {Array.from({ length: 24 }, (_, i) => (
                                 <option key={i} value={i}>{i}:00</option>
@@ -173,7 +173,7 @@ export default function RemindersSettingsPage() {
                         </select>
                     </div>
                 </div>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-muted-foreground">
                     Los recordatorios solo se enviarán dentro de esta ventana horaria
                 </p>
 
@@ -187,7 +187,7 @@ export default function RemindersSettingsPage() {
                             className="w-4 h-4 text-blue-600 rounded"
                         />
                         <MessageSquare className="w-5 h-5 text-green-600" />
-                        <span className="text-sm font-medium text-slate-700">WhatsApp habilitado</span>
+                        <span className="text-sm font-medium text-foreground">WhatsApp habilitado</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer">
                         <input
@@ -197,7 +197,7 @@ export default function RemindersSettingsPage() {
                             className="w-4 h-4 text-blue-600 rounded"
                         />
                         <Mail className="w-5 h-5 text-blue-600" />
-                        <span className="text-sm font-medium text-slate-700">Email habilitado</span>
+                        <span className="text-sm font-medium text-foreground">Email habilitado</span>
                     </label>
                 </div>
 
@@ -212,7 +212,7 @@ export default function RemindersSettingsPage() {
             </div>
 
             {/* Templates Section */}
-            <div className="bg-white rounded-xl border p-6 space-y-6">
+            <div className="bg-card rounded-xl border border-border p-6 space-y-6">
                 <div className="flex items-center gap-2">
                     <Bell className="w-5 h-5 text-blue-600" />
                     <h2 className="text-xl font-semibold">Plantillas de Mensajes</h2>
@@ -224,7 +224,7 @@ export default function RemindersSettingsPage() {
                         onClick={() => setActiveTab('whatsapp')}
                         className={`px-4 py-2 font-medium transition ${activeTab === 'whatsapp'
                                 ? 'text-blue-600 border-b-2 border-blue-600'
-                                : 'text-slate-600 hover:text-slate-900'
+                                : 'text-muted-foreground hover:text-foreground'
                             }`}
                     >
                         WhatsApp
@@ -233,7 +233,7 @@ export default function RemindersSettingsPage() {
                         onClick={() => setActiveTab('email')}
                         className={`px-4 py-2 font-medium transition ${activeTab === 'email'
                                 ? 'text-blue-600 border-b-2 border-blue-600'
-                                : 'text-slate-600 hover:text-slate-900'
+                                : 'text-muted-foreground hover:text-foreground'
                             }`}
                     >
                         Email
@@ -244,16 +244,16 @@ export default function RemindersSettingsPage() {
                 {activeTab === 'whatsapp' && whatsappTemplate && (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Mensaje de WhatsApp
                             </label>
                             <textarea
                                 value={whatsappTemplate.message}
                                 onChange={(e) => updateTemplate('whatsapp_reminder', 'message', e.target.value)}
                                 rows={10}
-                                className="w-full px-3 py-2 border rounded-lg font-mono text-sm"
+                                className="w-full px-3 py-2 border border-border rounded-lg font-mono text-sm bg-card text-foreground"
                             />
-                            <p className="text-xs text-slate-500 mt-2">
+                            <p className="text-xs text-muted-foreground mt-2">
                                 Variables disponibles: {'{patient_name}'}, {'{date}'}, {'{time}'}, {'{service}'}, {'{clinic_name}'}, {'{hours_before}'}
                             </p>
                         </div>
@@ -272,27 +272,27 @@ export default function RemindersSettingsPage() {
                 {activeTab === 'email' && emailTemplate && (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Asunto del Email
                             </label>
                             <input
                                 type="text"
                                 value={emailTemplate.subject || ''}
                                 onChange={(e) => updateTemplate('email_reminder', 'subject', e.target.value)}
-                                className="w-full px-3 py-2 border rounded-lg"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Mensaje del Email
                             </label>
                             <textarea
                                 value={emailTemplate.message}
                                 onChange={(e) => updateTemplate('email_reminder', 'message', e.target.value)}
                                 rows={12}
-                                className="w-full px-3 py-2 border rounded-lg font-mono text-sm"
+                                className="w-full px-3 py-2 border border-border rounded-lg font-mono text-sm bg-card text-foreground"
                             />
-                            <p className="text-xs text-slate-500 mt-2">
+                            <p className="text-xs text-muted-foreground mt-2">
                                 Variables disponibles: {'{patient_name}'}, {'{date}'}, {'{time}'}, {'{service}'}, {'{clinic_name}'}, {'{hours_before}'}
                             </p>
                         </div>

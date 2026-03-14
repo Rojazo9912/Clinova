@@ -34,10 +34,10 @@ export default function AppointmentDetailsModal({ isOpen, onClose, event }: Appo
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/20 backdrop-blur-[1px]">
-            <div className="w-full max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 border border-slate-200">
+            <div className="w-full max-w-sm bg-card rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 border border-border">
                 <div className="p-6">
-                    <h2 className="text-xl font-bold text-slate-800 mb-2">{event.title}</h2>
-                    <p className="text-sm text-slate-500 mb-4">
+                    <h2 className="text-xl font-bold text-foreground mb-2">{event.title}</h2>
+                    <p className="text-sm text-muted-foreground mb-4">
                         {event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
 
@@ -52,7 +52,7 @@ export default function AppointmentDetailsModal({ isOpen, onClose, event }: Appo
 
                         <button
                             onClick={onClose}
-                            className="w-full px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-md bg-white border border-slate-200"
+                            className="w-full px-4 py-2 text-foreground hover:bg-muted rounded-md bg-card border border-border"
                         >
                             Cerrar
                         </button>

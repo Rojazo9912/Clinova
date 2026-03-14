@@ -34,10 +34,10 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-md">
+            <div className="bg-card rounded-xl p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold">Nuevo Servicio</h2>
-                    <button onClick={onClose} className="text-slate-500 hover:text-slate-700">
+                    <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                         <X className="h-6 w-6" />
                     </button>
                 </div>
@@ -50,7 +50,7 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
                             name="name"
                             required
                             placeholder="Ej: Sesión de Fisioterapia"
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>
 
@@ -60,7 +60,7 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
                             name="description"
                             rows={3}
                             placeholder="Descripción del servicio"
-                            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>
 
@@ -74,7 +74,7 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
                                 step="0.01"
                                 min="0"
                                 placeholder="0.00"
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                             />
                         </div>
 
@@ -85,7 +85,7 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
                                 name="duration_minutes"
                                 defaultValue={60}
                                 min="1"
-                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                             />
                         </div>
                     </div>
@@ -94,7 +94,7 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg hover:bg-slate-50"
+                            className="px-4 py-2 border border-border rounded-lg hover:bg-muted text-foreground"
                         >
                             Cancelar
                         </button>

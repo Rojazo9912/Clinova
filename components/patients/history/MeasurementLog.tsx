@@ -103,10 +103,10 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
         <div className="space-y-6">
 
             {/* View Toggle */}
-            <div className="flex space-x-2 bg-slate-100 p-1 rounded-lg w-fit">
+            <div className="flex space-x-2 bg-muted p-1 rounded-lg w-fit">
                 <button
                     onClick={() => setView('charts')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'charts' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'charts' ? 'bg-card text-blue-600 shadow-sm' : 'text-muted-foreground hover:text-foreground'
                         }`}
                 >
                     <Activity className="w-4 h-4 inline mr-2" />
@@ -114,7 +114,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                 </button>
                 <button
                     onClick={() => setView('rom')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'rom' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'rom' ? 'bg-card text-blue-600 shadow-sm' : 'text-muted-foreground hover:text-foreground'
                         }`}
                 >
                     <Ruler className="w-4 h-4 inline mr-2" />
@@ -122,7 +122,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                 </button>
                 <button
                     onClick={() => setView('bodymap')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'bodymap' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'bodymap' ? 'bg-card text-blue-600 shadow-sm' : 'text-muted-foreground hover:text-foreground'
                         }`}
                 >
                     <LayoutGrid className="w-4 h-4 inline mr-2" />
@@ -134,8 +134,8 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
 
                 {/* Input Column */}
                 <div className="md:col-span-1 space-y-6">
-                    <div className="bg-white p-6 rounded-xl border shadow-sm space-y-4">
-                        <h3 className="font-semibold text-slate-900 flex items-center gap-2">
+                    <div className="bg-card p-6 rounded-xl border shadow-sm space-y-4">
+                        <h3 className="font-semibold text-foreground flex items-center gap-2">
                             <PlusCircle className="w-5 h-5 text-blue-600" />
                             Nuevo Registro
                         </h3>
@@ -143,7 +143,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                         {view === 'charts' ? (
                             <>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-slate-700">Métrica</label>
+                                    <label className="text-sm font-medium text-foreground">Métrica</label>
                                     <Select value={metric} onValueChange={setMetric}>
                                         <SelectTrigger>
                                             <SelectValue />
@@ -159,7 +159,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
 
                                 <div className="space-y-4 pt-2">
                                     <div className="flex justify-between">
-                                        <label className="text-sm font-medium text-slate-700">Valor</label>
+                                        <label className="text-sm font-medium text-foreground">Valor</label>
                                         <span className="text-2xl font-bold text-blue-600">{value[0]}/10</span>
                                     </div>
                                     <Slider
@@ -169,7 +169,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                                         step={1}
                                         className="py-4"
                                     />
-                                    <p className="text-xs text-slate-500 text-center">
+                                    <p className="text-xs text-muted-foreground text-center">
                                         {metric === 'dolor' ? (
                                             value[0] === 0 ? 'Sin dolor' : value[0] <= 3 ? 'Leve' : value[0] <= 7 ? 'Moderado' : 'Severo'
                                         ) : (
@@ -181,7 +181,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                         ) : view === 'rom' ? (
                             <>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-slate-700">Articulación</label>
+                                    <label className="text-sm font-medium text-foreground">Articulación</label>
                                     <Select value={bodyRegion} onValueChange={setBodyRegion}>
                                         <SelectTrigger>
                                             <SelectValue />
@@ -196,7 +196,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
 
                                 <div className="space-y-4 pt-2">
                                     <div className="flex justify-between">
-                                        <label className="text-sm font-medium text-slate-700">Grados (ROM)</label>
+                                        <label className="text-sm font-medium text-foreground">Grados (ROM)</label>
                                         <span className="text-2xl font-bold text-indigo-600">{romValue[0]}°</span>
                                     </div>
                                     <Slider
@@ -206,19 +206,19 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                                         step={5}
                                         className="py-4"
                                     />
-                                    <p className="text-xs text-slate-500 text-center">
+                                    <p className="text-xs text-muted-foreground text-center">
                                         {romValue[0] <= 45 ? 'Muy limitado' : romValue[0] <= 90 ? 'Limitado' : romValue[0] <= 135 ? 'Moderado' : 'Completo'}
                                     </p>
                                 </div>
                             </>
                         ) : (
-                            <div className="text-sm text-slate-600 bg-blue-50 p-3 rounded-lg">
+                            <div className="text-sm text-foreground bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
                                 Toca las zonas en el mapa y asigna la intensidad.
                             </div>
                         )}
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700">Notas (opcional)</label>
+                            <label className="text-sm font-medium text-foreground">Notas (opcional)</label>
                             <Textarea
                                 placeholder="Comentarios sobre el progreso..."
                                 value={notes}
@@ -257,13 +257,13 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
                             {/* Input Map */}
                             <div className="h-full">
-                                <h4 className="text-sm font-medium mb-2 text-center text-slate-500">Nuevo Registro</h4>
+                                <h4 className="text-sm font-medium mb-2 text-center text-muted-foreground">Nuevo Registro</h4>
                                 <BodyMap points={bodyPoints} onChange={setBodyPoints} />
                             </div>
 
                             {/* Latest Record Map */}
                             <div className="h-full opacity-75">
-                                <h4 className="text-sm font-medium mb-2 text-center text-slate-500">Último Registrado</h4>
+                                <h4 className="text-sm font-medium mb-2 text-center text-muted-foreground">Último Registrado</h4>
                                 <BodyMap points={latestBodyMap} readOnly />
                             </div>
                         </div>
