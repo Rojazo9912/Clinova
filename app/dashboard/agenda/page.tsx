@@ -248,7 +248,7 @@ export default function AgendaPage() {
                     <button
                         onClick={() => setIsBlockMode(!isBlockMode)}
                         className={`px-4 py-2 rounded-lg transition flex items-center gap-2 border ${isBlockMode
-                            ? 'bg-red-100 text-red-700 border-red-200 hover:bg-red-200'
+                            ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-200 dark:hover:bg-red-900/50'
                             : 'bg-card text-foreground border-border hover:bg-muted'
                             }`}
                     >
@@ -260,12 +260,12 @@ export default function AgendaPage() {
 
             {/* Block Mode Banner */}
             {isBlockMode && (
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-center justify-between animate-in fade-in slide-in-from-top-2">
+                <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-lg flex items-center justify-between animate-in fade-in slide-in-from-top-2">
                     <div>
-                        <p className="text-sm font-medium text-red-800">
+                        <p className="text-sm font-medium text-red-800 dark:text-red-300">
                             Modo Bloqueo Activado
                         </p>
-                        <p className="text-sm text-red-600 mt-1">
+                        <p className="text-sm text-red-600 dark:text-red-400 mt-1">
                             Arrastra en el calendario para bloquear horarios. Haz clic en "Modo Bloqueo Activado" para salir.
                         </p>
                     </div>
@@ -388,9 +388,9 @@ export default function AgendaPage() {
                     <form id="quick-appointment-form" onSubmit={handleSubmit} className="p-6 space-y-5">
                         {/* Slot info */}
                         {selectedSlot && (
-                            <div className="flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl">
-                                <Clock className="h-4 w-4 text-blue-600 shrink-0" />
-                                <p className="text-sm text-blue-800 font-medium">
+                            <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/50 rounded-xl">
+                                <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                                <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
                                     {selectedSlot.start.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })} – {selectedSlot.end.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
                                 </p>
                             </div>

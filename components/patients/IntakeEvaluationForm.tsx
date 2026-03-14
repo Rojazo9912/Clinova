@@ -348,7 +348,7 @@ Funcionalidad: ${functionalLevel}/10
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-2">Patologías conocidas</label>
+                                <label className="block text-sm font-medium text-foreground mb-2">Patologías conocidas</label>
                                 <div className="flex flex-wrap gap-2">
                                     {COMMON_CONDITIONS.map(condition => (
                                         <button
@@ -620,7 +620,7 @@ Funcionalidad: ${functionalLevel}/10
                             </div>
 
                             {/* Create Treatment Plan */}
-                            <div className={`rounded-xl p-5 border-2 transition ${createPlan ? 'bg-emerald-50 border-emerald-300' : 'bg-slate-50 border-slate-200'}`}>
+                            <div className={`rounded-xl p-5 border-2 transition ${createPlan ? 'bg-emerald-50 border-emerald-300 dark:bg-emerald-900/20 dark:border-emerald-800' : 'bg-slate-50 border-slate-200 dark:bg-slate-800/50 dark:border-slate-700'}`}>
                                 <label className="flex items-center gap-3 cursor-pointer mb-4">
                                     <input
                                         type="checkbox"
@@ -629,8 +629,8 @@ Funcionalidad: ${functionalLevel}/10
                                         className="w-5 h-5 rounded text-emerald-600"
                                     />
                                     <div>
-                                        <span className="text-sm font-semibold text-slate-900">Crear Plan de Tratamiento con Paquete</span>
-                                        <p className="text-xs text-slate-500">Define sesiones, precio y objetivos medibles</p>
+                                        <span className="text-sm font-semibold text-foreground">Crear Plan de Tratamiento con Paquete</span>
+                                        <p className="text-xs text-muted-foreground">Define sesiones, precio y objetivos medibles</p>
                                     </div>
                                 </label>
 
@@ -679,7 +679,7 @@ Funcionalidad: ${functionalLevel}/10
 
                                         {/* Goals */}
                                         <div>
-                                            <label className="block text-sm font-medium text-slate-700 mb-2">
+                                            <label className="block text-sm font-medium text-foreground mb-2">
                                                 <Target className="w-3.5 h-3.5 inline mr-1" />
                                                 Objetivos medibles
                                             </label>
@@ -737,11 +737,11 @@ Funcionalidad: ${functionalLevel}/10
                             )}
 
                             {hasPortalAccess && (
-                                <div className="rounded-xl p-4 bg-emerald-50 border border-emerald-200 flex items-center gap-3">
-                                    <Globe className="w-5 h-5 text-emerald-500" />
+                                <div className="rounded-xl p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 flex items-center gap-3">
+                                    <Globe className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
                                     <div>
-                                        <span className="text-sm font-medium text-emerald-800">Portal del paciente activo</span>
-                                        <p className="text-xs text-emerald-600">El paciente ya tiene acceso al portal</p>
+                                        <span className="text-sm font-medium text-emerald-800 dark:text-emerald-300">Portal del paciente activo</span>
+                                        <p className="text-xs text-emerald-600 dark:text-emerald-400">El paciente ya tiene acceso al portal</p>
                                     </div>
                                 </div>
                             )}

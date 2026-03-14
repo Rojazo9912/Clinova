@@ -88,17 +88,17 @@ export default function BodyMap({ points, onChange, readOnly = false }: BodyMapP
                     Mapa Corporal
                     {selectedZone && !readOnly && (
                         <div className="flex gap-1 text-xs">
-                            <span className="text-slate-500 mr-2 items-center flex">
+                            <span className="text-muted-foreground mr-2 items-center flex">
                                 {ZONES.find(z => z.id === selectedZone)?.name}:
                             </span>
                             {[0, 2, 5, 8, 10].map(val => (
                                 <button
                                     key={val}
                                     onClick={() => updateIntensity(val)}
-                                    className={`px-2 py-0.5 rounded ${val === 0 ? 'bg-slate-100' :
-                                            val <= 3 ? 'bg-yellow-100 text-yellow-700' :
-                                                val <= 6 ? 'bg-orange-100 text-orange-700' :
-                                                    'bg-red-100 text-red-700'
+                                    className={`px-2 py-0.5 rounded ${val === 0 ? 'bg-muted text-foreground' :
+                                            val <= 3 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400' :
+                                                val <= 6 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400' :
+                                                    'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400'
                                         }`}
                                 >
                                     {val === 0 ? 'Borrar' : val}

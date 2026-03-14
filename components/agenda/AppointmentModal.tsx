@@ -58,18 +58,18 @@ export default function AppointmentModal({ isOpen, onClose, refreshCalendar }: A
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700">Fecha</label>
-                            <input type="date" name="date" required className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-card text-foreground p-2 border" />
+                            <label className="block text-sm font-medium text-foreground mb-1">Fecha</label>
+                            <input type="date" name="date" required className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-background text-foreground p-2 border" />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Inicio</label>
-                                <input type="time" name="startTime" required className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border" />
+                                <label className="block text-sm font-medium text-foreground mb-1">Inicio</label>
+                                <input type="time" name="startTime" required className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-background text-foreground p-2 border" />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-slate-700">Fin</label>
-                                <input type="time" name="endTime" required className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border" />
+                                <label className="block text-sm font-medium text-foreground mb-1">Fin</label>
+                                <input type="time" name="endTime" required className="mt-1 block w-full rounded-md border-border shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-background text-foreground p-2 border" />
                             </div>
                         </div>
 

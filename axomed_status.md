@@ -14,14 +14,24 @@
 | [components/dashboard/AppointmentTimeline.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/dashboard/AppointmentTimeline.tsx) | ✅ |
 | [components/dashboard/BusinessAlertsPanel.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/dashboard/BusinessAlertsPanel.tsx) | ✅ |
 | [components/dashboard/RevenueChart.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/dashboard/RevenueChart.tsx) | ✅ |
+| [components/dashboard/RevenueChart.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/dashboard/RevenueChart.tsx) | ✅ |
 | [app/dashboard/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/page.tsx) | ✅ |
 | [app/dashboard/finance/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/finance/page.tsx) | ✅ |
 | [app/dashboard/patients/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/patients/page.tsx) | ✅ |
+| [app/dashboard/agenda/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/agenda/page.tsx) | ✅ |
+| [app/dashboard/emr/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/emr/page.tsx) | ✅ |
 | [app/dashboard/admin/clinics/[id]/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/admin/clinics/%5Bid%5D/page.tsx) | ✅ |
 | [components/admin/CreateClinicUserForm.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/admin/CreateClinicUserForm.tsx) | ✅ |
 | [components/calendar/AdvancedCalendar.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/calendar/AdvancedCalendar.tsx) | ✅ |
 | [components/calendar/AvailabilityBlockModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/calendar/AvailabilityBlockModal.tsx) | ✅ |
 | [components/calendar/RecurringAppointmentModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/calendar/RecurringAppointmentModal.tsx) | ✅ |
+| [components/agenda/AppointmentModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/agenda/AppointmentModal.tsx) | ✅ |
+| [components/agenda/AppointmentDetailsModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/agenda/AppointmentDetailsModal.tsx) | ✅ |
+| [components/finance/PaymentModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/finance/PaymentModal.tsx) | ✅ |
+| [components/finance/ServiceModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/finance/ServiceModal.tsx) | ✅ |
+| [components/patients/TreatmentPlanModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/TreatmentPlanModal.tsx) | ✅ |
+| [components/patients/PatientCombobox.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/PatientCombobox.tsx) | ✅ |
+| [components/physiotherapists/PhysiotherapistModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/physiotherapists/PhysiotherapistModal.tsx) | ✅ |
 | [components/emr/SessionModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/emr/SessionModal.tsx) | ✅ |
 | [components/users/UserModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/users/UserModal.tsx) | ✅ |
 | [components/patients/PatientModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/PatientModal.tsx) | ✅ |
@@ -33,6 +43,25 @@
 | [app/portal/medical-records/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/portal/medical-records/page.tsx) | ✅ |
 | [app/portal/payments/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/portal/payments/page.tsx) | ✅ |
 | [app/citas/confirmar/[token]/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/citas/confirmar/%5Btoken%5D/page.tsx) | ✅ |
+| [components/roles/RoleModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/roles/RoleModal.tsx) | ✅ |
+| [components/patients/IntakeEvaluationForm.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/IntakeEvaluationForm.tsx) | ✅ |
+| [components/patients/history/MeasurementLog.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/history/MeasurementLog.tsx) | ✅ |
+| [components/patients/history/BodyMap.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/history/BodyMap.tsx) | ✅ |
+| [app/dashboard/settings/reminders/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/settings/reminders/page.tsx) | ✅ |
+| [app/dashboard/physiotherapists/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/physiotherapists/page.tsx) | ✅ |
+| [app/dashboard/users/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/users/page.tsx) | ✅ |
+| [app/dashboard/templates/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/templates/page.tsx) | ✅ |
+| [app/dashboard/exercises/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/exercises/page.tsx) | ✅ |
+| [app/(auth)/login/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/%28auth%29/login/page.tsx) | ✅ |
+| [app/(auth)/update-password/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/%28auth%29/update-password/page.tsx) | ✅ |
+
+### 💳 Facturación y Suscripciones (Stripe)
+| Funcionalidad | Estado |
+|---|---|
+| Soporte multi-plan (Mensual, Trimestral, Anual con descuento) | ✅ |
+| Integración de Stripe Checkout y Customer Portal | ✅ |
+| Webhook para manejo de suscripciones (pagos y cancelaciones) | ✅ |
+| Interfaz de facturación nativa en opciones de Clínica | ✅ |
 
 ### 🧹 Limpieza de Producción
 | Tarea | Estado |
@@ -49,38 +78,9 @@
 
 ---
 
-## 🔴 PENDIENTE — Dark Mode (Alta Prioridad)
-
-> Archivos con `bg-white` o colores hardcodeados que los usuarios VEN frecuentemente.
-
-| Archivo | Función |
-|---|---|
-| [components/agenda/AppointmentModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/agenda/AppointmentModal.tsx) | Modal crear/editar cita |
-| [components/agenda/AppointmentDetailsModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/agenda/AppointmentDetailsModal.tsx) | Ver detalles de cita |
-| [components/finance/PaymentModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/finance/PaymentModal.tsx) | Registrar pago |
-| [components/finance/ServiceModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/finance/ServiceModal.tsx) | Crear/editar servicio |
-| [components/patients/TreatmentPlanModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/TreatmentPlanModal.tsx) | Plan de tratamiento |
-| [components/patients/PatientCombobox.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/PatientCombobox.tsx) | Buscador de pacientes (agenda) |
-| [components/physiotherapists/PhysiotherapistModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/physiotherapists/PhysiotherapistModal.tsx) | Alta de fisioterapeuta |
-| [app/dashboard/agenda/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/agenda/page.tsx) | Página de agenda |
-| [app/dashboard/emr/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/emr/page.tsx) | Expediente médico |
-
 ## 🟡 PENDIENTE — Dark Mode (Media Prioridad)
 
-| Archivo | Función |
-|---|---|
-| [components/roles/RoleModal.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/roles/RoleModal.tsx) | Roles de usuario |
-| [components/patients/IntakeEvaluationForm.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/IntakeEvaluationForm.tsx) | Evaluación inicial |
-| [components/patients/history/MeasurementLog.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/history/MeasurementLog.tsx) | Registro de mediciones |
-| [components/patients/history/BodyMap.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/history/BodyMap.tsx) | Mapa corporal |
-| [app/dashboard/settings/reminders/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/settings/reminders/page.tsx) | Configurar recordatorios |
-| [app/dashboard/settings/billing/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/settings/billing/page.tsx) | Facturación |
-| [app/dashboard/physiotherapists/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/physiotherapists/page.tsx) | Lista fisioterapeutas |
-| [app/dashboard/users/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/users/page.tsx) | Gestión de usuarios |
-| [app/dashboard/templates/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/templates/page.tsx) | Plantillas de notas |
-| [app/dashboard/exercises/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/exercises/page.tsx) | Ejercicios del dashboard |
-| [app/(auth)/login/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/%28auth%29/login/page.tsx) | Login principal |
-| [app/(auth)/update-password/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/%28auth%29/update-password/page.tsx) | Cambiar contraseña |
+*¡Todas las tareas de esta sección han sido completadas!*
 
 ## 🟢 PENDIENTE — Dark Mode (Baja Prioridad)
 
@@ -107,7 +107,6 @@
 | Tarea | Urgencia | Notas |
 |---|---|---|
 | **Términos de Uso + Aviso de Privacidad** | 🔴 Alta | Requerido NOM-024 México (datos de salud) |
-| **Pasarela de pago (Stripe / Conekta)** | 🔴 Alta | Suscripción mensual de clínicas |
 | **Dominio propio** | 🟡 Media | Salir de Railway.app |
 | **Responsive mobile** | 🟡 Media | Agenda y EMR en celular |
 | **Onboarding automático** | 🟡 Media | Flujo para nuevas clínicas |

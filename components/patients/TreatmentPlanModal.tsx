@@ -84,13 +84,13 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
 
                 <div className="overflow-y-auto p-6">
                     {error && (
-                        <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>
+                        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-sm">{error}</div>
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6" id="plan-form">
                         {/* Plan Info */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700">Título del plan *</label>
+                            <label className="block text-sm font-medium text-foreground">Título del plan *</label>
                             <input
                                 name="title"
                                 required
@@ -100,7 +100,7 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700">Diagnóstico</label>
+                            <label className="block text-sm font-medium text-foreground">Diagnóstico</label>
                             <textarea
                                 name="diagnosis"
                                 rows={2}
@@ -203,7 +203,7 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
                                 <button
                                     type="button"
                                     onClick={addGoal}
-                                    className="px-3 py-2 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 shrink-0"
+                                    className="px-3 py-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-lg hover:bg-emerald-200 dark:hover:bg-emerald-900/50 shrink-0"
                                 >
                                     <Plus className="w-4 h-4" />
                                 </button>
@@ -212,7 +212,7 @@ export default function TreatmentPlanModal({ isOpen, onClose, onSuccess, patient
 
                         {/* Notes */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700">Notas adicionales</label>
+                            <label className="block text-sm font-medium text-foreground">Notas adicionales</label>
                             <textarea
                                 name="notes"
                                 rows={2}

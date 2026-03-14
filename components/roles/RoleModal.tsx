@@ -178,13 +178,13 @@ export default function RoleModal({ isOpen, onClose, onSuccess, role }: RoleModa
                         <h3 className="font-semibold mb-3">Permisos</h3>
                         <div className="space-y-4">
                             {PERMISSION_GROUPS.map((group) => (
-                                <div key={group.name} className="bg-muted p-3 rounded-lg">
+                                <div key={group.name} className="bg-muted dark:bg-muted/50 p-3 rounded-lg">
                                     <div className="flex justify-between items-center mb-2">
                                         <h4 className="font-medium text-sm text-foreground">{group.name}</h4>
                                         <button
                                             type="button"
                                             onClick={() => toggleAll(group.permissions.map(p => p.value))}
-                                            className="text-xs text-blue-600 hover:text-blue-800"
+                                            className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                                         >
                                             Seleccionar todo
                                         </button>

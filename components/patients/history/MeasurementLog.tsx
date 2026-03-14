@@ -170,19 +170,19 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
                                         className="py-4"
                                     />
                                     <p className="text-xs text-muted-foreground text-center">
-                                        {metric === 'dolor' ? (
-                                            value[0] === 0 ? 'Sin dolor' : value[0] <= 3 ? 'Leve' : value[0] <= 7 ? 'Moderado' : 'Severo'
-                                        ) : (
-                                            value[0] === 0 ? 'Nulo' : value[0] <= 5 ? 'Limitado' : 'Bueno'
-                                        )}
-                                    </p>
-                                </div>
-                            </>
-                        ) : view === 'rom' ? (
-                            <>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-foreground">Articulación</label>
-                                    <Select value={bodyRegion} onValueChange={setBodyRegion}>
+                                            {metric === 'dolor' ? (
+                                                value[0] === 0 ? 'Sin dolor' : value[0] <= 3 ? 'Leve' : value[0] <= 7 ? 'Moderado' : 'Severo'
+                                            ) : (
+                                                value[0] === 0 ? 'Nulo' : value[0] <= 5 ? 'Limitado' : 'Bueno'
+                                            )}
+                                        </p>
+                                    </div>
+                                </>
+                            ) : view === 'rom' ? (
+                                <>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-foreground">Articulación</label>
+                                        <Select value={bodyRegion} onValueChange={setBodyRegion}>
                                         <SelectTrigger>
                                             <SelectValue />
                                         </SelectTrigger>
