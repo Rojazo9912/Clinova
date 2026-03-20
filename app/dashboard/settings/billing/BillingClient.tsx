@@ -167,7 +167,7 @@ export default function BillingClient({ subscription, showSuccess, showCanceled 
                                         >
                                             Anual
                                             <span className="absolute -top-2.5 -right-2.5 bg-green-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold shadow-sm whitespace-nowrap">
-                                                -2 meses
+                                                -1 mes
                                             </span>
                                         </button>
                                     </div>
