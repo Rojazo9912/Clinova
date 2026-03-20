@@ -17,6 +17,7 @@ export default async function DashboardLayout({
     const { data: profile } = await supabase
         .from('profiles')
         .select(`
+            clinic_id,
             role,
             full_name,
             roles (
@@ -25,6 +26,10 @@ export default async function DashboardLayout({
         `)
         .eq('id', user.id)
         .single()
+
+    if (!profile?.clinic_id) {
+        redirect('/onboarding')
+    }
 
     const rolesData = profile?.roles as any
     const permissions = Array.isArray(rolesData)

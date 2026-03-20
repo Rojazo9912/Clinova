@@ -57,16 +57,16 @@ export default function EvolutionChart({
                 <div className="h-[300px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                             <XAxis
                                 dataKey="date"
-                                stroke="#9ca3af"
+                                stroke="hsl(var(--muted-foreground))"
                                 fontSize={12}
                                 tickLine={false}
                                 axisLine={false}
                             />
                             <YAxis
-                                stroke="#9ca3af"
+                                stroke="hsl(var(--muted-foreground))"
                                 fontSize={12}
                                 tickLine={false}
                                 axisLine={false}
@@ -74,7 +74,13 @@ export default function EvolutionChart({
                                 ticks={metricName === 'rom' ? [0, 45, 90, 135, 180] : [0, 2, 4, 6, 8, 10]}
                             />
                             <Tooltip
-                                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                                contentStyle={{ 
+                                    backgroundColor: 'hsl(var(--card))', 
+                                    color: 'hsl(var(--card-foreground))',
+                                    borderRadius: '8px', 
+                                    border: '1px solid hsl(var(--border))', 
+                                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' 
+                                }}
                                 labelFormatter={(label, payload) => payload[0]?.payload.fullDate || label}
                             />
                             <Line

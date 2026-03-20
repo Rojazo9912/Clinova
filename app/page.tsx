@@ -44,17 +44,17 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
                 <Link
-                  href="/login"
+                  href="/register"
                   className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:shadow-blue-500/40 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
-                  Acceder a la Plataforma
+                  Comienza Gratis
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
                 <Link
-                  href="#"
+                  href="/login"
                   className="inline-flex h-12 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
-                  Solicitar Demo
+                  Ya tengo cuenta
                 </Link>
               </div>
             </div>

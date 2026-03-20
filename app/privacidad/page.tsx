@@ -164,6 +164,7 @@ export default function PrivacidadPage() {
                         </p>
                         <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                             <li><strong className="text-foreground">Supabase (infraestructura de base de datos):</strong> Proveedor de almacenamiento seguro con cifrado en reposo y en tránsito.</li>
+                            <li><strong className="text-foreground">Stripe (procesador de pagos):</strong> Para gestionar de forma segura los pagos de suscripciones.</li>
                             <li><strong className="text-foreground">Proveedores de comunicación (Twilio/Resend):</strong> Para el envío de recordatorios por WhatsApp y correo electrónico.</li>
                             <li><strong className="text-foreground">Autoridades competentes:</strong> Cuando así lo requiera la legislación aplicable.</li>
                         </ul>

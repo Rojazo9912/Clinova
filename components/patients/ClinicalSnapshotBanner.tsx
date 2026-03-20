@@ -24,26 +24,26 @@ const STATUS_CONFIG = {
     improving: {
         label: 'Mejorando',
         icon: TrendingDown,
-        bg: 'bg-emerald-50 border-emerald-200',
-        text: 'text-emerald-700',
-        dot: 'bg-emerald-500',
-        iconColor: 'text-emerald-600',
+        bg: 'bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800',
+        text: 'text-emerald-700 dark:text-emerald-400',
+        dot: 'bg-emerald-500 dark:bg-emerald-400',
+        iconColor: 'text-emerald-600 dark:text-emerald-400',
     },
     stable: {
         label: 'Estable',
         icon: Minus,
-        bg: 'bg-amber-50 border-amber-200',
-        text: 'text-amber-700',
-        dot: 'bg-amber-500',
-        iconColor: 'text-amber-600',
+        bg: 'bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800',
+        text: 'text-amber-700 dark:text-amber-400',
+        dot: 'bg-amber-500 dark:bg-amber-400',
+        iconColor: 'text-amber-600 dark:text-amber-400',
     },
     worsening: {
         label: 'Atención',
         icon: TrendingUp,
-        bg: 'bg-red-50 border-red-200',
-        text: 'text-red-700',
-        dot: 'bg-red-500',
-        iconColor: 'text-red-600',
+        bg: 'bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800',
+        text: 'text-red-700 dark:text-red-400',
+        dot: 'bg-red-500 dark:bg-red-400',
+        iconColor: 'text-red-600 dark:text-red-400',
     },
 }
 
@@ -80,7 +80,7 @@ export default function ClinicalSnapshotBanner({
                     <Flame className="h-4 w-4 text-orange-500" />
                     <span className="font-medium">EVA</span>
                     <span className="text-muted-foreground">{painMetric.firstValue} → </span>
-                    <span className={`font-bold ${painMetric.lastValue <= 3 ? 'text-emerald-600' : painMetric.lastValue <= 6 ? 'text-amber-600' : 'text-red-600'}`}>
+                    <span className={`font-bold ${painMetric.lastValue <= 3 ? 'text-emerald-600 dark:text-emerald-400' : painMetric.lastValue <= 6 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'}`}>
                         {painMetric.lastValue}/10
                     </span>
                 </div>

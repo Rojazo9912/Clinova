@@ -54,6 +54,19 @@
 | [app/dashboard/exercises/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/exercises/page.tsx) | ✅ |
 | [app/(auth)/login/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/%28auth%29/login/page.tsx) | ✅ |
 | [app/(auth)/update-password/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/%28auth%29/update-password/page.tsx) | ✅ |
+| [components/patients/TreatmentPlanCard.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/TreatmentPlanCard.tsx) | ✅ |
+| [components/patients/history/MeasurementChart.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/history/MeasurementChart.tsx) | ✅ |
+| [components/patients/history/ProgressSummary.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/history/ProgressSummary.tsx) | ✅ |
+| [components/patients/ClinicalSnapshotBanner.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/ClinicalSnapshotBanner.tsx) | ✅ |
+| [components/patients/PatientActions.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/PatientActions.tsx) | ✅ |
+| [components/search/GlobalSearch.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/search/GlobalSearch.tsx) | ✅ |
+| [components/settings/NotificationSettings.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/settings/NotificationSettings.tsx) | ✅ |
+| [app/dashboard/admin/roles/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/admin/roles/page.tsx) | ✅ |
+| [app/dashboard/admin/clinics/new/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/admin/clinics/new/page.tsx) | ✅ |
+| [app/dashboard/patients/[id]/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/patients/%5Bid%5D/page.tsx) | ✅ |
+| [app/dashboard/patients/[id]/evolution/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/patients/%5Bid%5D/evolution/page.tsx) | ✅ |
+| [app/dashboard/patients/[id]/intake/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/patients/%5Bid%5D/intake/page.tsx) | ✅ |
+| [app/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/page.tsx) | ✅ |
 
 ### 💳 Facturación y Suscripciones (Stripe)
 | Funcionalidad | Estado |
@@ -84,21 +97,7 @@
 
 ## 🟢 PENDIENTE — Dark Mode (Baja Prioridad)
 
-| Archivo | Función |
-|---|---|
-| [components/patients/TreatmentPlanCard.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/TreatmentPlanCard.tsx) | Tarjeta plan tratamiento |
-| [components/patients/history/MeasurementChart.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/history/MeasurementChart.tsx) | Gráfica de mediciones |
-| [components/patients/history/ProgressSummary.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/history/ProgressSummary.tsx) | Resumen de progreso |
-| [components/patients/ClinicalSnapshotBanner.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/ClinicalSnapshotBanner.tsx) | Banner resumen clínico |
-| [components/patients/PatientActions.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/patients/PatientActions.tsx) | Acciones de paciente |
-| [components/search/GlobalSearch.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/search/GlobalSearch.tsx) | Búsqueda global |
-| [components/settings/NotificationSettings.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/components/settings/NotificationSettings.tsx) | Config notificaciones |
-| [app/dashboard/admin/roles/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/admin/roles/page.tsx) | Admin — roles |
-| [app/dashboard/admin/clinics/new/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/admin/clinics/new/page.tsx) | Admin — nueva clínica |
-| [app/dashboard/patients/[id]/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/patients/%5Bid%5D/page.tsx) | Perfil del paciente |
-| [app/dashboard/patients/[id]/evolution/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/patients/%5Bid%5D/evolution/page.tsx) | Evolución del paciente |
-| [app/dashboard/patients/[id]/intake/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/patients/%5Bid%5D/intake/page.tsx) | Intake del paciente |
-| [app/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/page.tsx) | Landing page |
+*¡Todas las tareas de Dark Mode han sido completadas exitosamente!*
 
 ---
 
@@ -106,10 +105,10 @@
 
 | Tarea | Urgencia | Notas |
 |---|---|---|
-| **Términos de Uso + Aviso de Privacidad** | 🔴 Alta | Requerido NOM-024 México (datos de salud) |
+| **Términos de Uso + Aviso de Privacidad** | ✅ Completado | Requerido NOM-024 México (datos de salud) |
 | **Dominio propio** | 🟡 Media | Salir de Railway.app |
 | **Responsive mobile** | 🟡 Media | Agenda y EMR en celular |
-| **Onboarding automático** | 🟡 Media | Flujo para nuevas clínicas |
+| **Onboarding automático** | ✅ Completado | Flujo para nuevas clínicas y registro |
 | **Backups automáticos Supabase** | 🟡 Media | Configurar en Supabase dashboard |
 | **Email branding** | 🟢 Baja | Personalizar emails con logo de AxoMed |
 | **Notificaciones push** | 🟢 Baja | Service Worker ya existe, falta config |

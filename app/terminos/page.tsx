@@ -112,8 +112,10 @@ export default function TerminosPage() {
                         <h2 className="text-xl font-bold text-foreground mb-3">6. Suscripción y Pagos</h2>
                         <p className="text-muted-foreground">
                             El acceso a la Plataforma está sujeto al pago de una suscripción mensual o anual según el plan contratado.
-                            Los precios podrán modificarse con previo aviso de 30 días. El incumplimiento de pago podrá resultar en la
-                            suspensión del servicio. No se realizan reembolsos por períodos parciales de uso.
+                            Los pagos se procesan de manera segura a través de <strong>Stripe</strong>. AxoMed no almacena datos completos
+                            de tarjetas bancarias. Los precios podrán modificarse con previo aviso de 30 días. El incumplimiento de pago podrá resultar en la
+                            suspensión del servicio. No se realizan reembolsos por períodos parciales de uso. Puede cancelar
+                            su suscripción en cualquier momento desde el portal de facturación en la Plataforma.
                         </p>
                     </section>
 

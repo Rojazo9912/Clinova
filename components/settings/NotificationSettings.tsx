@@ -98,16 +98,16 @@ export default function NotificationSettings() {
 
                 {/* Info */}
                 {!config?.configured && (
-                    <div className="p-4 rounded-lg bg-yellow-50 border border-yellow-200">
-                        <p className="text-sm text-yellow-800">
-                            <strong>Configuración requerida:</strong> Agrega las credenciales de Twilio y Resend en tu archivo <code className="px-1 py-0.5 bg-yellow-100 rounded">.env.local</code> para habilitar las notificaciones.
+                    <div className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800">
+                        <p className="text-sm text-yellow-800 dark:text-yellow-300">
+                            <strong>Configuración requerida:</strong> Agrega las credenciales de Twilio y Resend en tu archivo <code className="px-1 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 rounded">.env.local</code> para habilitar las notificaciones.
                         </p>
                     </div>
                 )}
 
                 {config?.configured && (
-                    <div className="p-4 rounded-lg bg-green-50 border border-green-200">
-                        <p className="text-sm text-green-800">
+                    <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800">
+                        <p className="text-sm text-green-800 dark:text-green-300">
                             ✅ Sistema de notificaciones activo. Los recordatorios se envían automáticamente 24 horas antes de cada cita.
                         </p>
                     </div>

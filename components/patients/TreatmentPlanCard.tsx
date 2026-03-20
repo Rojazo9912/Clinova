@@ -18,10 +18,10 @@ const FREQUENCY_LABELS: Record<string, string> = {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-    active: { label: 'Activo', color: 'text-emerald-700', bg: 'bg-emerald-100' },
-    completed: { label: 'Completado', color: 'text-blue-700', bg: 'bg-blue-100' },
-    paused: { label: 'Pausado', color: 'text-amber-700', bg: 'bg-amber-100' },
-    cancelled: { label: 'Cancelado', color: 'text-red-700', bg: 'bg-red-100' },
+    active: { label: 'Activo', color: 'text-emerald-700 dark:text-emerald-400', bg: 'bg-emerald-100 dark:bg-emerald-900/30' },
+    completed: { label: 'Completado', color: 'text-blue-700 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30' },
+    paused: { label: 'Pausado', color: 'text-amber-700 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30' },
+    cancelled: { label: 'Cancelado', color: 'text-red-700 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30' },
 }
 
 const DISCHARGE_REASONS: Record<string, string> = {
@@ -237,13 +237,13 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
 
                                             {/* Discharge info */}
                                             {plan.status === 'completed' && plan.discharge_reason && (
-                                                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-                                                    <label className="text-xs font-medium text-blue-700 uppercase tracking-wide">Alta</label>
-                                                    <p className="text-sm text-blue-800 mt-1">
+                                                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
+                                                    <label className="text-xs font-medium text-blue-700 dark:text-blue-400 uppercase tracking-wide">Alta</label>
+                                                    <p className="text-sm text-blue-800 dark:text-blue-300 mt-1">
                                                         Motivo: {DISCHARGE_REASONS[plan.discharge_reason] || plan.discharge_reason}
                                                     </p>
                                                     {plan.discharge_notes && (
-                                                        <p className="text-sm text-blue-700 mt-1">{plan.discharge_notes}</p>
+                                                        <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">{plan.discharge_notes}</p>
                                                     )}
                                                 </div>
                                             )}
@@ -253,7 +253,7 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                                                 <div className="flex gap-2 pt-2">
                                                     <button
                                                         onClick={() => handlePause(plan.id, plan.status === 'paused')}
-                                                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-amber-50 text-amber-700 rounded-lg hover:bg-amber-100 border border-amber-200"
+                                                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/40 border border-amber-200 dark:border-amber-800"
                                                     >
                                                         {plan.status === 'paused' ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />}
                                                         {plan.status === 'paused' ? 'Reanudar' : 'Pausar'}
@@ -261,7 +261,7 @@ export default function TreatmentPlanCard({ plans, patientId }: TreatmentPlanCar
                                                     {plan.status === 'active' && (
                                                         <button
                                                             onClick={() => setShowDischarge(plan.id)}
-                                                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 border border-blue-200"
+                                                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200 dark:border-blue-800"
                                                         >
                                                             <LogOut className="w-3 h-3" />
                                                             Dar de Alta
