@@ -74,12 +74,12 @@ export function generateFinancialReport(data: FinancialReportData) {
     // Revenue by Service
     yPos = (doc as any).lastAutoTable.finalY + 15
     doc.setFontSize(14)
-    doc.text('Ingresos por Servicio', 20, yPos)
+    doc.text('Ingresos por Tratamiento', 20, yPos)
 
     yPos += 10
     autoTable(doc, {
         startY: yPos,
-        head: [['Servicio', 'Monto']],
+        head: [['Tratamiento', 'Monto']],
         body: Object.entries(data.paymentsByService).map(([service, amount]) => [
             service,
             `$${amount.toLocaleString()}`
@@ -105,7 +105,7 @@ export function generateFinancialReport(data: FinancialReportData) {
         yPos += 10
         autoTable(doc, {
             startY: yPos,
-            head: [['Fecha', 'Paciente', 'Servicio', 'Método', 'Monto']],
+            head: [['Fecha', 'Paciente', 'Tratamiento', 'Método', 'Monto']],
             body: data.payments.map(p => [
                 p.date,
                 p.patient,
@@ -175,7 +175,7 @@ export function generatePaymentReceipt(data: {
     doc.text(data.patientName, 120, yPos, { align: 'right' })
 
     yPos += 10
-    doc.text('Servicio:', 40, yPos)
+    doc.text('Tratamiento:', 40, yPos)
     doc.text(data.serviceName, 120, yPos, { align: 'right' })
 
     yPos += 10

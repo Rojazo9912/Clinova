@@ -127,7 +127,7 @@ export async function resendAppointmentConfirmation(appointmentId: string) {
             <h2>Confirmación de Cita</h2>
             <div style="background-color: #f1f5f9; padding: 20px; border-radius: 8px; margin: 24px 0;">
                 <p style="margin: 0 0 10px; font-size: 16px;"><strong>Paciente:</strong> <span style="color: #475569;">${patient.first_name} ${patient.last_name}</span></p>
-                <p style="margin: 0 0 10px; font-size: 16px;"><strong>Servicio:</strong> <span style="color: #475569;">${serviceName}</span></p>
+                <p style="margin: 0 0 10px; font-size: 16px;"><strong>Tratamiento:</strong> <span style="color: #475569;">${serviceName}</span></p>
                 <p style="margin: 0 0 10px; font-size: 16px;"><strong>Fecha y Hora:</strong> <span style="color: #475569;">${dateStr}</span></p>
                 <p style="margin: 0; font-size: 16px;"><strong>Clínica:</strong> <span style="color: #475569;">${clinicName}</span></p>
             </div>

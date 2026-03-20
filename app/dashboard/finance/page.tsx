@@ -43,7 +43,7 @@ export default function FinancePage() {
     }, [refreshKey])
 
     const tabs: { key: 'services' | 'payments' | 'reports' | 'pending'; label: string; badge?: number | null }[] = [
-        { key: 'services', label: 'Servicios' },
+        { key: 'services', label: 'Tratamientos' },
         { key: 'payments', label: 'Pagos' },
         { key: 'reports', label: 'Reportes' },
         { key: 'pending', label: 'Cobros Pendientes', badge: pendingCollections.length > 0 ? pendingCollections.length : null },
@@ -51,14 +51,14 @@ export default function FinancePage() {
 
     return (
         <div className="space-y-6">
-            <PageHeader title="Finanzas" description="Gestiona servicios, pagos y reportes financieros.">
+            <PageHeader title="Finanzas" description="Gestiona tratamientos, pagos y reportes financieros.">
                 {activeTab === 'services' && (
                     <button
                         onClick={() => setIsServiceModalOpen(true)}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl shadow-sm hover:bg-blue-700 transition text-sm font-medium"
                     >
                         <Plus className="h-4 w-4" />
-                        Nuevo Servicio
+                        Nuevo Tratamiento
                     </button>
                 )}
                 {(activeTab === 'payments' || activeTab === 'pending') && (
@@ -139,7 +139,7 @@ export default function FinancePage() {
                     <table className="w-full text-left">
                         <thead className="bg-muted border-b border-border">
                             <tr>
-                                <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Servicio</th>
+                                <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Tratamiento</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Descripción</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Precio</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Duración</th>
@@ -148,7 +148,7 @@ export default function FinancePage() {
                         <tbody className="divide-y divide-border">
                             {services.length === 0 ? (
                                 <tr>
-                                    <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground text-sm">No hay servicios registrados.</td>
+                                    <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground text-sm">No hay tratamientos registrados.</td>
                                 </tr>
                             ) : (
                                 services.map((service) => (
@@ -173,7 +173,7 @@ export default function FinancePage() {
                             <tr>
                                 <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Fecha</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Paciente</th>
-                                <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Servicio</th>
+                                <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Tratamiento</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Monto</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">Método</th>
                             </tr>
@@ -219,7 +219,7 @@ export default function FinancePage() {
                                 const detailedPayments = payments.map((p: any) => ({
                                     date: new Date(p.created_at).toLocaleDateString('es-MX'),
                                     patient: `${p.patients?.first_name || ''} ${p.patients?.last_name || ''}`,
-                                    service: p.services?.name || 'Sin servicio',
+                                    service: p.services?.name || 'Sin tratamiento',
                                     amount: Number(p.amount),
                                     method: p.payment_method
                                 }))
@@ -269,7 +269,7 @@ export default function FinancePage() {
                         </div>
 
                         <div className="bg-card rounded-2xl border border-border shadow-sm p-6">
-                            <h4 className="text-sm font-semibold text-foreground mb-3">Por Servicio</h4>
+                            <h4 className="text-sm font-semibold text-foreground mb-3">Por Tratamiento</h4>
                             <div className="space-y-2">
                                 {Object.entries(report.byService).length === 0 ? (
                                     <p className="text-sm text-muted-foreground">Sin datos</p>

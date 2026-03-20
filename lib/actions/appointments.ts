@@ -115,7 +115,7 @@ export async function createAppointment(data: {
         end: validated.data.end,
         description: [
             `Paciente: ${patientName}`,
-            serviceName ? `Servicio: ${serviceName}` : null,
+            serviceName ? `Tratamiento: ${serviceName}` : null,
             serviceDescription ? `Descripción: ${serviceDescription}` : null,
             'Cita creada desde AxoMed.',
         ].filter(Boolean).join('\n')

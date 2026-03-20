@@ -94,12 +94,12 @@ export default function PaymentModal({ isOpen, onClose, onSuccess }: PaymentModa
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium mb-1">Servicio</label>
+                        <label className="block text-sm font-medium mb-1">Tratamiento</label>
                         <select
                             name="service_id"
                             className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         >
-                            <option value="">Sin servicio específico</option>
+                            <option value="">Sin tratamiento específico</option>
                             {services.map((s: any) => (
                                 <option key={s.id} value={s.id}>
                                     {s.name} - ${s.price}

@@ -76,7 +76,7 @@ export default function SessionModal({ isOpen, onClose, onSuccess, patientId, pa
             patient_age: patientAge?.toString() || '[Edad]',
             date: now.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }),
             therapist_name: '[Fisioterapeuta]',
-            service: '[Servicio]',
+            service: '[Tratamiento]',
             session_number: '1'
         }
 

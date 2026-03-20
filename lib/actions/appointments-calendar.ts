@@ -140,7 +140,7 @@ export async function createQuickAppointment(data: {
             end: new Date(data.endTime),
             description: [
                 `Paciente: ${patientName}`,
-                serviceName ? `Servicio: ${serviceName}` : null,
+                serviceName ? `Tratamiento: ${serviceName}` : null,
                 serviceDescription ? `Descripción: ${serviceDescription}` : null,
                 `Clínica: ${clinicName}`,
                 'Cita creada desde la Agenda de AxoMed.',

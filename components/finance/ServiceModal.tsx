@@ -23,10 +23,10 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
         try {
             const formData = new FormData(e.currentTarget)
             await createService(formData)
-            toast.success('Servicio creado exitosamente')
+            toast.success('Tratamiento creado exitosamente')
             onSuccess()
         } catch (error) {
-            toast.error('Error al crear servicio')
+            toast.error('Error al crear tratamiento')
         } finally {
             setLoading(false)
         }
@@ -36,7 +36,7 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-card rounded-xl p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold">Nuevo Servicio</h2>
+                    <h2 className="text-2xl font-bold">Nuevo Tratamiento</h2>
                     <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                         <X className="h-6 w-6" />
                     </button>
@@ -44,7 +44,7 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium mb-1">Nombre del Servicio *</label>
+                        <label className="block text-sm font-medium mb-1">Nombre del Tratamiento *</label>
                         <input
                             type="text"
                             name="name"
@@ -59,7 +59,7 @@ export default function ServiceModal({ isOpen, onClose, onSuccess }: ServiceModa
                         <textarea
                             name="description"
                             rows={3}
-                            placeholder="Descripción del servicio"
+                            placeholder="Descripción del tratamiento"
                             className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-blue-500 bg-card text-foreground"
                         />
                     </div>

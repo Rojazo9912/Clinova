@@ -73,7 +73,7 @@ export default function PaymentsPage() {
                         <thead className="bg-muted border-b border-border">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Fecha</th>
-                                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Servicio</th>
+                                <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Tratamiento</th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Método</th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Monto</th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-muted-foreground uppercase">Estado</th>

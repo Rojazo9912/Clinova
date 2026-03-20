@@ -96,7 +96,7 @@ export async function sendAppointmentReminder(data: AppointmentNotification) {
                             <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
                                 <p style="margin: 5px 0;"><strong>📅 Fecha:</strong> ${dateStr}</p>
                                 <p style="margin: 5px 0;"><strong>⏰ Hora:</strong> ${timeStr}</p>
-                                <p style="margin: 5px 0;"><strong>🏥 Servicio:</strong> ${data.serviceName}</p>
+                                <p style="margin: 5px 0;"><strong>🏥 Tratamiento:</strong> ${data.serviceName}</p>
                                 <p style="margin: 5px 0;"><strong>📍 Clínica:</strong> ${data.clinicName}</p>
                             </div>
                             <p>¡Nos vemos pronto!</p>
@@ -172,7 +172,7 @@ export async function sendAppointmentConfirmation(data: AppointmentNotification)
                             <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
                                 <p style="margin: 5px 0;"><strong>📅 Fecha:</strong> ${dateStr}</p>
                                 <p style="margin: 5px 0;"><strong>⏰ Hora:</strong> ${timeStr}</p>
-                                <p style="margin: 5px 0;"><strong>🏥 Servicio:</strong> ${data.serviceName}</p>
+                                <p style="margin: 5px 0;"><strong>🏥 Tratamiento:</strong> ${data.serviceName}</p>
                                 <p style="margin: 5px 0;"><strong>📍 Clínica:</strong> ${data.clinicName}</p>
                             </div>
                             <p>¡Gracias por confiar en nosotros!</p>

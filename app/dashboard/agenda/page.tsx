@@ -366,7 +366,7 @@ export default function AgendaPage() {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="p-4 bg-muted rounded-xl">
-                                <p className="text-xs text-muted-foreground mb-1">Servicio</p>
+                                <p className="text-xs text-muted-foreground mb-1">Tratamiento</p>
                                 <p className="text-sm font-medium text-foreground">{selectedEvent.resource?.serviceName || '—'}</p>
                             </div>
                             <div className="p-4 bg-muted rounded-xl">

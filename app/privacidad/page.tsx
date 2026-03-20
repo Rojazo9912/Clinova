@@ -85,7 +85,7 @@ export default function PrivacidadPage() {
                                     <li>Historial clínico, diagnósticos, tratamientos y notas de sesión</li>
                                     <li>Mediciones clínicas (dolor, movilidad, fuerza)</li>
                                     <li>Planes de tratamiento y objetivos terapéuticos</li>
-                                    <li>Información de pago relacionada con servicios clínicos</li>
+                                    <li>Información de pago relacionada con tratamientos clínicos</li>
                                 </ul>
                             </div>
                         </div>
@@ -111,7 +111,7 @@ export default function PrivacidadPage() {
                                     <li>Programación y seguimiento de citas y sesiones</li>
                                     <li>Elaboración de planes de tratamiento</li>
                                     <li>Registro de evolución clínica y métricas de progreso</li>
-                                    <li>Facturación y gestión de pagos por servicios clínicos</li>
+                                    <li>Facturación y gestión de pagos por tratamientos clínicos</li>
                                     <li>Envío de recordatorios de citas al paciente</li>
                                     <li>Acceso del paciente a su portal personal</li>
                                 </ul>

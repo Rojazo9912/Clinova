@@ -16,7 +16,7 @@ const AVAILABLE_VARIABLES = [
     { name: 'patient_name', label: 'Nombre del paciente' },
     { name: 'patient_age', label: 'Edad del paciente' },
     { name: 'date', label: 'Fecha de sesión' },
-    { name: 'service', label: 'Servicio' },
+    { name: 'service', label: 'Tratamiento' },
     { name: 'therapist_name', label: 'Nombre del fisioterapeuta' },
     { name: 'session_number', label: 'Número de sesión' }
 ]
@@ -219,21 +219,21 @@ export default function TemplatesPage() {
 
             {/* Create/Edit Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-card rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                        <div className="p-6 border-b border-border flex items-center justify-between sticky top-0 bg-card">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[999] p-4 sm:p-6">
+                    <div className="bg-card rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-border flex flex-col">
+                        <div className="p-6 border-b border-border flex items-center justify-between sticky top-0 bg-card/95 backdrop-blur z-10">
                             <h2 className="text-2xl font-bold text-foreground">
                                 {editingTemplate ? 'Editar Plantilla' : 'Nueva Plantilla'}
                             </h2>
-                            <button onClick={() => setIsModalOpen(false)} className="text-muted-foreground hover:text-foreground">
-                                <X className="w-6 h-6" />
+                            <button onClick={() => setIsModalOpen(false)} className="p-2 bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground rounded-full transition">
+                                <X className="w-5 h-5" />
                             </button>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-foreground mb-2">
+                        <form onSubmit={handleSubmit} className="p-6 space-y-6 flex-1">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-foreground">
                                         Nombre de la Plantilla
                                     </label>
                                     <input
@@ -261,8 +261,8 @@ export default function TemplatesPage() {
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-foreground mb-2">
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-foreground">
                                     Contenido de la Plantilla
                                 </label>
                                 <textarea
@@ -276,8 +276,8 @@ export default function TemplatesPage() {
                                 />
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-foreground mb-2">
+                            <div className="space-y-3">
+                                <label className="text-sm font-semibold text-foreground">
                                     Variables Disponibles (click para insertar)
                                 </label>
                                 <div className="flex flex-wrap gap-2">
@@ -306,17 +306,17 @@ export default function TemplatesPage() {
                                 </label>
                             </div>
 
-                            <div className="flex gap-3 pt-4 border-t">
+                            <div className="flex gap-3 pt-6 border-t border-border mt-auto">
                                 <button
                                     type="submit"
-                                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                    className="flex-1 px-4 py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition shadow-sm"
                                 >
-                                    {editingTemplate ? 'Actualizar Plantilla' : 'Crear Plantilla'}
+                                    {editingTemplate ? 'Guardar Cambios' : 'Crear Plantilla'}
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-4 py-2 border border-border rounded-lg hover:bg-muted"
+                                    className="px-6 py-2.5 bg-muted text-muted-foreground font-medium rounded-xl hover:bg-muted/80 hover:text-foreground transition"
                                 >
                                     Cancelar
                                 </button>
