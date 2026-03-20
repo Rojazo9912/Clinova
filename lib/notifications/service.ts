@@ -1,19 +1,7 @@
-import twilio from 'twilio'
 import { Resend } from 'resend'
+import { sendWhatsAppMessage } from './whatsapp'
 
-// Initialize clients lazily
-let twilioClient: twilio.Twilio | null = null
 let resendClient: Resend | null = null
-
-function getTwilioClient() {
-    if (!twilioClient && process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
-        twilioClient = twilio(
-            process.env.TWILIO_ACCOUNT_SID,
-            process.env.TWILIO_AUTH_TOKEN
-        )
-    }
-    return twilioClient
-}
 
 function getResendClient() {
     if (!resendClient && process.env.RESEND_API_KEY) {
@@ -27,6 +15,7 @@ interface AppointmentNotification {
     patientPhone?: string
     patientEmail?: string
     clinicName: string
+    clinicPhoneNumberId?: string
     appointmentDate: Date
     serviceName: string
     confirmationToken?: string
@@ -54,25 +43,18 @@ export async function sendAppointmentReminder(data: AppointmentNotification) {
     // Send WhatsApp
     if (data.patientPhone) {
         try {
-            const client = getTwilioClient()
-            if (client && process.env.TWILIO_WHATSAPP_FROM) {
-                let message = `*${data.clinicName}*\n\nHola ${data.patientName}! 👋\n\nTe recordamos tu cita:\n\n📅 ${dateStr}\n⏰ ${timeStr}\n🏥 ${data.serviceName}`
+            let message = `*${data.clinicName}*\n\nHola ${data.patientName}! 👋\n\nTe recordamos tu cita:\n\n📅 ${dateStr}\n⏰ ${timeStr}\n🏥 ${data.serviceName}`
 
-                if (data.confirmationToken) {
-                    // Use standard link instead of button
-                    const confirmLink = `https://axomed-v2.up.railway.app/citas/confirmar/${data.confirmationToken}`
-                    message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\n${confirmLink}`
-                }
-
-                message += `\n\nNos vemos pronto!`
-
-                await client.messages.create({
-                    from: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,
-                    to: `whatsapp:${data.patientPhone}`,
-                    body: message
-                })
-                results.whatsapp = true
+            if (data.confirmationToken) {
+                const confirmLink = `${process.env.NEXT_PUBLIC_SITE_URL}/citas/confirmar/${data.confirmationToken}`
+                message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\n${confirmLink}`
             }
+
+            message += `\n\nNos vemos pronto!`
+
+            const result = await sendWhatsAppMessage(data.patientPhone, message, data.clinicPhoneNumberId)
+            results.whatsapp = result.success
+            if (!result.success) results.errors.push(`WhatsApp: ${result.error}`)
         } catch (error) {
             console.error('WhatsApp error:', error)
             results.errors.push(`WhatsApp: ${error}`)
@@ -138,17 +120,11 @@ export async function sendAppointmentConfirmation(data: AppointmentNotification)
     // Send WhatsApp
     if (data.patientPhone) {
         try {
-            const client = getTwilioClient()
-            if (client && process.env.TWILIO_WHATSAPP_FROM) {
-                const message = `*${data.clinicName}*\n\n¡Cita confirmada! ✅\n\nHola ${data.patientName}, tu cita ha sido confirmada:\n\n📅 ${dateStr}\n⏰ ${timeStr}\n🏥 ${data.serviceName}\n\nGracias por confiar en nosotros!`
+            const message = `*${data.clinicName}*\n\n¡Cita confirmada! ✅\n\nHola ${data.patientName}, tu cita ha sido confirmada:\n\n📅 ${dateStr}\n⏰ ${timeStr}\n🏥 ${data.serviceName}\n\nGracias por confiar en nosotros!`
 
-                await client.messages.create({
-                    from: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,
-                    to: `whatsapp:${data.patientPhone}`,
-                    body: message
-                })
-                results.whatsapp = true
-            }
+            const result = await sendWhatsAppMessage(data.patientPhone, message, data.clinicPhoneNumberId)
+            results.whatsapp = result.success
+            if (!result.success) results.errors.push(`WhatsApp: ${result.error}`)
         } catch (error) {
             console.error('WhatsApp error:', error)
             results.errors.push(`WhatsApp: ${error}`)

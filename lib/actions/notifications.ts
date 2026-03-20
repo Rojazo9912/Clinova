@@ -10,9 +10,6 @@ import { es } from 'date-fns/locale'
 export async function sendAppointmentReminder(appointmentId: string) {
     const supabase = await createClient()
 
-    // Fetch appointment with patient and clinic details
-    // Note: We need to join properly. 
-    // Assuming simple structure: appointments -> patients.
     const { data: appointment, error } = await supabase
         .from('appointments')
         .select(`
@@ -24,7 +21,8 @@ export async function sendAppointmentReminder(appointmentId: string) {
                 phone
             ),
             clinics (
-                name
+                name,
+                whatsapp_phone_number_id
             )
         `)
         .eq('id', appointmentId)
@@ -38,21 +36,19 @@ export async function sendAppointmentReminder(appointmentId: string) {
     const patient = appointment.patients
     if (!patient) return { success: false, error: 'Patient not found' }
 
-    const clinicName = appointment.clinics?.name || 'Clínica'
+    const clinicName = (appointment.clinics as any)?.name || 'Clínica'
+    const clinicPhoneNumberId = (appointment.clinics as any)?.whatsapp_phone_number_id || undefined
     const dateStr = format(new Date(appointment.start_time), "EEEE d 'de' MMMM 'a las' HH:mm", { locale: es })
 
-    const messageBody = `Hola ${patient.first_name}, te recordamos tu cita en ${clinicName} el ${dateStr}. Por favor llega 10 minutos antes.`
+    const messageBody = `*${clinicName}*\n\nHola ${patient.first_name}, te recordamos tu cita el ${dateStr}. Por favor llega 10 minutos antes.`
 
     const results = {
         whatsapp: null as any,
         email: null as any
     }
 
-    // Send WhatsApp if phone exists
     if (patient.phone) {
-        // Simple formatting for example, assuming input is close to E.164 or needs cleaning
-        // Triggering the library
-        results.whatsapp = await sendWhatsAppMessage(patient.phone, messageBody)
+        results.whatsapp = await sendWhatsAppMessage(patient.phone, messageBody, clinicPhoneNumberId)
     }
 
     // Send Email if email exists
@@ -88,7 +84,8 @@ export async function resendAppointmentConfirmation(appointmentId: string) {
                 phone
             ),
             clinics (
-                name
+                name,
+                whatsapp_phone_number_id
             ),
             services (
                 name
@@ -105,20 +102,20 @@ export async function resendAppointmentConfirmation(appointmentId: string) {
     const patient = appointment.patients
     if (!patient) return { success: false, error: 'Paciente no encontrado' }
 
-    const clinicName = appointment.clinics?.name || 'Clínica'
-    const serviceName = appointment.services?.name || 'Consulta'
+    const clinicName = (appointment.clinics as any)?.name || 'Clínica'
+    const clinicPhoneNumberId = (appointment.clinics as any)?.whatsapp_phone_number_id || undefined
+    const serviceName = (appointment.services as any)?.name || 'Consulta'
     const dateStr = format(new Date(appointment.start_time), "EEEE d 'de' MMMM 'a las' HH:mm", { locale: es })
 
-    const messageBody = `Hola ${patient.first_name}, confirmamos tu cita de ${serviceName} en ${clinicName} el ${dateStr}. ¡Te esperamos!`
+    const messageBody = `*${clinicName}*\n\nHola ${patient.first_name}, confirmamos tu cita de ${serviceName} el ${dateStr}. ¡Te esperamos!`
 
     const results = {
         whatsapp: null as any,
         email: null as any
     }
 
-    // Send WhatsApp if phone exists
     if (patient.phone) {
-        results.whatsapp = await sendWhatsAppMessage(patient.phone, messageBody)
+        results.whatsapp = await sendWhatsAppMessage(patient.phone, messageBody, clinicPhoneNumberId)
     }
 
     // Send Email if email exists
@@ -143,13 +140,12 @@ export async function resendAppointmentConfirmation(appointmentId: string) {
 }
 
 export async function testNotificationSetup() {
-    // Test if notification services are configured
-    const twilioConfigured = !!(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN)
+    const whatsappConfigured = !!(process.env.WHATSAPP_ACCESS_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID)
     const resendConfigured = !!process.env.RESEND_API_KEY
 
     return {
-        whatsapp: twilioConfigured,
+        whatsapp: whatsappConfigured,
         email: resendConfigured,
-        configured: twilioConfigured || resendConfigured
+        configured: whatsappConfigured || resendConfigured
     }
 }

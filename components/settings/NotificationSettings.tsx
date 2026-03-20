@@ -100,7 +100,7 @@ export default function NotificationSettings() {
                 {!config?.configured && (
                     <div className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800">
                         <p className="text-sm text-yellow-800 dark:text-yellow-300">
-                            <strong>Configuración requerida:</strong> Agrega las credenciales de Twilio y Resend en tu archivo <code className="px-1 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 rounded">.env.local</code> para habilitar las notificaciones.
+                            <strong>Configuración requerida:</strong> Agrega <code className="px-1 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 rounded">WHATSAPP_ACCESS_TOKEN</code> y <code className="px-1 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 rounded">WHATSAPP_PHONE_NUMBER_ID</code> (Meta Cloud API) en tu archivo <code className="px-1 py-0.5 bg-yellow-100 dark:bg-yellow-900/40 rounded">.env.local</code> para habilitar WhatsApp.
                         </p>
                     </div>
                 )}

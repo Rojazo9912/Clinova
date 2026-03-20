@@ -27,6 +27,7 @@ export async function GET(request: Request) {
             .select(`
                 id,
                 name,
+                whatsapp_phone_number_id,
                 reminder_settings (
                     reminder_times,
                     send_start_hour,
@@ -140,7 +141,7 @@ export async function GET(request: Request) {
                                 message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\nhttps://axomed-v2.up.railway.app/citas/confirmar/${apt.confirmation_token}`
                             }
 
-                            await sendWhatsAppMessage(patient.phone, message)
+                            await sendWhatsAppMessage(patient.phone, message, (clinic as any).whatsapp_phone_number_id || undefined)
 
                             await logReminder(supabase, {
                                 appointment_id: apt.id,
