@@ -1,5 +1,5 @@
 # 🗺️ AxoMed — Mapa de Estado del Sistema
-**Última actualización:** 2026-03-13
+**Última actualización:** 2026-03-19
 
 ---
 
@@ -68,6 +68,20 @@
 | [app/dashboard/patients/[id]/intake/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/dashboard/patients/%5Bid%5D/intake/page.tsx) | ✅ |
 | [app/page.tsx](file:///c:/Users/Migue/OneDrive/Documentos/Desarrollos/AxoMed/app/page.tsx) | ✅ |
 
+### 🔒 Seguridad y Arquitectura
+| Funcionalidad | Estado |
+|---|---|
+| Aislamiento de datos por clínica (Hardened Queries) | ✅ |
+| Prevención de fugas de datos en Búsqueda Global y Reportes | ✅ |
+| RLS Policies auditadas para multi-tenancy | ✅ |
+
+### 🎨 UX y Personalización
+| Cambio | Estado |
+|---|---|
+| Renombrado de "Servicio" a "Tratamiento" (Todo el sistema) | ✅ |
+| Acceso directo a Portal de Facturación en Configuración | ✅ |
+| Correos de confirmación con branding AxoMed | ✅ |
+
 ### 💳 Facturación y Suscripciones (Stripe)
 | Funcionalidad | Estado |
 |---|---|
@@ -111,4 +125,5 @@
 | **Onboarding automático** | ✅ Completado | Flujo para nuevas clínicas y registro |
 | **Backups automáticos Supabase** | ✅ Completado | Configuración administrada directamente en Supabase |
 | **Email branding** | ✅ Completado | Plantillas HTML inyectadas en Código y Auth |
+| **Notificaciones WhatsApp** | 🟡 Media | Arquitectura multi-clínica (identificación por número/ID) |
 | **Notificaciones push** | 🟢 Baja | Service Worker ya existe, falta config |

@@ -66,7 +66,7 @@ export async function sendAppointmentReminder(appointmentId: string) {
                 Si deseas reprogramar o tienes algún contratiempo, por favor contáctanos lo antes posible.
             </p>
         `
-        const fullHtml = getBrandedEmailHtml(`Recordatorio Cita - ${clinicName}`, htmlContent)
+        const fullHtml = getBrandedEmailHtml(`Recordatorio Cita - ${clinicName}`, htmlContent, clinicName)
         results.email = await sendEmail(patient.email, `Recordatorio Cita - ${clinicName}`, fullHtml)
     }
 
@@ -135,7 +135,7 @@ export async function resendAppointmentConfirmation(appointmentId: string) {
                 El equipo de ${clinicName} está listo para recibirte. Si necesitas reprogramar o cancelar tu cita, contáctanos cuanto antes. ¡Te esperamos!
             </p>
         `
-        const fullHtml = getBrandedEmailHtml(`Confirmación de Cita - ${clinicName}`, htmlContent)
+        const fullHtml = getBrandedEmailHtml(`Confirmación de Cita - ${clinicName}`, htmlContent, clinicName)
         results.email = await sendEmail(patient.email, `Confirmación de Cita - ${clinicName}`, fullHtml)
     }
 

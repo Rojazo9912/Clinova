@@ -1,9 +1,10 @@
-export function getBrandedEmailHtml(title: string, contentHtml: string): string {
+export function getBrandedEmailHtml(title: string, contentHtml: string, clinicName?: string): string {
     const primaryColor = '#2563eb'; // Blue 600
     const lightBg = '#f8fafc'; // Slate 50
     const cardBg = '#ffffff'; // White
     const textColor = '#334155'; // Slate 700
     const currentYear = new Date().getFullYear();
+    const displayName = clinicName || 'AxoMed';
 
     return `
 <!DOCTYPE html>
@@ -23,7 +24,7 @@ export function getBrandedEmailHtml(title: string, contentHtml: string): string 
                     <tr>
                         <td align="center" style="padding: 32px 24px; background-color: #ffffff; border-bottom: 2px solid #e2e8f0;">
                             <!-- Reemplazar src por la URL real en producción -->
-                            <h1 style="margin: 0; font-size: 28px; font-weight: 800; color: ${primaryColor}; letter-spacing: -0.5px;">AxoMed</h1>
+                            <h1 style="margin: 0; font-size: 28px; font-weight: 800; color: ${primaryColor}; letter-spacing: -0.5px;">${displayName}</h1>
                         </td>
                     </tr>
 
@@ -45,11 +46,11 @@ export function getBrandedEmailHtml(title: string, contentHtml: string): string 
                     <tr>
                         <td align="center" style="padding: 24px 32px; background-color: #f8fafc;">
                             <p style="margin: 0; font-size: 14px; color: #64748b; line-height: 1.5;">
-                                Recibes este correo como parte de tu atención o configuración en <b>AxoMed</b>.<br>
+                                Recibes este correo como parte de tu atención en <b>${displayName}</b>.<br>
                                 Si tienes alguna duda, por favor contacta a tu clínica.
                             </p>
                             <p style="margin: 16px 0 0; font-size: 13px; color: #94a3b8;">
-                                &copy; ${currentYear} AxoMed. Todos los derechos reservados.
+                                &copy; ${currentYear} ${displayName}. Todos los derechos reservados.
                             </p>
                         </td>
                     </tr>

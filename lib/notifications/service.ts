@@ -56,7 +56,7 @@ export async function sendAppointmentReminder(data: AppointmentNotification) {
         try {
             const client = getTwilioClient()
             if (client && process.env.TWILIO_WHATSAPP_FROM) {
-                let message = `Hola ${data.patientName}! 👋\n\nTe recordamos tu cita en ${data.clinicName}:\n\n📅 ${dateStr}\n⏰ ${timeStr}\n🏥 ${data.serviceName}`
+                let message = `*${data.clinicName}*\n\nHola ${data.patientName}! 👋\n\nTe recordamos tu cita:\n\n📅 ${dateStr}\n⏰ ${timeStr}\n🏥 ${data.serviceName}`
 
                 if (data.confirmationToken) {
                     // Use standard link instead of button
@@ -140,7 +140,7 @@ export async function sendAppointmentConfirmation(data: AppointmentNotification)
         try {
             const client = getTwilioClient()
             if (client && process.env.TWILIO_WHATSAPP_FROM) {
-                const message = `¡Cita confirmada! ✅\n\nHola ${data.patientName}, tu cita ha sido confirmada:\n\n📅 ${dateStr}\n⏰ ${timeStr}\n🏥 ${data.serviceName}\n\nGracias por confiar en ${data.clinicName}!`
+                const message = `*${data.clinicName}*\n\n¡Cita confirmada! ✅\n\nHola ${data.patientName}, tu cita ha sido confirmada:\n\n📅 ${dateStr}\n⏰ ${timeStr}\n🏥 ${data.serviceName}\n\nGracias por confiar en nosotros!`
 
                 await client.messages.create({
                     from: `whatsapp:${process.env.TWILIO_WHATSAPP_FROM}`,

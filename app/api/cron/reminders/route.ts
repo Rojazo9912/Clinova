@@ -182,7 +182,7 @@ export async function GET(request: Request) {
                                     ${formattedMessage}
                                 </p>
                             `
-                            const fullHtml = getBrandedEmailHtml(subject, htmlContent)
+                            const fullHtml = getBrandedEmailHtml(subject, htmlContent, clinic.name)
 
                             await sendEmail(
                                 patient.email,
