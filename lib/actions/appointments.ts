@@ -24,6 +24,12 @@ const updateAppointmentSchema = z.object({
 export async function getAppointments(start: Date, end: Date) {
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return []
+
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
+    if (!profile?.clinic_id) return []
+
     const { data, error } = await supabase
         .from('appointments')
         .select(`
@@ -35,6 +41,7 @@ export async function getAppointments(start: Date, end: Date) {
     `)
         .gte('start_time', start.toISOString())
         .lte('end_time', end.toISOString())
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) {
         console.error('Error fetching appointments:', error)
@@ -130,6 +137,12 @@ export async function updateAppointment(id: string, data: {
 
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
+    if (!profile?.clinic_id) throw new Error('No se encontró la clínica')
+
     const updateData: Record<string, any> = {}
     if (validated.data.title) updateData.title = validated.data.title
     if (validated.data.start) updateData.start_time = validated.data.start.toISOString()
@@ -140,6 +153,7 @@ export async function updateAppointment(id: string, data: {
         .from('appointments')
         .update(updateData)
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) {
         console.error('Error updating appointment:', error)

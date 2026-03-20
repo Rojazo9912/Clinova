@@ -77,9 +77,16 @@ export async function createPatient(data: {
 export async function searchPatients(query: string) {
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return []
+
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
+    if (!profile?.clinic_id) return []
+
     let queryBuilder = supabase
         .from('patients')
         .select('id, first_name, last_name, email, phone, created_at, patient_users(is_active), clinics(name)')
+        .eq('clinic_id', profile.clinic_id)
 
     if (query) {
         queryBuilder = queryBuilder.or(`first_name.ilike.%${query}%,last_name.ilike.%${query}%,email.ilike.%${query}%`)
@@ -142,10 +149,17 @@ export async function updatePatient(id: string, data: {
 
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
+    if (!profile?.clinic_id) throw new Error('Sin clínica asociada')
+
     const { data: updated, error } = await supabase
         .from('patients')
         .update({ ...validated.data, email: validated.data.email || null })
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
         .select()
         .single()
 
@@ -162,10 +176,17 @@ export async function getPatientById(id: string) {
 
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return null
+
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
+    if (!profile?.clinic_id) return null
+
     const { data, error } = await supabase
         .from('patients')
         .select('*')
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
         .single()
 
     if (error) {
