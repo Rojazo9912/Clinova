@@ -138,7 +138,8 @@ export async function GET(request: Request) {
 
                             // Append confirmation link if token exists
                             if (apt.confirmation_token) {
-                                message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\nhttps://axomed-v2.up.railway.app/citas/confirmar/${apt.confirmation_token}`
+                                const appUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://axomed.com.mx').replace(/\/$/, '')
+                                message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\n${appUrl}/citas/confirmar/${apt.confirmation_token}`
                             }
 
                             await sendWhatsAppMessage(patient.phone, message, (clinic as any).whatsapp_phone_number_id || undefined)

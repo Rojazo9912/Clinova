@@ -69,6 +69,17 @@ export async function createService(formData: FormData) {
 export async function updateService(id: string, formData: FormData) {
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
     const name = formData.get('name') as string
     const description = formData.get('description') as string
     const price = parseFloat(formData.get('price') as string)
@@ -83,6 +94,7 @@ export async function updateService(id: string, formData: FormData) {
             duration_minutes: durationMinutes
         })
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) throw error
 
@@ -92,11 +104,23 @@ export async function updateService(id: string, formData: FormData) {
 export async function deleteService(id: string) {
     const supabase = await createClient()
 
-    // Soft delete
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
+    // Soft delete — only if it belongs to the user's clinic
     const { error } = await supabase
         .from('services')
         .update({ active: false })
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) throw error
 

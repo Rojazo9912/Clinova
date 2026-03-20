@@ -24,6 +24,16 @@ export async function getMedicalRecords(patientId: string) {
 
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return []
+
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
+    if (!profile?.clinic_id) return []
+
+    // Verify the patient belongs to this clinic before returning records
+    const { data: patient } = await supabase.from('patients').select('id').eq('id', patientId).eq('clinic_id', profile.clinic_id).maybeSingle()
+    if (!patient) return []
+
     const { data, error } = await supabase
         .from('medical_records')
         .select(`
@@ -43,7 +53,6 @@ export async function getMedicalRecords(patientId: string) {
         return []
     }
 
-    // Supabase returns arrays for relations sometimes. We map to ensure it matches expectations.
     return data.map((record: any) => ({
         ...record,
         profiles: Array.isArray(record.profiles) ? record.profiles[0] : record.profiles
@@ -87,6 +96,16 @@ export async function createMedicalRecord(data: {
 
 export async function getTherapySessions(patientId: string) {
     const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return []
+
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
+    if (!profile?.clinic_id) return []
+
+    // Verify the patient belongs to this clinic
+    const { data: patient } = await supabase.from('patients').select('id').eq('id', patientId).eq('clinic_id', profile.clinic_id).maybeSingle()
+    if (!patient) return []
 
     const { data, error } = await supabase
         .from('therapy_sessions')
@@ -179,6 +198,12 @@ export async function updateTherapySession(id: string, data: {
 
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase.from('profiles').select('clinic_id').eq('id', user.id).single()
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
     const { error } = await supabase
         .from('therapy_sessions')
         .update({
@@ -187,6 +212,7 @@ export async function updateTherapySession(id: string, data: {
             progress_rating: validated.data.progress_rating
         })
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) {
         console.error('Error updating therapy session:', error)

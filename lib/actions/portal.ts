@@ -47,10 +47,23 @@ export async function cancelAppointment(appointmentId: string) {
     const supabase = await createClient()
 
     try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return { success: false, message: 'No autenticado' }
+
+        const { data: patientUser } = await supabase
+            .from('patient_users')
+            .select('patient_id')
+            .eq('user_id', user.id)
+            .single()
+
+        if (!patientUser) return { success: false, message: 'Paciente no encontrado' }
+
+        // Only allow cancellation of the patient's OWN appointments
         const { error } = await supabase
             .from('appointments')
             .update({ status: 'cancelled' })
             .eq('id', appointmentId)
+            .eq('patient_id', patientUser.patient_id)
 
         if (error) throw error
 
