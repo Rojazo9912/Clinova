@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
     const reqUrl = new URL(request.url);
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || reqUrl.origin;
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL)?.replace(/\/$/, '') || 'https://axomed.com.mx';
 
     const oauth2Client = new google.auth.OAuth2(
         process.env.GOOGLE_CLIENT_ID,

@@ -10,7 +10,7 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'Falta código de autorización' }, { status: 400 });
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || new URL(request.url).origin;
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL)?.replace(/\/$/, '') || 'https://axomed.com.mx';
 
     try {
         const oauth2Client = new google.auth.OAuth2(
