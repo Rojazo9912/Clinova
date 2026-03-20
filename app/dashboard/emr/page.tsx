@@ -106,9 +106,9 @@ export default function EMRPage() {
                         <h3 className="text-2xl font-bold text-foreground">
                             {selectedPatient.first_name} {selectedPatient.last_name}
                         </h3>
-                        <div className="mt-2 flex gap-6 text-sm text-muted-foreground">
-                            <span>📧 {selectedPatient.email || 'Sin email'}</span>
-                            <span>📞 {selectedPatient.phone || 'Sin teléfono'}</span>
+                        <div className="mt-2 flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-muted-foreground">
+                            <span className="flex items-center gap-1">📧 {selectedPatient.email || 'Sin email'}</span>
+                            <span className="flex items-center gap-1">📞 {selectedPatient.phone || 'Sin teléfono'}</span>
                         </div>
                     </div>
 

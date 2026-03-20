@@ -103,7 +103,7 @@ export default function MeasurementLog({ patientId, initialHistory }: Measuremen
         <div className="space-y-6">
 
             {/* View Toggle */}
-            <div className="flex space-x-2 bg-muted p-1 rounded-lg w-fit">
+            <div className="flex space-x-2 bg-muted p-1 rounded-lg w-full sm:w-fit overflow-x-auto hide-scrollbar">
                 <button
                     onClick={() => setView('charts')}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition ${view === 'charts' ? 'bg-card text-blue-600 shadow-sm' : 'text-muted-foreground hover:text-foreground'

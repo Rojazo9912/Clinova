@@ -38,10 +38,10 @@ export default function PatientTimeline({ sessions }: PatientTimelineProps) {
                 {sessions.map((session: any) => (
                     <div
                         key={session.id}
-                        className="bg-card rounded-xl border border-border p-6 hover:shadow-md transition"
+                        className="bg-card rounded-xl border border-border p-4 sm:p-6 hover:shadow-md transition"
                     >
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="flex items-center gap-4">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
+                            <div className="flex flex-wrap items-center gap-4">
                                 <div className="flex items-center gap-2 text-muted-foreground">
                                     <Calendar className="h-4 w-4" />
                                     <span className="text-sm font-medium">
@@ -71,7 +71,7 @@ export default function PatientTimeline({ sessions }: PatientTimelineProps) {
 
                         <div>
                             <p className="text-sm text-muted-foreground mb-1">Notas</p>
-                            <p className="text-foreground whitespace-pre-wrap">{session.notes}</p>
+                            <p className="text-foreground whitespace-pre-wrap break-words text-sm sm:text-base">{session.notes}</p>
                         </div>
 
                         <div className="mt-4 pt-4 border-t">

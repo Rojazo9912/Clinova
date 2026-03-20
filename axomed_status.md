@@ -106,9 +106,9 @@
 | Tarea | Urgencia | Notas |
 |---|---|---|
 | **Términos de Uso + Aviso de Privacidad** | ✅ Completado | Requerido NOM-024 México (datos de salud) |
-| **Dominio propio** | 🟡 Media | Salir de Railway.app |
-| **Responsive mobile** | 🟡 Media | Agenda y EMR en celular |
+| **Dominio propio** | 🟡 Media | Pendiente decisión de compra entre Vercel u Hostinger |
+| **Responsive mobile** | ✅ Completado | Agenda, Expediente Clínico y Componentes optimizados para celular |
 | **Onboarding automático** | ✅ Completado | Flujo para nuevas clínicas y registro |
-| **Backups automáticos Supabase** | 🟡 Media | Configurar en Supabase dashboard |
-| **Email branding** | 🟢 Baja | Personalizar emails con logo de AxoMed |
+| **Backups automáticos Supabase** | ✅ Completado | Configuración administrada directamente en Supabase |
+| **Email branding** | ✅ Completado | Plantillas HTML inyectadas en Código y Auth |
 | **Notificaciones push** | 🟢 Baja | Service Worker ya existe, falta config |

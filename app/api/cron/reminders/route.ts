@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendWhatsAppMessage } from '@/lib/notifications/whatsapp'
 import { sendEmail } from '@/lib/notifications/email'
+import { getBrandedEmailHtml } from '@/lib/notifications/email-template'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -174,11 +175,19 @@ export async function GET(request: Request) {
                         try {
                             const subject = replaceVariables(emailTemplate.subject || 'Recordatorio de Cita', variables)
                             const message = replaceVariables(emailTemplate.message, variables)
+                            const formattedMessage = message.replace(/\n/g, '<br>')
+                            const htmlContent = `
+                                <h2>Recordatorio</h2>
+                                <p style="font-size: 16px; line-height: 1.6; color: #334155; margin-bottom: 24px;">
+                                    ${formattedMessage}
+                                </p>
+                            `
+                            const fullHtml = getBrandedEmailHtml(subject, htmlContent)
 
                             await sendEmail(
                                 patient.email,
                                 subject,
-                                message.replace(/\n/g, '<br>')
+                                fullHtml
                             )
 
                             await logReminder(supabase, {

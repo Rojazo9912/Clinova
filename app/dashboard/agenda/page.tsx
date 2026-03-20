@@ -229,14 +229,14 @@ export default function AgendaPage() {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">Agenda</h2>
                     <p className="text-muted-foreground">
                         Gestiona las citas de tu clínica
                     </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                     <button
                         onClick={() => setIsRecurringModalOpen(true)}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
@@ -279,7 +279,7 @@ export default function AgendaPage() {
             )}
 
             {/* Legend */}
-            <div className="flex items-center gap-4 p-4 bg-card rounded-lg border border-border">
+            <div className="flex flex-wrap items-center gap-4 p-4 bg-card rounded-lg border border-border">
                 <span className="text-sm font-medium text-foreground">Estados:</span>
                 <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-green-500"></div>

@@ -203,11 +203,11 @@ export default function AdvancedCalendar({
 // Custom Toolbar Component
 function CustomToolbar({ label, onNavigate, onView, view }: any) {
     return (
-        <div className="flex items-center justify-between mb-4 pb-4">
-            <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-4 pb-4">
+            <div className="flex items-center gap-2 w-full md:w-auto max-w-full overflow-x-auto pb-1 md:pb-0 hide-scrollbar">
                 <button
                     onClick={() => onNavigate('TODAY')}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium whitespace-nowrap"
                 >
                     Hoy
                 </button>
@@ -227,7 +227,7 @@ function CustomToolbar({ label, onNavigate, onView, view }: any) {
 
             <h2 className="text-xl font-semibold text-foreground">{label}</h2>
 
-            <div className="flex gap-1 bg-muted rounded-lg p-1">
+            <div className="flex gap-1 bg-muted rounded-lg p-1 w-full md:w-auto max-w-full overflow-x-auto hide-scrollbar">
                 <button
                     onClick={() => onView('day')}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition text-foreground ${view === 'day'
