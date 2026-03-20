@@ -173,7 +173,7 @@ export default function BillingClient({ subscription, showSuccess, showCanceled 
                                     </div>
                                 </div>
                                 <p className="text-3xl font-bold text-foreground mt-4">
-                                    {billingCycle === 'monthly' ? '$1,500' : billingCycle === 'quarterly' ? '$4,500' : '$15,000'} <span className="text-sm font-normal text-muted-foreground">/{billingCycle === 'monthly' ? 'mes' : billingCycle === 'quarterly' ? '3 meses' : 'año'}</span>
+                                    {billingCycle === 'monthly' ? '$1,500' : billingCycle === 'quarterly' ? '$4,500' : '$16,500'} <span className="text-sm font-normal text-muted-foreground">/{billingCycle === 'monthly' ? 'mes' : billingCycle === 'quarterly' ? '3 meses' : 'año'}</span>
                                 </p>
                                 <ul className="mt-6 space-y-3">
                                     <li className="flex items-center gap-2 text-sm text-muted-foreground"><Check className="h-4 w-4 text-blue-600" /> Clínicas Ilimitadas</li>
