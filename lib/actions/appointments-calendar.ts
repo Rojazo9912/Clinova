@@ -59,6 +59,17 @@ export async function getAppointmentsForCalendar() {
 export async function updateAppointmentTime(appointmentId: string, startTime: Date, endTime: Date) {
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
     const { error } = await supabase
         .from('appointments')
         .update({
@@ -66,6 +77,7 @@ export async function updateAppointmentTime(appointmentId: string, startTime: Da
             end_time: endTime.toISOString()
         })
         .eq('id', appointmentId)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) {
         console.error('Error updating appointment time:', error)

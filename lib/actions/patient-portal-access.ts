@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { sendPatientWelcomeEmail } from '@/lib/emails/patient-welcome'
 
 // Generate random password
@@ -132,7 +133,7 @@ export async function revokePortalAccess(patientId: string) {
             throw new Error('Patient does not have portal access')
         }
 
-        // Deactivate access
+        // Deactivate access in DB
         const { error } = await supabase
             .from('patient_users')
             .update({ is_active: false })
@@ -142,8 +143,13 @@ export async function revokePortalAccess(patientId: string) {
             throw new Error('Failed to revoke access')
         }
 
-        // Optionally: delete auth user
-        // await supabase.auth.admin.deleteUser(patientUser.user_id)
+        // Delete the Supabase Auth user so the patient cannot log in again
+        const adminClient = createAdminClient()
+        const { error: authDeleteError } = await adminClient.auth.admin.deleteUser(patientUser.user_id)
+        if (authDeleteError) {
+            console.error('Error deleting portal auth user:', authDeleteError)
+            // Access is already deactivated in DB; log the error but don't surface it
+        }
 
         return {
             success: true,

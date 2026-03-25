@@ -185,35 +185,19 @@ export async function recordPayment(formData: FormData) {
 
     if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
 
-    const { error } = await supabase
-        .from('payments')
-        .insert({
-            clinic_id: profile.clinic_id,
-            patient_id: patientId,
-            service_id: serviceId || null,
-            amount,
-            payment_method: paymentMethod,
-            notes,
-            status: 'completed'
-        })
+    // Use the record_payment RPC so the payment insert and plan balance update
+    // execute in a single atomic transaction (migration: 20260325_record_payment_transaction.sql).
+    const { error } = await supabase.rpc('record_payment', {
+        p_clinic_id: profile.clinic_id,
+        p_patient_id: patientId,
+        p_service_id: serviceId || null,
+        p_amount: amount,
+        p_payment_method: paymentMethod,
+        p_notes: notes || null,
+        p_treatment_plan_id: treatmentPlanId || null,
+    })
 
-    if (error) throw error
-
-    // Update treatment plan paid amount if linked
-    if (treatmentPlanId) {
-        const { data: plan } = await supabase
-            .from('treatment_plans')
-            .select('paid_amount')
-            .eq('id', treatmentPlanId)
-            .single()
-
-        if (plan) {
-            await supabase
-                .from('treatment_plans')
-                .update({ paid_amount: (Number(plan.paid_amount) || 0) + amount })
-                .eq('id', treatmentPlanId)
-        }
-    }
+    if (error) throw new Error(`Error al registrar pago: ${error.message}`)
 
     revalidatePath('/dashboard/finance')
 }

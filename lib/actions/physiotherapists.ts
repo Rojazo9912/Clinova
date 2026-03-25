@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import crypto from 'crypto'
@@ -59,23 +60,9 @@ export async function createPhysiotherapist(formData: FormData) {
 
     if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
 
-    // Initialize Admin Client for User Creation
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
     const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'https://axomed-production.up.railway.app'
 
-    if (!serviceRoleKey) {
-        throw new Error('Error de configuración: SUPABASE_SERVICE_ROLE_KEY faltante')
-    }
-
-    const { createClient: createServiceClient } = await import('@supabase/supabase-js')
-    const supabaseAdmin = createServiceClient(supabaseUrl, serviceRoleKey, {
-        auth: {
-            autoRefreshToken: false,
-            persistSession: false
-        }
-    })
+    const supabaseAdmin = createAdminClient()
 
     // Generate secure random password
     const tempPassword = crypto.randomBytes(6).toString('base64url')
@@ -154,6 +141,17 @@ export async function createPhysiotherapist(formData: FormData) {
 export async function updatePhysiotherapist(id: string, formData: FormData) {
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
     const fullName = formData.get('full_name') as string
     const email = formData.get('email') as string
     const phone = formData.get('phone') as string
@@ -166,13 +164,14 @@ export async function updatePhysiotherapist(id: string, formData: FormData) {
         .from('profiles')
         .update({
             full_name: fullName,
-            email, // Allow updating email in profile (does not affect auth)
+            email,
             phone,
             license_number: licenseNumber,
             bio,
             specialties
         })
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) throw error
 
@@ -182,17 +181,28 @@ export async function updatePhysiotherapist(id: string, formData: FormData) {
 export async function deletePhysiotherapist(id: string) {
     const supabase = await createClient()
 
-    // Verify current user is admin
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('No autenticado')
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+    const { data: callerProfile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
 
-    const { createClient: createServiceClient } = await import('@supabase/supabase-js')
-    const supabaseAdmin = createServiceClient(supabaseUrl, serviceRoleKey, {
-        auth: { autoRefreshToken: false, persistSession: false }
-    })
+    if (!callerProfile?.clinic_id) throw new Error('Sin clínica asignada')
+
+    // Verify the target physio belongs to the caller's clinic before deletion
+    const { data: targetProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', id)
+        .eq('clinic_id', callerProfile.clinic_id)
+        .single()
+
+    if (!targetProfile) throw new Error('Fisioterapeuta no encontrado en tu clínica')
+
+    const supabaseAdmin = createAdminClient()
 
     // Delete profile first
     const { error: profileError } = await supabaseAdmin

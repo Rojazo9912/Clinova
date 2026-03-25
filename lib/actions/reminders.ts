@@ -115,10 +115,22 @@ export async function updateReminderTemplate(templateType: string, data: {
 export async function togglePatientReminders(patientId: string, enabled: boolean) {
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
     const { error } = await supabase
         .from('patients')
         .update({ reminders_enabled: enabled })
         .eq('id', patientId)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) throw error
 

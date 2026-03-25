@@ -20,7 +20,8 @@
       "Bash(xxd)",
       "Bash(powershell -File \"C:/Users/Migue/AppData/Local/Temp/fix_types.ps1\")",
       "Bash(powershell -ExecutionPolicy Bypass -File \"C:/Users/Migue/AppData/Local/Temp/fix_types.ps1\")",
-      "Bash(grep -l \"createTreatmentPlan\" /c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/lib/actions/*.ts)"
+      "Bash(grep -l \"createTreatmentPlan\" /c/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/lib/actions/*.ts)",
+      "Bash(find \"c:/Users/Migue/OneDrive/Documentos/Desarrollos/Clinova/components\" -name \"*.tsx\" -exec wc -l {} ;)"
     ]
   }
 }

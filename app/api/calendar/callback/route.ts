@@ -1,16 +1,23 @@
 import { google } from 'googleapis';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const code = searchParams.get('code');
+    const state = searchParams.get('state');
+
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL)?.replace(/\/$/, '') || 'https://axomed.com.mx';
 
     if (!code) {
         return NextResponse.json({ error: 'Falta código de autorización' }, { status: 400 });
     }
 
-    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL)?.replace(/\/$/, '') || 'https://axomed.com.mx';
+    // Validate CSRF state token
+    const savedState = request.cookies.get('gcal_oauth_state')?.value;
+    if (!state || !savedState || state !== savedState) {
+        return NextResponse.redirect(`${baseUrl}/dashboard/settings?error=oauth_state_invalid`);
+    }
 
     try {
         const oauth2Client = new google.auth.OAuth2(
@@ -45,10 +52,14 @@ export async function GET(request: Request) {
             return NextResponse.redirect(`${baseUrl}/dashboard/settings?error=calendar_sync_failed`);
         }
 
-        // Redirigir de vuelta a las configuraciones
-        return NextResponse.redirect(`${baseUrl}/dashboard/settings?success=calendar_synced`);
+        // Redirigir de vuelta a las configuraciones y limpiar la cookie de state
+        const successResponse = NextResponse.redirect(`${baseUrl}/dashboard/settings?success=calendar_synced`);
+        successResponse.cookies.delete('gcal_oauth_state');
+        return successResponse;
     } catch (error) {
         console.error('Error en callback de calendar:', error);
-        return NextResponse.redirect(`${baseUrl}/dashboard/settings?error=calendar_sync_failed`);
+        const errorResponse = NextResponse.redirect(`${baseUrl}/dashboard/settings?error=calendar_sync_failed`);
+        errorResponse.cookies.delete('gcal_oauth_state');
+        return errorResponse;
     }
 }

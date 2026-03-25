@@ -130,6 +130,17 @@ export async function updateUser(id: string, formData: FormData) {
 
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
     const { error } = await supabase
         .from('profiles')
         .update({
@@ -138,6 +149,7 @@ export async function updateUser(id: string, formData: FormData) {
             role: validated.data.role
         })
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) throw new Error(`Error al actualizar usuario: ${error.message}`)
 
@@ -149,10 +161,22 @@ export async function deleteUser(id: string) {
 
     const supabase = await createClient()
 
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
     const { error } = await supabase
         .from('profiles')
         .delete()
         .eq('id', id)
+        .eq('clinic_id', profile.clinic_id)
 
     if (error) throw new Error(`Error al eliminar usuario: ${error.message}`)
 
