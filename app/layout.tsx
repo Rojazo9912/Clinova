@@ -18,6 +18,13 @@ export const metadata: Metadata = {
   title: "AxoMed",
   description: "Gestión Inteligente para Clínicas de Fisioterapia",
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/api/icons?size=32", sizes: "32x32", type: "image/png" },
+      { url: "/api/icons?size=16", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-icon",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
