@@ -25,75 +25,34 @@ export async function getDashboardMetrics() {
     const monthEnd = endOfMonth(now)
     const lastMonthStart = startOfMonth(subMonths(now, 1))
     const lastMonthEnd = endOfMonth(subMonths(now, 1))
-
-    // Total patients
-    const { count: totalPatients } = await supabase
-        .from('patients')
-        .select('id', { count: 'exact', head: true })
-        .eq('clinic_id', clinicId)
-
-    // New patients this month
-    const { count: newPatientsThisMonth } = await supabase
-        .from('patients')
-        .select('id', { count: 'exact', head: true })
-        .eq('clinic_id', clinicId)
-        .gte('created_at', monthStart.toISOString())
-        .lte('created_at', monthEnd.toISOString())
-
-    const { count: newPatientsLastMonth } = await supabase
-        .from('patients')
-        .select('id', { count: 'exact', head: true })
-        .eq('clinic_id', clinicId)
-        .gte('created_at', lastMonthStart.toISOString())
-        .lte('created_at', lastMonthEnd.toISOString())
-
-    // Revenue this month
-    const { data: paymentsThisMonth } = await supabase
-        .from('payments')
-        .select('amount')
-        .eq('clinic_id', clinicId)
-        .eq('status', 'completed')
-        .gte('created_at', monthStart.toISOString())
-        .lte('created_at', monthEnd.toISOString())
-
-    const { data: paymentsLastMonth } = await supabase
-        .from('payments')
-        .select('amount')
-        .eq('clinic_id', clinicId)
-        .eq('status', 'completed')
-        .gte('created_at', lastMonthStart.toISOString())
-        .lte('created_at', lastMonthEnd.toISOString())
-
-    const revenueThisMonth = paymentsThisMonth?.reduce((sum, p) => sum + Number(p.amount), 0) || 0
-    const revenueLastMonth = paymentsLastMonth?.reduce((sum, p) => sum + Number(p.amount), 0) || 0
-
-    // Appointments today
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const tomorrow = new Date(today)
     tomorrow.setDate(tomorrow.getDate() + 1)
 
-    const { count: appointmentsToday } = await supabase
-        .from('appointments')
-        .select('id', { count: 'exact', head: true })
-        .eq('clinic_id', clinicId)
-        .gte('start_time', today.toISOString())
-        .lt('start_time', tomorrow.toISOString())
+    // Run all 8 queries in parallel
+    const [
+        { count: totalPatients },
+        { count: newPatientsThisMonth },
+        { count: newPatientsLastMonth },
+        { data: paymentsThisMonth },
+        { data: paymentsLastMonth },
+        { count: appointmentsToday },
+        { count: appointmentsThisMonth },
+        { count: appointmentsLastMonth },
+    ] = await Promise.all([
+        supabase.from('patients').select('id', { count: 'exact', head: true }).eq('clinic_id', clinicId),
+        supabase.from('patients').select('id', { count: 'exact', head: true }).eq('clinic_id', clinicId).gte('created_at', monthStart.toISOString()).lte('created_at', monthEnd.toISOString()),
+        supabase.from('patients').select('id', { count: 'exact', head: true }).eq('clinic_id', clinicId).gte('created_at', lastMonthStart.toISOString()).lte('created_at', lastMonthEnd.toISOString()),
+        supabase.from('payments').select('amount').eq('clinic_id', clinicId).eq('status', 'completed').gte('created_at', monthStart.toISOString()).lte('created_at', monthEnd.toISOString()),
+        supabase.from('payments').select('amount').eq('clinic_id', clinicId).eq('status', 'completed').gte('created_at', lastMonthStart.toISOString()).lte('created_at', lastMonthEnd.toISOString()),
+        supabase.from('appointments').select('id', { count: 'exact', head: true }).eq('clinic_id', clinicId).gte('start_time', today.toISOString()).lt('start_time', tomorrow.toISOString()),
+        supabase.from('appointments').select('id', { count: 'exact', head: true }).eq('clinic_id', clinicId).gte('start_time', monthStart.toISOString()).lte('start_time', monthEnd.toISOString()),
+        supabase.from('appointments').select('id', { count: 'exact', head: true }).eq('clinic_id', clinicId).gte('start_time', lastMonthStart.toISOString()).lte('start_time', lastMonthEnd.toISOString()),
+    ])
 
-    // Appointments this month
-    const { count: appointmentsThisMonth } = await supabase
-        .from('appointments')
-        .select('id', { count: 'exact', head: true })
-        .eq('clinic_id', clinicId)
-        .gte('start_time', monthStart.toISOString())
-        .lte('start_time', monthEnd.toISOString())
-
-    const { count: appointmentsLastMonth } = await supabase
-        .from('appointments')
-        .select('id', { count: 'exact', head: true })
-        .eq('clinic_id', clinicId)
-        .gte('start_time', lastMonthStart.toISOString())
-        .lte('start_time', lastMonthEnd.toISOString())
+    const revenueThisMonth = paymentsThisMonth?.reduce((sum, p) => sum + Number(p.amount), 0) || 0
+    const revenueLastMonth = paymentsLastMonth?.reduce((sum, p) => sum + Number(p.amount), 0) || 0
 
     // Calculate changes
     const patientChange = newPatientsLastMonth ?
@@ -131,30 +90,34 @@ export async function getRevenueChartData() {
 
     if (!profile?.clinic_id) return []
 
-    // Get last 6 months of revenue
-    const months = []
+    // Fetch all payments from the last 6 months in a single query, group in memory
+    const sixMonthsAgo = startOfMonth(subMonths(new Date(), 5))
+
+    const { data: payments } = await supabase
+        .from('payments')
+        .select('amount, created_at')
+        .eq('clinic_id', profile.clinic_id)
+        .eq('status', 'completed')
+        .gte('created_at', sixMonthsAgo.toISOString())
+
+    // Build month buckets from the result set
+    const revenueByMonth: Record<string, number> = {}
     for (let i = 5; i >= 0; i--) {
-        const monthDate = subMonths(new Date(), i)
-        const start = startOfMonth(monthDate)
-        const end = endOfMonth(monthDate)
-
-        const { data: payments } = await supabase
-            .from('payments')
-            .select('amount')
-            .eq('clinic_id', profile.clinic_id)
-            .eq('status', 'completed')
-            .gte('created_at', start.toISOString())
-            .lte('created_at', end.toISOString())
-
-        const revenue = payments?.reduce((sum, p) => sum + Number(p.amount), 0) || 0
-
-        months.push({
-            date: format(monthDate, 'MMM'),
-            revenue
-        })
+        const key = format(subMonths(new Date(), i), 'yyyy-MM')
+        revenueByMonth[key] = 0
     }
 
-    return months
+    for (const p of payments || []) {
+        const key = format(new Date(p.created_at), 'yyyy-MM')
+        if (key in revenueByMonth) {
+            revenueByMonth[key] += Number(p.amount)
+        }
+    }
+
+    return Object.entries(revenueByMonth).map(([key, revenue]) => ({
+        date: format(new Date(key + '-01'), 'MMM'),
+        revenue
+    }))
 }
 
 export async function getTodayAppointments() {

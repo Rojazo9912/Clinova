@@ -45,14 +45,14 @@ export async function searchGlobal(query: string): Promise<SearchResult[]> {
         })))
     }
 
-    // Search appointments
+    // Search appointments — filter by patient name at DB level
     const { data: appointments } = await supabase
         .from('appointments')
         .select(`
             id,
             start_time,
             status,
-            patients (
+            patients!inner (
                 first_name,
                 last_name
             ),
@@ -61,25 +61,20 @@ export async function searchGlobal(query: string): Promise<SearchResult[]> {
             )
         `)
         .eq('clinic_id', profile.clinic_id)
+        .or(`first_name.ilike.${searchTerm},last_name.ilike.${searchTerm}`, { referencedTable: 'patients' })
         .limit(5)
 
     if (appointments) {
-        results.push(...appointments
-            .filter(apt => {
-                const patientName = `${(apt.patients as any)?.first_name} ${(apt.patients as any)?.last_name}`.toLowerCase()
-                const serviceName = ((apt.services as any)?.name || '').toLowerCase()
-                return patientName.includes(query.toLowerCase()) || serviceName.includes(query.toLowerCase())
-            })
-            .map(apt => ({
-                type: 'appointment' as const,
-                id: apt.id,
-                title: `Cita - ${(apt.patients as any)?.first_name} ${(apt.patients as any)?.last_name}`,
-                subtitle: `${(apt.services as any)?.name || 'Consulta'} - ${new Date(apt.start_time).toLocaleDateString()}`,
-                href: `/dashboard/agenda`
-            })))
+        results.push(...appointments.map(apt => ({
+            type: 'appointment' as const,
+            id: apt.id,
+            title: `Cita - ${(apt.patients as any)?.first_name} ${(apt.patients as any)?.last_name}`,
+            subtitle: `${(apt.services as any)?.name || 'Consulta'} - ${new Date(apt.start_time).toLocaleDateString()}`,
+            href: `/dashboard/agenda`
+        })))
     }
 
-    // Search payments
+    // Search payments — filter by patient name at DB level
     const { data: payments } = await supabase
         .from('payments')
         .select(`
@@ -87,59 +82,56 @@ export async function searchGlobal(query: string): Promise<SearchResult[]> {
             amount,
             payment_method,
             created_at,
-            patients (
+            patients!inner (
                 first_name,
                 last_name
             )
         `)
         .eq('clinic_id', profile.clinic_id)
+        .or(`first_name.ilike.${searchTerm},last_name.ilike.${searchTerm}`, { referencedTable: 'patients' })
         .limit(5)
 
     if (payments) {
-        results.push(...payments
-            .filter(p => {
-                const patientName = `${(p.patients as any)?.first_name} ${(p.patients as any)?.last_name}`.toLowerCase()
-                return patientName.includes(query.toLowerCase())
-            })
-            .map(p => ({
-                type: 'payment' as const,
-                id: p.id,
-                title: `Pago - ${(p.patients as any)?.first_name} ${(p.patients as any)?.last_name}`,
-                subtitle: `$${Number(p.amount).toLocaleString()} - ${p.payment_method}`,
-                href: `/dashboard/finance`
-            })))
+        results.push(...payments.map(p => ({
+            type: 'payment' as const,
+            id: p.id,
+            title: `Pago - ${(p.patients as any)?.first_name} ${(p.patients as any)?.last_name}`,
+            subtitle: `$${Number(p.amount).toLocaleString()} - ${p.payment_method}`,
+            href: `/dashboard/finance`
+        })))
     }
 
-    // Search therapy sessions
-    const { data: sessions } = await supabase
-        .from('therapy_sessions')
-        .select(`
-            id,
-            session_date,
-            notes,
-            patients (
-                first_name,
-                last_name
-            )
-        `)
-        .eq('clinic_id', profile.clinic_id)
-        .limit(5)
+    // Search therapy sessions — two queries to correctly OR across base table (notes) and joined table (patient name)
+    const [{ data: sessionsByNotes }, { data: sessionsByPatient }] = await Promise.all([
+        supabase
+            .from('therapy_sessions')
+            .select(`id, session_date, notes, patients ( first_name, last_name )`)
+            .eq('clinic_id', profile.clinic_id)
+            .ilike('notes', searchTerm)
+            .limit(5),
+        supabase
+            .from('therapy_sessions')
+            .select(`id, session_date, notes, patients!inner ( first_name, last_name )`)
+            .eq('clinic_id', profile.clinic_id)
+            .or(`first_name.ilike.${searchTerm},last_name.ilike.${searchTerm}`, { referencedTable: 'patients' })
+            .limit(5),
+    ])
 
-    if (sessions) {
-        results.push(...sessions
-            .filter(s => {
-                const patientName = `${(s.patients as any)?.first_name} ${(s.patients as any)?.last_name}`.toLowerCase()
-                const notes = (s.notes || '').toLowerCase()
-                return patientName.includes(query.toLowerCase()) || notes.includes(query.toLowerCase())
-            })
-            .map(s => ({
-                type: 'session' as const,
-                id: s.id,
-                title: `Sesión - ${(s.patients as any)?.first_name} ${(s.patients as any)?.last_name}`,
-                subtitle: `${new Date(s.session_date).toLocaleDateString()}`,
-                href: `/dashboard/emr`
-            })))
-    }
+    // Merge and deduplicate by id
+    const seenSessionIds = new Set<string>()
+    const sessions = [...(sessionsByNotes || []), ...(sessionsByPatient || [])].filter(s => {
+        if (seenSessionIds.has(s.id)) return false
+        seenSessionIds.add(s.id)
+        return true
+    })
+
+    results.push(...sessions.slice(0, 5).map(s => ({
+        type: 'session' as const,
+        id: s.id,
+        title: `Sesión - ${(s.patients as any)?.first_name} ${(s.patients as any)?.last_name}`,
+        subtitle: `${new Date(s.session_date).toLocaleDateString()}`,
+        href: `/dashboard/emr`
+    })))
 
     // Sort by relevance (patients first, then by date)
     return results.slice(0, 10)

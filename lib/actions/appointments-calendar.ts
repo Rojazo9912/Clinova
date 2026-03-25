@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { exportAppointmentToGoogleCalendar, fetchGoogleCalendarEvents } from './calendar-sync'
 
-export async function getAppointmentsForCalendar() {
+export async function getAppointmentsForCalendar(startDate?: Date, endDate?: Date) {
     const supabase = await createClient()
 
     const { data: { user } } = await supabase.auth.getUser()
@@ -18,7 +18,7 @@ export async function getAppointmentsForCalendar() {
 
     if (!profile?.clinic_id) return []
 
-    const { data: appointments } = await supabase
+    let query = supabase
         .from('appointments')
         .select(`
             id,
@@ -38,6 +38,11 @@ export async function getAppointmentsForCalendar() {
         `)
         .eq('clinic_id', profile.clinic_id)
         .order('start_time', { ascending: true })
+
+    if (startDate) query = query.gte('start_time', startDate.toISOString())
+    if (endDate) query = query.lte('start_time', endDate.toISOString())
+
+    const { data: appointments } = await query
 
     if (!appointments) return []
 

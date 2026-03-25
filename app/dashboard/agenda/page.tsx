@@ -61,7 +61,7 @@ export default function AgendaPage() {
         const endDate = new Date(now.getFullYear(), now.getMonth() + 2, 0)
 
         const [appointmentsData, patientsData, servicesData, blocksData, gcalBlocks] = await Promise.all([
-            getAppointmentsForCalendar(),
+            getAppointmentsForCalendar(startDate, endDate),
             getPatientsForCalendar(),
             getServicesForCalendar(),
             getAvailabilityBlocks(startDate, endDate),

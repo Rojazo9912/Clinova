@@ -47,11 +47,11 @@ export async function updateReminderSettings(data: {
 
     const { error } = await supabase
         .from('reminder_settings')
-        .update({
+        .upsert({
+            clinic_id: profile.clinic_id,
             ...data,
             updated_at: new Date().toISOString()
-        })
-        .eq('clinic_id', profile.clinic_id)
+        }, { onConflict: 'clinic_id' })
 
     if (error) throw error
 
@@ -100,12 +100,12 @@ export async function updateReminderTemplate(templateType: string, data: {
 
     const { error } = await supabase
         .from('reminder_templates')
-        .update({
+        .upsert({
+            clinic_id: profile.clinic_id,
+            template_type: templateType,
             ...data,
             updated_at: new Date().toISOString()
-        })
-        .eq('clinic_id', profile.clinic_id)
-        .eq('template_type', templateType)
+        }, { onConflict: 'clinic_id,template_type' })
 
     if (error) throw error
 

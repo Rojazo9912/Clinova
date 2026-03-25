@@ -10,7 +10,12 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
     try {
-        // Verify cron secret
+        // Validate CRON_SECRET is configured before comparing
+        if (!process.env.CRON_SECRET) {
+            console.error('CRON_SECRET is not configured')
+            return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
+        }
+
         const authHeader = request.headers.get('authorization')
         if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -21,7 +26,7 @@ export async function GET(request: Request) {
         const now = new Date()
         const currentHour = now.getHours()
 
-        // Get all clinics with their reminder settings
+        // Query 1: all clinics with their reminder settings
         const { data: clinics } = await supabase
             .from('clinics')
             .select(`
@@ -37,60 +42,83 @@ export async function GET(request: Request) {
                 )
             `)
 
-        for (const clinic of clinics || []) {
+        // Keep only clinics within their send window
+        const activeClinics = (clinics || []).filter(clinic => {
             const settings = (clinic.reminder_settings as any)?.[0]
-            if (!settings) continue
+            if (!settings) return false
+            return currentHour >= settings.send_start_hour && currentHour < settings.send_end_hour
+        })
 
-            // Check if we're within sending hours
-            if (currentHour < settings.send_start_hour || currentHour >= settings.send_end_hour) {
-                console.log(`Skipping clinic ${clinic.id}: outside send window`)
-                continue
-            }
+        if (activeClinics.length === 0) {
+            return NextResponse.json({ success: true, reminders_sent: 0, results: [] })
+        }
 
-            // Get templates for this clinic
-            const { data: templates } = await supabase
-                .from('reminder_templates')
-                .select('*')
-                .eq('clinic_id', clinic.id)
+        // Query 2: all reminder templates for active clinics (single query, not per-clinic)
+        const activeClinicIds = activeClinics.map(c => c.id)
+        const { data: allTemplates } = await supabase
+            .from('reminder_templates')
+            .select('*')
+            .in('clinic_id', activeClinicIds)
 
-            const whatsappTemplate = templates?.find(t => t.template_type === 'whatsapp_reminder')
-            const emailTemplate = templates?.find(t => t.template_type === 'email_reminder')
+        const templateMap = new Map<string, any>()
+        for (const t of allTemplates || []) {
+            templateMap.set(`${t.clinic_id}:${t.template_type}`, t)
+        }
 
-            // Process each reminder time
-            for (const hoursBefor of settings.reminder_times || [24]) {
+        // Process each active clinic with a single appointment query per clinic
+        // (covers all reminder windows for that clinic, routed in memory)
+        for (const clinic of activeClinics) {
+            const settings = (clinic.reminder_settings as any)?.[0]
+            const whatsappTemplate = templateMap.get(`${clinic.id}:whatsapp_reminder`)
+            const emailTemplate = templateMap.get(`${clinic.id}:email_reminder`)
+
+            // Compute all windows for this clinic
+            type Window = { hoursBefore: number; windowStart: Date; windowEnd: Date }
+            const windows: Window[] = (settings.reminder_times || [24]).map((hoursBefore: number) => {
                 const targetTime = new Date(now)
-                targetTime.setHours(targetTime.getHours() + hoursBefor)
-
-                // Get appointments for this time window (±30 minutes)
+                targetTime.setHours(targetTime.getHours() + hoursBefore)
                 const windowStart = new Date(targetTime)
                 windowStart.setMinutes(windowStart.getMinutes() - 30)
                 const windowEnd = new Date(targetTime)
                 windowEnd.setMinutes(windowEnd.getMinutes() + 30)
+                return { hoursBefore, windowStart, windowEnd }
+            })
 
-                const { data: appointments } = await supabase
-                    .from('appointments')
-                    .select(`
+            // Single appointment query covering the full span of all windows for this clinic
+            const minStart = new Date(Math.min(...windows.map(w => w.windowStart.getTime())))
+            const maxEnd = new Date(Math.max(...windows.map(w => w.windowEnd.getTime())))
+
+            const { data: allAppointments } = await supabase
+                .from('appointments')
+                .select(`
+                    id,
+                    start_time,
+                    confirmation_token,
+                    patients!inner (
                         id,
-                        start_time,
-                        confirmation_token,
-                        patients!inner (
-                            id,
-                            first_name,
-                            last_name,
-                            phone,
-                            email,
-                            reminders_enabled
-                        ),
-                        services (
-                            name
-                        )
-                    `)
-                    .eq('clinic_id', clinic.id)
-                    .eq('status', 'confirmed')
-                    .gte('start_time', windowStart.toISOString())
-                    .lte('start_time', windowEnd.toISOString())
+                        first_name,
+                        last_name,
+                        phone,
+                        email,
+                        reminders_enabled
+                    ),
+                    services (
+                        name
+                    )
+                `)
+                .eq('clinic_id', clinic.id)
+                .eq('status', 'confirmed')
+                .gte('start_time', minStart.toISOString())
+                .lte('start_time', maxEnd.toISOString())
 
-                for (const apt of appointments || []) {
+            // Route appointments to their matching window in memory
+            for (const { hoursBefore, windowStart, windowEnd } of windows) {
+                const appointments = (allAppointments || []).filter(apt => {
+                    const t = new Date(apt.start_time).getTime()
+                    return t >= windowStart.getTime() && t <= windowEnd.getTime()
+                })
+
+                for (const apt of appointments) {
                     const patient = apt.patients as any
                     const service = apt.services as any
 
@@ -101,34 +129,33 @@ export async function GET(request: Request) {
                             patient_id: patient.id,
                             clinic_id: clinic.id,
                             reminder_type: 'skipped',
-                            hours_before: hoursBefor,
+                            hours_before: hoursBefore,
                             status: 'skipped',
                             error_message: 'Patient has reminders disabled'
                         })
                         continue
                     }
 
-                    // Check if reminder already sent for this time
+                    // Check if reminder already sent for this appointment + window
                     const { data: existingLog } = await supabase
                         .from('reminder_logs')
                         .select('id')
                         .eq('appointment_id', apt.id)
-                        .eq('hours_before', hoursBefor)
+                        .eq('hours_before', hoursBefore)
                         .single()
 
                     if (existingLog) {
-                        console.log(`Reminder already sent for appointment ${apt.id} at ${hoursBefor}h`)
+                        console.log(`Reminder already sent for appointment ${apt.id} at ${hoursBefore}h`)
                         continue
                     }
 
-                    // Prepare variables for template
                     const variables = {
                         patient_name: `${patient.first_name} ${patient.last_name}`,
                         date: format(new Date(apt.start_time), "EEEE, d 'de' MMMM", { locale: es }),
                         time: format(new Date(apt.start_time), 'HH:mm'),
                         service: service?.name || 'Consulta',
                         clinic_name: clinic.name,
-                        hours_before: hoursBefor.toString()
+                        hours_before: hoursBefore.toString()
                     }
 
                     // Send WhatsApp
@@ -136,7 +163,6 @@ export async function GET(request: Request) {
                         try {
                             let message = replaceVariables(whatsappTemplate.message, variables)
 
-                            // Append confirmation link if token exists
                             if (apt.confirmation_token) {
                                 const appUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://axomed.com.mx').replace(/\/$/, '')
                                 message += `\n\nCONFIRMA TU ASISTENCIA AQUÍ:\n${appUrl}/citas/confirmar/${apt.confirmation_token}`
@@ -149,23 +175,18 @@ export async function GET(request: Request) {
                                 patient_id: patient.id,
                                 clinic_id: clinic.id,
                                 reminder_type: 'whatsapp',
-                                hours_before: hoursBefor,
+                                hours_before: hoursBefore,
                                 status: 'sent'
                             })
 
-                            results.push({
-                                type: 'whatsapp',
-                                patient: variables.patient_name,
-                                hours_before: hoursBefor,
-                                status: 'sent'
-                            })
+                            results.push({ type: 'whatsapp', patient: variables.patient_name, hours_before: hoursBefore, status: 'sent' })
                         } catch (error: any) {
                             await logReminder(supabase, {
                                 appointment_id: apt.id,
                                 patient_id: patient.id,
                                 clinic_id: clinic.id,
                                 reminder_type: 'whatsapp',
-                                hours_before: hoursBefor,
+                                hours_before: hoursBefore,
                                 status: 'failed',
                                 error_message: error.message
                             })
@@ -186,34 +207,25 @@ export async function GET(request: Request) {
                             `
                             const fullHtml = getBrandedEmailHtml(subject, htmlContent, clinic.name)
 
-                            await sendEmail(
-                                patient.email,
-                                subject,
-                                fullHtml
-                            )
+                            await sendEmail(patient.email, subject, fullHtml)
 
                             await logReminder(supabase, {
                                 appointment_id: apt.id,
                                 patient_id: patient.id,
                                 clinic_id: clinic.id,
                                 reminder_type: 'email',
-                                hours_before: hoursBefor,
+                                hours_before: hoursBefore,
                                 status: 'sent'
                             })
 
-                            results.push({
-                                type: 'email',
-                                patient: variables.patient_name,
-                                hours_before: hoursBefor,
-                                status: 'sent'
-                            })
+                            results.push({ type: 'email', patient: variables.patient_name, hours_before: hoursBefore, status: 'sent' })
                         } catch (error: any) {
                             await logReminder(supabase, {
                                 appointment_id: apt.id,
                                 patient_id: patient.id,
                                 clinic_id: clinic.id,
                                 reminder_type: 'email',
-                                hours_before: hoursBefor,
+                                hours_before: hoursBefore,
                                 status: 'failed',
                                 error_message: error.message
                             })
