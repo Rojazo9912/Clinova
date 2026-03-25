@@ -77,8 +77,20 @@ export async function createUser(formData: FormData) {
 
     if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
 
+    // Verificar si el email ya existe en profiles de esta clínica
+    const { data: existingProfile } = await supabaseAdmin
+        .from('profiles')
+        .select('id')
+        .eq('email', email)
+        .eq('clinic_id', profile.clinic_id)
+        .maybeSingle()
+
+    if (existingProfile) throw new Error('Este email ya pertenece a un usuario de esta clínica')
+
     const securePassword = crypto.randomBytes(12).toString('base64').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12) + 'A1!'
 
+    // Intentar crear el auth user; si ya existe (huérfano), reutilizar su ID
+    let authUserId: string
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
         password: securePassword,
@@ -87,15 +99,26 @@ export async function createUser(formData: FormData) {
     })
 
     if (authError) {
-        throw new Error(`Error al crear usuario: ${authError.message}`)
+        if (authError.message.includes('already been registered') || authError.message.includes('already exists')) {
+            // Auth user huérfano — obtener su ID para crear el perfil
+            const { data: existingAuth } = await supabaseAdmin.auth.admin.listUsers()
+            const orphan = existingAuth?.users.find(u => u.email === email)
+            if (!orphan) throw new Error('Error al crear usuario: email en uso')
+            authUserId = orphan.id
+            // Actualizar contraseña para que el administrador pueda enviarla
+            await supabaseAdmin.auth.admin.updateUserById(authUserId, { password: securePassword })
+        } else {
+            throw new Error(`Error al crear usuario: ${authError.message}`)
+        }
+    } else {
+        if (!authData.user) throw new Error('No se pudo crear el usuario')
+        authUserId = authData.user.id
     }
-
-    if (!authData.user) throw new Error('No se pudo crear el usuario')
 
     const { data: newProfile, error } = await supabaseAdmin
         .from('profiles')
         .insert({
-            id: authData.user.id,
+            id: authUserId,
             full_name,
             email,
             phone: phone || null,
@@ -106,7 +129,7 @@ export async function createUser(formData: FormData) {
         .single()
 
     if (error) {
-        await supabaseAdmin.auth.admin.deleteUser(authData.user.id)
+        await supabaseAdmin.auth.admin.deleteUser(authUserId)
         throw new Error(`Error al crear el perfil: ${error.message}`)
     }
 
@@ -160,6 +183,7 @@ export async function deleteUser(id: string) {
     if (!id || typeof id !== 'string') throw new Error('ID de usuario inválido')
 
     const supabase = await createClient()
+    const supabaseAdmin = createAdminClient()
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) throw new Error('No autenticado')
@@ -179,6 +203,9 @@ export async function deleteUser(id: string) {
         .eq('clinic_id', profile.clinic_id)
 
     if (error) throw new Error(`Error al eliminar usuario: ${error.message}`)
+
+    // Borrar también el usuario de Supabase Auth para que el email quede libre
+    await supabaseAdmin.auth.admin.deleteUser(id)
 
     revalidatePath('/dashboard/users')
 }
