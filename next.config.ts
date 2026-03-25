@@ -23,6 +23,8 @@ const nextConfig: NextConfig = {
             },
         ]
     },
+    //@ts-ignore - Next.js 16 turbopack configuration
+    turbopack: {},
 }
 
 export default withPWA({

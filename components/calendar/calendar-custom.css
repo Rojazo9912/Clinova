@@ -314,4 +314,60 @@
 /* Day cell backgrounds */
 .dark .rbc-row-bg .rbc-day-bg {
     background-color: hsl(var(--card));
+}
+
+/* ==============================
+   MOBILE RESPONSIVE
+   ============================== */
+
+@media (max-width: 767px) {
+    .rbc-header {
+        padding: 6px 2px;
+        font-size: 11px;
+    }
+
+    .rbc-event {
+        padding: 2px 4px;
+        font-size: 11px;
+    }
+
+    .rbc-event-content {
+        font-size: 11px;
+    }
+
+    .rbc-event-label {
+        font-size: 10px;
+    }
+
+    .rbc-timeslot-group {
+        min-height: 50px;
+    }
+
+    .rbc-time-slot {
+        min-height: 25px;
+    }
+
+    .rbc-label {
+        font-size: 11px;
+        padding: 0 4px;
+    }
+
+    .rbc-time-gutter {
+        min-width: 44px;
+    }
+
+    .rbc-month-row {
+        min-height: 60px;
+    }
+
+    .rbc-date-cell {
+        padding: 4px;
+        font-size: 12px;
+    }
+
+    /* Hide the all-day row on mobile day view to save space */
+    .rbc-allday-cell {
+        max-height: 40px;
+        overflow: hidden;
+    }
 }

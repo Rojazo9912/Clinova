@@ -46,9 +46,14 @@ export default function AdvancedCalendar({
     onSelectSlot,
     onSelectEvent
 }: AdvancedCalendarProps) {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+
     const [view, setView] = useState<View>(() => {
-        // Load saved view from localStorage, default to 'week'
         if (typeof window !== 'undefined') {
+            // On mobile default to day view; on desktop use saved preference
+            if (window.innerWidth < 768) {
+                return 'day'
+            }
             const savedView = localStorage.getItem('calendar-view')
             return (savedView as View) || 'week'
         }
@@ -56,10 +61,10 @@ export default function AdvancedCalendar({
     })
     const [date, setDate] = useState(new Date())
 
-    // Save view to localStorage whenever it changes
+    // Save view to localStorage whenever it changes (desktop only)
     const handleViewChange = useCallback((newView: View) => {
         setView(newView)
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && window.innerWidth >= 768) {
             localStorage.setItem('calendar-view', newView)
         }
     }, [])
@@ -193,7 +198,7 @@ export default function AdvancedCalendar({
                 }}
                 dayLayoutAlgorithm="no-overlap"
                 components={{
-                    toolbar: CustomToolbar
+                    toolbar: (props: any) => <CustomToolbar {...props} isMobile={isMobile} />
                 }}
             />
         </div>
@@ -201,61 +206,57 @@ export default function AdvancedCalendar({
 }
 
 // Custom Toolbar Component
-function CustomToolbar({ label, onNavigate, onView, view }: any) {
+function CustomToolbar({ label, onNavigate, onView, view, isMobile }: any) {
     return (
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-4 pb-4">
-            <div className="flex items-center gap-2 w-full md:w-auto max-w-full overflow-x-auto pb-1 md:pb-0 hide-scrollbar">
-                <button
-                    onClick={() => onNavigate('TODAY')}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium whitespace-nowrap"
-                >
-                    Hoy
-                </button>
-                <button
-                    onClick={() => onNavigate('PREV')}
-                    className="px-3 py-2 border border-border rounded-lg hover:bg-muted transition text-foreground"
-                >
-                    ←
-                </button>
-                <button
-                    onClick={() => onNavigate('NEXT')}
-                    className="px-3 py-2 border border-border rounded-lg hover:bg-muted transition text-foreground"
-                >
-                    →
-                </button>
+        <div className="flex flex-col gap-2 mb-4 pb-4">
+            {/* Top row: nav + label */}
+            <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                    <button
+                        onClick={() => onNavigate('TODAY')}
+                        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium whitespace-nowrap"
+                    >
+                        Hoy
+                    </button>
+                    <button
+                        onClick={() => onNavigate('PREV')}
+                        className="px-2.5 py-1.5 border border-border rounded-lg hover:bg-muted transition text-foreground text-sm"
+                    >
+                        ←
+                    </button>
+                    <button
+                        onClick={() => onNavigate('NEXT')}
+                        className="px-2.5 py-1.5 border border-border rounded-lg hover:bg-muted transition text-foreground text-sm"
+                    >
+                        →
+                    </button>
+                </div>
+
+                {/* View switcher */}
+                <div className="flex gap-0.5 bg-muted rounded-lg p-1">
+                    <button
+                        onClick={() => onView('day')}
+                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition text-foreground ${view === 'day' ? 'bg-card shadow-sm' : 'hover:bg-muted/70'}`}
+                    >
+                        Día
+                    </button>
+                    <button
+                        onClick={() => onView('week')}
+                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition text-foreground ${view === 'week' ? 'bg-card shadow-sm' : 'hover:bg-muted/70'}`}
+                    >
+                        Semana
+                    </button>
+                    <button
+                        onClick={() => onView('month')}
+                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition text-foreground ${view === 'month' ? 'bg-card shadow-sm' : 'hover:bg-muted/70'}`}
+                    >
+                        Mes
+                    </button>
+                </div>
             </div>
 
-            <h2 className="text-xl font-semibold text-foreground">{label}</h2>
-
-            <div className="flex gap-1 bg-muted rounded-lg p-1 w-full md:w-auto max-w-full overflow-x-auto hide-scrollbar">
-                <button
-                    onClick={() => onView('day')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition text-foreground ${view === 'day'
-                        ? 'bg-card shadow-sm'
-                        : 'hover:bg-muted/70'
-                        }`}
-                >
-                    Día
-                </button>
-                <button
-                    onClick={() => onView('week')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition text-foreground ${view === 'week'
-                        ? 'bg-card shadow-sm'
-                        : 'hover:bg-muted/70'
-                        }`}
-                >
-                    Semana
-                </button>
-                <button
-                    onClick={() => onView('month')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition text-foreground ${view === 'month'
-                        ? 'bg-card shadow-sm'
-                        : 'hover:bg-muted/70'
-                        }`}
-                >
-                    Mes
-                </button>
-            </div>
+            {/* Date label */}
+            <h2 className="text-base font-semibold text-foreground">{label}</h2>
         </div>
     )
 }
