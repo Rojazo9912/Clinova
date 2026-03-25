@@ -1,20 +1,5 @@
-'use client'
-
-import { useEffect } from 'react'
-
+// El service worker es registrado automáticamente por @ducanh2912/next-pwa (next.config.ts).
+// Este componente se mantiene para compatibilidad pero ya no registra el SW manualmente.
 export function ServiceWorkerRegister() {
-    useEffect(() => {
-        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-            navigator.serviceWorker
-                .register('/sw.js')
-                .then((registration) => {
-                    console.log('SW registered:', registration)
-                })
-                .catch((error) => {
-                    console.error('SW registration failed:', error)
-                })
-        }
-    }, [])
-
     return null
 }

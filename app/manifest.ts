@@ -2,24 +2,26 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'AxoMed',
+        name: 'AxoMed — Gestión de Clínica',
         short_name: 'AxoMed',
         description: 'Gestión Inteligente para Clínicas de Fisioterapia',
         start_url: '/',
         display: 'standalone',
-        background_color: '#ffffff',
+        orientation: 'portrait',
+        background_color: '#0f172a',
         theme_color: '#2563eb',
+        categories: ['medical', 'health', 'productivity'],
         icons: [
-            {
-                src: '/icon?size=192', // Dynamic icon generator
-                sizes: '192x192',
-                type: 'image/png',
-            },
-            {
-                src: '/icon?size=512', // Dynamic icon generator
-                sizes: '512x512',
-                type: 'image/png',
-            },
+            { src: '/icon?size=72',  sizes: '72x72',  type: 'image/png' },
+            { src: '/icon?size=96',  sizes: '96x96',  type: 'image/png' },
+            { src: '/icon?size=128', sizes: '128x128', type: 'image/png' },
+            { src: '/icon?size=144', sizes: '144x144', type: 'image/png' },
+            { src: '/icon?size=152', sizes: '152x152', type: 'image/png' },
+            { src: '/icon?size=192', sizes: '192x192', type: 'image/png' },
+            { src: '/icon?size=384', sizes: '384x384', type: 'image/png' },
+            { src: '/icon?size=512', sizes: '512x512', type: 'image/png' },
+            // Icono maskable: Android lo usa para el ícono redondeado en el launcher
+            { src: '/icon?size=512', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
     }
 }

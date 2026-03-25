@@ -18,6 +18,17 @@ export const metadata: Metadata = {
   title: "AxoMed",
   description: "Gestión Inteligente para Clínicas de Fisioterapia",
   manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "AxoMed",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 import { Toaster } from "sonner";
