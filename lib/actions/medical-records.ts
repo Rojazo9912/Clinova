@@ -139,7 +139,7 @@ export async function createTherapySession(data: {
     session_date: string
     duration_minutes: number
     notes: string
-    exercises: any[]
+    exercises: Record<string, unknown>[]
     progress_rating: number
 }) {
     const validated = therapySessionSchema.safeParse(data)
@@ -181,7 +181,7 @@ export async function createTherapySession(data: {
 
 export async function updateTherapySession(id: string, data: {
     notes: string
-    exercises: any[]
+    exercises: Record<string, unknown>[]
     progress_rating: number
 }) {
     if (!id || typeof id !== 'string') throw new Error('ID de sesión inválido')

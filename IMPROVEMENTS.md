@@ -1,6 +1,6 @@
 # Clinova v2 — Plan de Mejoras
 
-> Última revisión: 2026-03-25
+> Última revisión: 2026-03-25 · Fases 1, 2, 3 y 4 completadas
 > Alcance: seguridad, integridad de datos, performance, UX, deuda técnica
 
 ---

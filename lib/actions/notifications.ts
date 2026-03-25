@@ -42,9 +42,9 @@ export async function sendAppointmentReminder(appointmentId: string) {
 
     const messageBody = `*${clinicName}*\n\nHola ${patient.first_name}, te recordamos tu cita el ${dateStr}. Por favor llega 10 minutos antes.`
 
-    const results = {
-        whatsapp: null as any,
-        email: null as any
+    const results: { whatsapp: unknown; email: unknown } = {
+        whatsapp: null,
+        email: null
     }
 
     if (patient.phone) {
@@ -109,9 +109,9 @@ export async function resendAppointmentConfirmation(appointmentId: string) {
 
     const messageBody = `*${clinicName}*\n\nHola ${patient.first_name}, confirmamos tu cita de ${serviceName} el ${dateStr}. ¡Te esperamos!`
 
-    const results = {
-        whatsapp: null as any,
-        email: null as any
+    const results: { whatsapp: unknown; email: unknown } = {
+        whatsapp: null,
+        email: null
     }
 
     if (patient.phone) {

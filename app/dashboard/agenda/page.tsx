@@ -7,7 +7,7 @@ import RecurringAppointmentModal from '@/components/calendar/RecurringAppointmen
 import { getAppointmentsForCalendar, updateAppointmentTime, createQuickAppointment, getPatientsForCalendar, getServicesForCalendar, getGoogleCalendarBlocks } from '@/lib/actions/appointments-calendar'
 import { getAvailabilityBlocks, checkTimeSlotAvailability } from '@/lib/actions/availability'
 import { SlotInfo } from 'react-big-calendar'
-import { X, Plus, Calendar as CalendarIcon, User, Clock, Ban, Repeat, Send } from 'lucide-react'
+import { X, Plus, Calendar as CalendarIcon, User, Clock, Ban, Repeat, Send, AlertCircle, RefreshCw } from 'lucide-react'
 import { resendAppointmentConfirmation } from '@/lib/actions/notifications'
 import SlideOver from '@/components/ui/SlideOver'
 import { toast } from 'sonner'
@@ -38,6 +38,7 @@ export default function AgendaPage() {
     const [patients, setPatients] = useState<any[]>([])
     const [services, setServices] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
+    const [loadError, setLoadError] = useState(false)
 
     // Block Mode State
     const [isBlockMode, setIsBlockMode] = useState(false)
@@ -55,40 +56,45 @@ export default function AgendaPage() {
     }, [])
 
     const loadData = async () => {
-        // Get date range for current view (1 month)
-        const now = new Date()
-        const startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1)
-        const endDate = new Date(now.getFullYear(), now.getMonth() + 2, 0)
+        setLoadError(false)
+        try {
+            // Get date range for current view (1 month)
+            const now = new Date()
+            const startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+            const endDate = new Date(now.getFullYear(), now.getMonth() + 2, 0)
 
-        const [appointmentsData, patientsData, servicesData, blocksData, gcalBlocks] = await Promise.all([
-            getAppointmentsForCalendar(startDate, endDate),
-            getPatientsForCalendar(),
-            getServicesForCalendar(),
-            getAvailabilityBlocks(startDate, endDate),
-            getGoogleCalendarBlocks(startDate, endDate)
-        ])
+            const [appointmentsData, patientsData, servicesData, blocksData, gcalBlocks] = await Promise.all([
+                getAppointmentsForCalendar(startDate, endDate),
+                getPatientsForCalendar(),
+                getServicesForCalendar(),
+                getAvailabilityBlocks(startDate, endDate),
+                getGoogleCalendarBlocks(startDate, endDate)
+            ])
 
-        // Convert blocks to calendar events
-        const blockEvents = blocksData.map((block: any) => ({
-            id: `block-${block.id}`,
-            title: `🚫 ${block.reason || 'Bloqueado'}`,
-            start: new Date(block.start_time),
-            end: new Date(block.end_time),
-            resource: {
-                patientId: '',
-                patientName: '',
-                serviceId: '',
-                serviceName: '',
-                status: 'blocked',
-                isBlock: true,
-                blockId: block.id
-            }
-        }))
+            // Convert blocks to calendar events
+            const blockEvents = blocksData.map((block: any) => ({
+                id: `block-${block.id}`,
+                title: `🚫 ${block.reason || 'Bloqueado'}`,
+                start: new Date(block.start_time),
+                end: new Date(block.end_time),
+                resource: {
+                    patientId: '',
+                    patientName: '',
+                    serviceId: '',
+                    serviceName: '',
+                    status: 'blocked',
+                    isBlock: true,
+                    blockId: block.id
+                }
+            }))
 
-        setEvents([...appointmentsData, ...blockEvents, ...gcalBlocks])
-        setPatients(patientsData)
-        setServices(servicesData)
-
+            setEvents([...appointmentsData, ...blockEvents, ...gcalBlocks])
+            setPatients(patientsData)
+            setServices(servicesData)
+        } catch {
+            setLoadError(true)
+            toast.error('Error al cargar la agenda')
+        }
     }
 
     // Handle event drop (drag & drop)
@@ -302,6 +308,21 @@ export default function AgendaPage() {
                     <span className="text-sm text-foreground">Bloqueado</span>
                 </div>
             </div>
+
+            {/* Load error banner */}
+            {loadError && (
+                <div className="flex items-center gap-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                    <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
+                    <p className="text-sm text-red-700 dark:text-red-300 flex-1">Error al cargar la agenda. Los datos pueden estar desactualizados.</p>
+                    <button
+                        onClick={loadData}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition shrink-0"
+                    >
+                        <RefreshCw className="h-3.5 w-3.5" />
+                        Reintentar
+                    </button>
+                </div>
+            )}
 
             {/* Calendar */}
             <div className={isBlockMode ? "ring-2 ring-red-500 ring-offset-2 rounded-xl transition-all" : ""}>

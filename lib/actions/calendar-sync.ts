@@ -57,6 +57,87 @@ export async function exportAppointmentToGoogleCalendar(
     }
 }
 
+export async function updateGoogleCalendarEvent(
+    userId: string,
+    googleEventId: string,
+    appointmentData: { title: string; start: Date; end: Date; description?: string }
+) {
+    const supabase = await createClient();
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('gcal_access_token, gcal_refresh_token, gcal_token_expiry')
+        .eq('id', userId)
+        .single();
+
+    if (!profile?.gcal_refresh_token) return null;
+
+    try {
+        const oauth2Client = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET
+        );
+
+        oauth2Client.setCredentials({
+            access_token: profile.gcal_access_token,
+            refresh_token: profile.gcal_refresh_token,
+            expiry_date: profile.gcal_token_expiry ? new Date(profile.gcal_token_expiry).getTime() : null,
+        });
+
+        const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+        const response = await calendar.events.patch({
+            calendarId: 'primary',
+            eventId: googleEventId,
+            requestBody: {
+                summary: appointmentData.title,
+                description: appointmentData.description,
+                start: { dateTime: appointmentData.start.toISOString() },
+                end: { dateTime: appointmentData.end.toISOString() },
+            },
+        });
+
+        return response.data;
+    } catch (error: any) {
+        console.error('Error actualizando evento en Google Calendar:', error.message || error);
+        return null;
+    }
+}
+
+export async function deleteGoogleCalendarEvent(userId: string, googleEventId: string) {
+    const supabase = await createClient();
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('gcal_access_token, gcal_refresh_token, gcal_token_expiry')
+        .eq('id', userId)
+        .single();
+
+    if (!profile?.gcal_refresh_token) return;
+
+    try {
+        const oauth2Client = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET
+        );
+
+        oauth2Client.setCredentials({
+            access_token: profile.gcal_access_token,
+            refresh_token: profile.gcal_refresh_token,
+            expiry_date: profile.gcal_token_expiry ? new Date(profile.gcal_token_expiry).getTime() : null,
+        });
+
+        const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+        await calendar.events.delete({
+            calendarId: 'primary',
+            eventId: googleEventId,
+        });
+    } catch (error: any) {
+        console.error('Error eliminando evento de Google Calendar:', error.message || error);
+    }
+}
+
 export async function fetchGoogleCalendarEvents(userId: string, timeMin: Date, timeMax: Date) {
     const supabase = await createClient();
 

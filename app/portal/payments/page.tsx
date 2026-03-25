@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getPatientPayments } from '@/lib/actions/portal'
 import { generatePaymentReceipt } from '@/lib/pdf/reports'
-import { CreditCard, Calendar, Download } from 'lucide-react'
+import { CreditCard, Download, AlertCircle, RefreshCw } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -14,20 +14,29 @@ interface Payment {
     payment_method: string
     status: string
     service: { name: string }
+    patient_name: string
+    clinic_name: string
 }
 
 export default function PaymentsPage() {
     const [payments, setPayments] = useState<Payment[]>([])
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
 
-    useEffect(() => {
-        async function loadPayments() {
+    const loadPayments = async () => {
+        setLoading(true)
+        setError(false)
+        try {
             const data = await getPatientPayments()
             setPayments(data as Payment[])
+        } catch {
+            setError(true)
+        } finally {
             setLoading(false)
         }
-        loadPayments()
-    }, [])
+    }
+
+    useEffect(() => { loadPayments() }, [])
 
     const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0)
 
@@ -59,8 +68,23 @@ export default function PaymentsPage() {
             </div>
 
             {loading ? (
-                <div className="text-center py-12">
-                    <p className="text-muted-foreground">Cargando...</p>
+                <div className="space-y-3">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="h-16 bg-muted rounded-xl animate-pulse" />
+                    ))}
+                </div>
+            ) : error ? (
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
+                    <AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
+                    <p className="font-medium text-foreground">Error al cargar los pagos</p>
+                    <p className="text-sm text-muted-foreground mt-1">Verifica tu conexión e intenta de nuevo</p>
+                    <button
+                        onClick={loadPayments}
+                        className="mt-4 flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition mx-auto"
+                    >
+                        <RefreshCw className="w-4 h-4" />
+                        Reintentar
+                    </button>
                 </div>
             ) : payments.length === 0 ? (
                 <div className="text-center py-12 bg-card rounded-xl border border-border">
@@ -96,10 +120,15 @@ export default function PaymentsPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <button
-                                            onClick={() => {
-                                                // TODO: Implement PDF download
-                                                alert('Función de descarga de recibo próximamente')
-                                            }}
+                                            onClick={() => generatePaymentReceipt({
+                                                clinicName: payment.clinic_name || 'Clínica',
+                                                patientName: payment.patient_name,
+                                                amount: payment.amount,
+                                                paymentMethod: payment.payment_method,
+                                                paymentDate: format(new Date(payment.payment_date), "d 'de' MMM yyyy", { locale: es }),
+                                                serviceName: payment.service.name,
+                                                receiptNumber: payment.id.slice(0, 8).toUpperCase()
+                                            })}
                                             className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
                                         >
                                             <Download className="w-4 h-4" />

@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import { exportAppointmentToGoogleCalendar, fetchGoogleCalendarEvents } from './calendar-sync'
+import { exportAppointmentToGoogleCalendar, fetchGoogleCalendarEvents, updateGoogleCalendarEvent, deleteGoogleCalendarEvent } from './calendar-sync'
 
 export async function getAppointmentsForCalendar(startDate?: Date, endDate?: Date) {
     const supabase = await createClient()
@@ -46,16 +46,21 @@ export async function getAppointmentsForCalendar(startDate?: Date, endDate?: Dat
 
     if (!appointments) return []
 
-    return appointments.map((apt: any) => ({
+    type AptRow = {
+        id: string; start_time: string; end_time: string; status: string
+        patients: { id: string; first_name: string; last_name: string } | null
+        services: { id: string; name: string } | null
+    }
+    return (appointments as unknown as AptRow[]).map(apt => ({
         id: apt.id,
-        title: `${apt.patients?.first_name || ''} ${apt.patients?.last_name || ''} - ${apt.services?.name || 'Consulta'}`,
+        title: `${apt.patients?.first_name ?? ''} ${apt.patients?.last_name ?? ''} - ${apt.services?.name ?? 'Consulta'}`,
         start: new Date(apt.start_time),
         end: new Date(apt.end_time),
         resource: {
-            patientId: apt.patients?.id,
-            patientName: `${apt.patients?.first_name || ''} ${apt.patients?.last_name || ''}`,
-            serviceId: apt.services?.id,
-            serviceName: apt.services?.name || 'Consulta',
+            patientId: apt.patients?.id ?? '',
+            patientName: `${apt.patients?.first_name ?? ''} ${apt.patients?.last_name ?? ''}`,
+            serviceId: apt.services?.id ?? '',
+            serviceName: apt.services?.name ?? 'Consulta',
             status: apt.status
         }
     }))
@@ -75,7 +80,7 @@ export async function updateAppointmentTime(appointmentId: string, startTime: Da
 
     if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
 
-    const { error } = await supabase
+    const { error, data: updated } = await supabase
         .from('appointments')
         .update({
             start_time: startTime.toISOString(),
@@ -83,10 +88,56 @@ export async function updateAppointmentTime(appointmentId: string, startTime: Da
         })
         .eq('id', appointmentId)
         .eq('clinic_id', profile.clinic_id)
+        .select('google_event_id, patients(first_name, last_name), services(name)')
+        .single()
 
     if (error) {
         console.error('Error updating appointment time:', error)
         throw new Error('Failed to update appointment')
+    }
+
+    // Sync to Google Calendar if linked
+    if (updated?.google_event_id) {
+        const patient = (updated as any).patients
+        const patientName = patient ? `${patient.first_name} ${patient.last_name}` : 'Sin paciente'
+        const serviceName = (updated as any).services?.name
+        await updateGoogleCalendarEvent(user.id, updated.google_event_id, {
+            title: serviceName ? `${patientName} — ${serviceName}` : patientName,
+            start: startTime,
+            end: endTime,
+        })
+    }
+
+    revalidatePath('/dashboard/agenda')
+}
+
+export async function cancelAppointment(appointmentId: string) {
+    const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('No autenticado')
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id')
+        .eq('id', user.id)
+        .single()
+
+    if (!profile?.clinic_id) throw new Error('Sin clínica asignada')
+
+    const { error, data: cancelled } = await supabase
+        .from('appointments')
+        .update({ status: 'cancelled' })
+        .eq('id', appointmentId)
+        .eq('clinic_id', profile.clinic_id)
+        .select('google_event_id')
+        .single()
+
+    if (error) throw new Error('Error al cancelar cita: ' + error.message)
+
+    // Remove from Google Calendar if linked
+    if (cancelled?.google_event_id) {
+        await deleteGoogleCalendarEvent(user.id, cancelled.google_event_id)
     }
 
     revalidatePath('/dashboard/agenda')
@@ -150,8 +201,8 @@ export async function createQuickAppointment(data: {
 
         const eventTitle = serviceName ? `${patientName} — ${serviceName}` : patientName
 
-        // Exportar a Google Calendar
-        await exportAppointmentToGoogleCalendar(user.id, {
+        // Exportar a Google Calendar y guardar el event ID para sync bidireccional
+        const gcalEvent = await exportAppointmentToGoogleCalendar(user.id, {
             title: eventTitle,
             start: new Date(data.startTime),
             end: new Date(data.endTime),
@@ -163,6 +214,13 @@ export async function createQuickAppointment(data: {
                 'Cita creada desde la Agenda de AxoMed.',
             ].filter(Boolean).join('\n')
         })
+
+        if (gcalEvent && 'id' in gcalEvent && gcalEvent.id && newApt?.id) {
+            await supabase
+                .from('appointments')
+                .update({ google_event_id: gcalEvent.id })
+                .eq('id', newApt.id)
+        }
 
         revalidatePath('/dashboard/agenda')
     } catch (error: any) {

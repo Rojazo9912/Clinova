@@ -126,18 +126,30 @@ export async function getPatientPayments() {
 
     if (!patientUser) return []
 
-    const { data } = await supabase
-        .from('payments')
-        .select(`
-            id,
-            amount,
-            payment_date,
-            payment_method,
-            status,
-            services!inner(name)
-        `)
-        .eq('patient_id', patientUser.patient_id)
-        .order('payment_date', { ascending: false })
+    const [{ data }, { data: patientInfo }] = await Promise.all([
+        supabase
+            .from('payments')
+            .select(`
+                id,
+                amount,
+                payment_date,
+                payment_method,
+                status,
+                services!inner(name)
+            `)
+            .eq('patient_id', patientUser.patient_id)
+            .order('payment_date', { ascending: false }),
+        supabase
+            .from('patients')
+            .select('first_name, last_name, clinics!inner(name)')
+            .eq('id', patientUser.patient_id)
+            .single()
+    ])
+
+    const patientName = patientInfo
+        ? `${(patientInfo as any).first_name} ${(patientInfo as any).last_name}`
+        : ''
+    const clinicName = (patientInfo as any)?.clinics?.name ?? ''
 
     return (data || []).map((payment: any) => ({
         id: payment.id,
@@ -145,6 +157,8 @@ export async function getPatientPayments() {
         payment_date: payment.payment_date,
         payment_method: payment.payment_method,
         status: payment.status,
-        service: payment.services
+        service: payment.services,
+        patient_name: patientName,
+        clinic_name: clinicName
     }))
 }

@@ -159,14 +159,18 @@ export async function getTodayAppointments() {
         .lt('start_time', tomorrow.toISOString())
         .order('start_time')
 
-    return appointments?.map(apt => ({
-        id: apt.id,
-        patient_id: (apt.patients as any)?.id || null,
-        patient_name: `${(apt.patients as any)?.first_name ?? ''} ${(apt.patients as any)?.last_name ?? ''}`.trim() || 'Sin paciente',
-        service_name: (apt.services as any)?.name || 'Consulta',
-        start_time: apt.start_time,
-        status: apt.status
-    })) || []
+    return appointments?.map(apt => {
+        const p = apt.patients as unknown as { id: string; first_name: string; last_name: string } | null
+        const s = apt.services as unknown as { name: string } | null
+        return {
+            id: apt.id,
+            patient_id: p?.id ?? null,
+            patient_name: p ? `${p.first_name} ${p.last_name}`.trim() : 'Sin paciente',
+            service_name: s?.name ?? 'Consulta',
+            start_time: apt.start_time,
+            status: apt.status
+        }
+    }) || []
 }
 
 export async function getCurrentUserProfile() {
@@ -181,6 +185,20 @@ export async function getCurrentUserProfile() {
         .single()
 
     return profile?.full_name ?? null
+}
+
+export async function getClinicName(): Promise<string> {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return ''
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('clinic_id, clinics(name)')
+        .eq('id', user.id)
+        .single()
+
+    return (profile?.clinics as any)?.name ?? ''
 }
 
 export async function getBusinessAlerts() {

@@ -228,13 +228,13 @@ export async function getFinancialReport(startDate: string, endDate: string) {
 
     const total = payments.reduce((sum, p) => sum + Number(p.amount), 0)
 
-    const byMethod = payments.reduce((acc: any, p) => {
+    const byMethod = payments.reduce<Record<string, number>>((acc, p) => {
         acc[p.payment_method] = (acc[p.payment_method] || 0) + Number(p.amount)
         return acc
     }, {})
 
-    const byService = payments.reduce((acc: any, p) => {
-        const serviceName = (p.services as any)?.name || 'Sin servicio'
+    const byService = payments.reduce<Record<string, number>>((acc, p) => {
+        const serviceName = (p.services as unknown as { name: string } | null)?.name || 'Sin servicio'
         acc[serviceName] = (acc[serviceName] || 0) + Number(p.amount)
         return acc
     }, {})
@@ -286,8 +286,8 @@ export async function getPendingCollections() {
         .map(plan => ({
             id: plan.id,
             title: plan.title,
-            patient_id: (plan.patients as any)?.id as string,
-            patient_name: `${(plan.patients as any)?.first_name ?? ''} ${(plan.patients as any)?.last_name ?? ''}`.trim(),
+            patient_id: (plan.patients as unknown as { id: string } | null)?.id ?? '',
+            patient_name: (() => { const p = plan.patients as unknown as { first_name: string; last_name: string } | null; return p ? `${p.first_name} ${p.last_name}`.trim() : '' })(),
             package_price: Number(plan.package_price),
             paid_amount: Number(plan.paid_amount),
             pending: Number(plan.package_price) - Number(plan.paid_amount),

@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { getServices, getPayments, getFinancialReport, getPendingCollections } from '@/lib/actions/finance'
+import { getClinicName } from '@/lib/actions/dashboard'
 import ServiceModal from '@/components/finance/ServiceModal'
 import PaymentModal from '@/components/finance/PaymentModal'
 import PageHeader from '@/components/ui/PageHeader'
 import { generateFinancialReport } from '@/lib/pdf/reports'
-import { DollarSign, FileDown, AlertCircle, Plus, CreditCard, Clock } from 'lucide-react'
+import { DollarSign, FileDown, AlertCircle, Plus, CreditCard, Clock, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
 
 export default function FinancePage() {
@@ -22,25 +23,32 @@ export default function FinancePage() {
     const [isServiceModalOpen, setIsServiceModalOpen] = useState(false)
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
     const [refreshKey, setRefreshKey] = useState(0)
+    const [clinicName, setClinicName] = useState('')
+    const [loadError, setLoadError] = useState(false)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const [servicesData, paymentsData, pendingData] = await Promise.all([
+    const fetchData = async () => {
+        setLoadError(false)
+        try {
+            const endDate = new Date().toISOString()
+            const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+            const [servicesData, paymentsData, pendingData, reportData, name] = await Promise.all([
                 getServices(),
                 getPayments(),
                 getPendingCollections(),
+                getFinancialReport(startDate, endDate),
+                getClinicName(),
             ])
             setServices(servicesData)
             setPayments(paymentsData)
             setPendingCollections(pendingData)
-
-            const endDate = new Date().toISOString()
-            const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-            const reportData = await getFinancialReport(startDate, endDate)
             setReport(reportData)
+            setClinicName(name)
+        } catch {
+            setLoadError(true)
         }
-        fetchData()
-    }, [refreshKey])
+    }
+
+    useEffect(() => { fetchData() }, [refreshKey])
 
     const tabs: { key: 'services' | 'payments' | 'reports' | 'pending'; label: string; badge?: number | null }[] = [
         { key: 'services', label: 'Tratamientos' },
@@ -71,6 +79,20 @@ export default function FinancePage() {
                     </button>
                 )}
             </PageHeader>
+
+            {loadError && (
+                <div className="flex items-center gap-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                    <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
+                    <p className="text-sm text-red-700 dark:text-red-300 flex-1">Error al cargar los datos financieros.</p>
+                    <button
+                        onClick={fetchData}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition shrink-0"
+                    >
+                        <RefreshCw className="h-3.5 w-3.5" />
+                        Reintentar
+                    </button>
+                </div>
+            )}
 
             {/* Summary metric cards */}
             <div className="grid gap-4 sm:grid-cols-3">
@@ -225,7 +247,7 @@ export default function FinancePage() {
                                 }))
 
                                 generateFinancialReport({
-                                    clinicName: 'AxoMed',
+                                    clinicName: clinicName || 'Clínica',
                                     startDate: startDate.toLocaleDateString('es-MX'),
                                     endDate: endDate.toLocaleDateString('es-MX'),
                                     totalRevenue: report.total,
