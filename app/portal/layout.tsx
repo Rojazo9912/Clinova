@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import PortalLayoutWrapper from '@/components/portal/PortalLayoutWrapper'
 
 export default async function PortalLayout({
     children,
@@ -23,10 +24,24 @@ export default async function PortalLayout({
         .eq('is_active', true)
         .single()
 
-    // If not a patient, redirect to main site
+    // If not a patient, redirect to main site (unless it's an auth page)
     if (!patientUser) {
+        // Here we could check the path too, but redirecting to / is safe for non-patients
         redirect('/')
     }
 
-    return <>{children}</>
+    // Fetch patient name for the shell
+    const { data: patient } = await supabase
+        .from('patients')
+        .select('first_name, last_name')
+        .eq('auth_user_id', user.id)
+        .single()
+    
+    const patientName = patient ? `${patient.first_name}` : undefined
+
+    return (
+        <PortalLayoutWrapper patientName={patientName}>
+            {children}
+        </PortalLayoutWrapper>
+    )
 }

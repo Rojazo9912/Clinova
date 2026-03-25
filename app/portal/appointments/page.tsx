@@ -5,6 +5,7 @@ import { getPatientAppointments, cancelAppointment } from '@/lib/actions/portal'
 import { Calendar, Clock, User, X } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { toast } from 'sonner'
 
 interface Appointment {
     id: string
@@ -37,9 +38,10 @@ export default function AppointmentsPage() {
 
         const result = await cancelAppointment(id)
         if (result.success) {
+            toast.success(result.message)
             loadAppointments()
         } else {
-            alert(result.message)
+            toast.error(result.message)
         }
     }
 

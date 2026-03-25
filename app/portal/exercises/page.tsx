@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import { getPatientExercises, updateExerciseStatus, PatientExercise } from '@/lib/actions/exercises'
-import { Dumbbell, CheckCircle2, Play } from 'lucide-react'
+import { Dumbbell, CheckCircle2, Play, Clock, ArrowRight, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@/components/ui/button'
+import { createClient } from '@/lib/supabase/client'
+import { getPatientProfile } from '@/lib/actions/portal'
 
 const CATEGORIES = {
     mobility: '🏃 Movilidad',
@@ -31,24 +36,27 @@ export default function ExercisesPage() {
 
     async function loadExercises() {
         setLoading(true)
-        // Get patient ID from session
-        const response = await fetch('/api/auth/session')
-        const session = await response.json()
-
-        if (session?.user) {
-            const data = await getPatientExercises(session.user.id)
-            setAssignments(data as PatientExercise[])
+        try {
+            const patient = await getPatientProfile()
+            if (patient) {
+                const data = await getPatientExercises(patient.id)
+                setAssignments(data as PatientExercise[])
+            }
+        } catch (error) {
+            console.error("Error loading exercises:", error)
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     async function handleMarkComplete(id: string) {
         try {
             await updateExerciseStatus(id, 'completed')
+            toast.success('Ejercicio completado')
             setRefreshKey(prev => prev + 1)
             setSelectedExercise(null)
         } catch (error: any) {
-            alert('Error: ' + error.message)
+            toast.error('Error: ' + error.message)
         }
     }
 
@@ -57,8 +65,23 @@ export default function ExercisesPage() {
 
     if (loading) {
         return (
-            <div className="p-8">
-                <div className="text-center py-12 text-muted-foreground">Cargando ejercicios...</div>
+            <div className="space-y-8 animate-in fade-in duration-500">
+                <div className="space-y-2">
+                    <Skeleton className="h-10 w-48" />
+                    <Skeleton className="h-4 w-64" />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="space-y-4">
+                            <Skeleton className="h-40 w-full rounded-2xl" />
+                            <div className="space-y-2">
+                                <Skeleton className="h-6 w-3/4" />
+                                <Skeleton className="h-4 w-1/2" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         )
     }
@@ -78,7 +101,7 @@ export default function ExercisesPage() {
     }
 
     return (
-        <div className="p-8 space-y-8">
+        <div className="space-y-8 animate-in fade-in duration-500 pb-12">
             <div>
                 <h1 className="text-3xl font-bold text-foreground">Mis Ejercicios</h1>
                 <p className="text-muted-foreground mt-2">
