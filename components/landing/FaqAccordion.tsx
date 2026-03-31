@@ -46,7 +46,7 @@ export default function FaqAccordion() {
             {faqs.map((faq, i) => (
                 <div
                     key={i}
-                    className="glass-card dark:bg-slate-800/50 dark:border-white/5 rounded-2xl overflow-hidden"
+                    className="card-solid rounded-2xl overflow-hidden"
                 >
                     <button
                         onClick={() => setOpen(open === i ? null : i)}

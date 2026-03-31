@@ -490,7 +490,7 @@ export default function Home() {
               {integrations.map((int) => (
                 <div
                   key={int.name}
-                  className="glass-card dark:bg-slate-800/50 dark:border-white/5 rounded-2xl p-5 flex flex-col items-center text-center gap-3 hover:-translate-y-1 transition-transform"
+                  className="card-solid rounded-2xl p-5 flex flex-col items-center text-center gap-3 hover:-translate-y-1 transition-transform"
                 >
                   <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
                     {int.icon}
@@ -522,7 +522,7 @@ export default function Home() {
               {features.map((f) => {
                 const Icon = f.icon;
                 return (
-                  <div key={f.title} className="glass-card dark:bg-slate-800/50 dark:border-white/5 p-6 rounded-2xl space-y-3 group hover:-translate-y-1 transition-transform">
+                  <div key={f.title} className="card-solid p-6 rounded-2xl space-y-3 group hover:-translate-y-1 transition-transform">
                     <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${colorMap[f.color]}`}>
                       <Icon className="h-6 w-6" />
                     </div>
@@ -640,7 +640,7 @@ export default function Home() {
               {securityItems.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.title} className="flex gap-4 p-6 glass-card dark:bg-slate-800/50 dark:border-white/5 rounded-2xl">
+                  <div key={item.title} className="flex gap-4 p-6 card-solid rounded-2xl">
                     <div className="shrink-0 w-11 h-11 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
                       <Icon className="w-5 h-5" />
                     </div>
@@ -682,7 +682,7 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {testimonials.map((t) => (
-                <div key={t.name} className="glass-card dark:bg-slate-800/50 dark:border-white/5 p-6 rounded-2xl space-y-4">
+                <div key={t.name} className="card-solid p-6 rounded-2xl space-y-4">
                   {/* Stars */}
                   <div className="flex gap-0.5">
                     {Array.from({ length: t.stars }).map((_, i) => (
@@ -722,7 +722,7 @@ export default function Home() {
                   key={plan.name}
                   className={`rounded-2xl p-6 space-y-6 relative ${plan.highlight
                     ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/30 scale-105"
-                    : "glass-card dark:bg-slate-800/50 dark:border-white/5"
+                    : "card-solid"
                     }`}
                 >
                   {plan.highlight && (

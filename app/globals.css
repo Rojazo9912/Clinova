@@ -62,6 +62,11 @@
     @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-lg supports-[backdrop-filter]:bg-black/40;
   }
 
+  /* Solid card for sections that need reliable dark mode contrast */
+  .card-solid {
+    @apply bg-white dark:bg-slate-800 border border-border shadow-sm hover:shadow-md transition-all duration-300;
+  }
+
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600;
   }
