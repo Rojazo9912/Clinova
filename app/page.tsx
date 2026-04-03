@@ -1,5 +1,6 @@
 import Link from "next/link";
 import FaqAccordion from "@/components/landing/FaqAccordion";
+import PricingSection from "@/components/landing/PricingSection";
 import {
   ArrowRight, Activity, ShieldCheck, Zap, Calendar, FileText,
   Users, CreditCard, Bell, Dumbbell, CheckCircle, Star,
@@ -76,56 +77,6 @@ const testimonials = [
     role: "Especialista en Rehabilitación",
     text: "El expediente clínico con mapa corporal SVG es exactamente lo que necesitaba. Mis notas son mucho más precisas y rápidas.",
     stars: 5,
-  },
-];
-
-const plans = [
-  {
-    name: "Básico",
-    price: "$599",
-    period: "/mes MXN",
-    desc: "Para fisioterapeutas independientes",
-    highlight: false,
-    features: [
-      "1 fisioterapeuta",
-      "Hasta 200 pacientes",
-      "Agenda completa",
-      "Expediente clínico",
-      "Portal del paciente",
-      "Soporte por email",
-    ],
-  },
-  {
-    name: "Profesional",
-    price: "$1,499",
-    period: "/mes MXN",
-    desc: "La opción más popular para clínicas",
-    highlight: true,
-    features: [
-      "Hasta 5 fisioterapeutas",
-      "Pacientes ilimitados",
-      "Todo lo del plan Básico",
-      "Notificaciones WhatsApp + Email",
-      "Biblioteca de ejercicios",
-      "Reportes financieros PDF",
-      "Google Calendar sync",
-      "Soporte prioritario",
-    ],
-  },
-  {
-    name: "Clínica",
-    price: "$2,999",
-    period: "/mes MXN",
-    desc: "Para cadenas y clínicas grandes",
-    highlight: false,
-    features: [
-      "Fisioterapeutas ilimitados",
-      "Múltiples sedes",
-      "Todo lo del plan Profesional",
-      "Roles y permisos avanzados",
-      "Capacitación personalizada",
-      "Soporte dedicado 24/7",
-    ],
   },
 ];
 
@@ -706,76 +657,7 @@ export default function Home() {
         </section>
 
         {/* ── PRICING ──────────────────────────────────────────────────────── */}
-        <section id="pricing" className="py-20 md:py-28">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center space-y-4 mb-14">
-              <p className="text-sm font-semibold text-primary uppercase tracking-wider">Precios</p>
-              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-                Transparente y sin sorpresas
-              </h2>
-              <p className="text-muted-foreground text-lg">14 días gratis. Sin tarjeta de crédito.</p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {plans.map((plan) => (
-                <div
-                  key={plan.name}
-                  className={`rounded-2xl p-6 space-y-6 relative ${plan.highlight
-                    ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/30 scale-105"
-                    : "card-solid"
-                    }`}
-                >
-                  {plan.highlight && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1">
-                      MÁS POPULAR
-                    </div>
-                  )}
-
-                  <div>
-                    <h3 className={`text-lg font-bold ${plan.highlight ? "" : ""}`}>{plan.name}</h3>
-                    <p className={`text-xs mt-0.5 ${plan.highlight ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                      {plan.desc}
-                    </p>
-                  </div>
-
-                  <div className="flex items-end gap-1">
-                    <span className="text-4xl font-extrabold">{plan.price}</span>
-                    <span className={`text-sm mb-1 ${plan.highlight ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                      {plan.period}
-                    </span>
-                  </div>
-
-                  <ul className="space-y-2.5">
-                    {plan.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className={`h-4 w-4 shrink-0 ${plan.highlight ? "text-primary-foreground/80" : "text-green-500"}`} />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Link
-                    href="/register"
-                    className={`flex h-11 items-center justify-center rounded-xl text-sm font-semibold transition-all ${plan.highlight
-                      ? "bg-white text-primary hover:bg-white/90"
-                      : "bg-primary text-primary-foreground hover:bg-primary/90"
-                      }`}
-                  >
-                    Comenzar gratis
-                    <ChevronRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-center text-sm text-muted-foreground mt-8">
-              ¿Necesitas algo personalizado?{" "}
-              <a href="mailto:hola@axomed.com.mx" className="text-primary font-medium hover:underline">
-                Contáctanos
-              </a>
-            </p>
-          </div>
-        </section>
+        <PricingSection />
 
         {/* ── FAQ ──────────────────────────────────────────────────────────── */}
         <section id="faq" className="py-20 md:py-28">
