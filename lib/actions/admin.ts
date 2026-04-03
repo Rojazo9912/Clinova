@@ -26,9 +26,14 @@ export type Clinic = {
     id: string
     name: string
     slug: string
-    address?: string
-    phone?: string
-    email?: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    stripe_customer_id?: string | null
+    stripe_subscription_id?: string | null
+    subscription_status?: string | null
+    subscription_plan?: string | null
+    subscription_current_period_end?: string | null
     created_at: string
 }
 
