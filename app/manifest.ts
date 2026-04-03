@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: 'AxoMed — Gestión de Clínica',
         short_name: 'AxoMed',
         description: 'Gestión Inteligente para Clínicas de Fisioterapia',
-        start_url: '/',
+        start_url: '/login',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#0f172a',
