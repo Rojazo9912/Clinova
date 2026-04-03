@@ -264,3 +264,32 @@ export async function createClinicUser(prevState: any, formData: FormData) {
     revalidatePath(`/dashboard/admin/clinics/${clinic_id}`)
     return { message: 'Usuario creado exitosamente', success: true }
 }
+
+export async function changeUserPassword(userId: string, newPassword: string) {
+    const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'No autenticado' }
+
+    const { data: adminProfile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .maybeSingle()
+
+    if (adminProfile?.role !== 'super_admin') return { error: 'No autorizado' }
+
+    if (newPassword.length < 8) return { error: 'La contraseña debe tener al menos 8 caracteres' }
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+    const { createClient: createServiceClient } = await import('@supabase/supabase-js')
+    const supabaseAdmin = createServiceClient(supabaseUrl, serviceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+    })
+
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, { password: newPassword })
+    if (error) return { error: 'Error al cambiar contraseña: ' + error.message }
+
+    return { success: true }
+}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, MapPin, Phone, Mail, UserPlus, Users, CheckCircle, XCircle, Clock } from "lucide-react";
 import CreateClinicUserForm from "@/components/admin/CreateClinicUserForm";
 import AdminBillingClient from "@/components/admin/AdminBillingClient";
+import ChangePasswordButton from "@/components/admin/ChangePasswordButton";
 
 export const dynamic = "force-dynamic";
 
@@ -109,13 +110,16 @@ export default async function ClinicDetailsPage({ params }: { params: Promise<{ 
                                             <p className="text-xs text-muted-foreground">{user.email ?? user.phone ?? '—'}</p>
                                         </div>
                                     </div>
-                                    <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                                        user.role === 'clinic_manager'
-                                            ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
-                                            : 'bg-muted text-muted-foreground'
-                                    }`}>
-                                        {user.role === 'clinic_manager' ? 'Gerente' : user.role}
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                                            user.role === 'clinic_manager'
+                                                ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                                                : 'bg-muted text-muted-foreground'
+                                        }`}>
+                                            {user.role === 'clinic_manager' ? 'Gerente' : user.role}
+                                        </span>
+                                        <ChangePasswordButton userId={user.id} userName={user.full_name ?? 'Usuario'} />
+                                    </div>
                                 </div>
                             ))
                         )}
