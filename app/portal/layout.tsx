@@ -24,10 +24,20 @@ export default async function PortalLayout({
         .eq('is_active', true)
         .single()
 
-    // If not a patient, redirect to main site (unless it's an auth page)
+    // If not a patient, redirect appropriately
     if (!patientUser) {
-        // Here we could check the path too, but redirecting to / is safe for non-patients
-        redirect('/')
+        // Check if staff user → send to their dashboard
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+
+        if (profile?.role && ['clinic_manager', 'physio', 'staff', 'super_admin'].includes(profile.role)) {
+            redirect('/dashboard')
+        }
+
+        redirect('/portal/login')
     }
 
     // Fetch patient name for the shell
