@@ -122,7 +122,7 @@ export default function AdvancedCalendar({
     }), [])
 
     return (
-        <div className="h-[calc(100vh-200px)] bg-card rounded-xl p-4">
+        <div className="h-[calc(100vh-200px)] bg-card rounded-xl overflow-hidden">
             <DnDCalendar
                 localizer={localizer}
                 events={events}
@@ -144,15 +144,15 @@ export default function AdvancedCalendar({
                 step={15}
                 timeslots={4}
                 defaultView="week"
-                views={['month', 'week', 'day']}
-                min={new Date(2024, 0, 1, 7, 0, 0)} // 7 AM
-                max={new Date(2024, 0, 1, 21, 0, 0)} // 9 PM
-                scrollToTime={new Date()} // Auto-scroll to current time
+                views={['month', 'week', 'day', 'agenda']}
+                min={new Date(2024, 0, 1, 7, 0, 0)}
+                max={new Date(2024, 0, 1, 21, 0, 0)}
+                scrollToTime={new Date()}
                 showMultiDayTimes
-                getNow={() => new Date()} // Enable current time indicator
+                getNow={() => new Date()}
                 formats={{
                     dayFormat: 'ddd DD',
-                    weekdayFormat: 'dddd',
+                    weekdayFormat: (date: Date) => moment(date).format('ddd').toUpperCase(),
                     monthHeaderFormat: 'MMMM YYYY',
                     dayHeaderFormat: 'dddd, DD MMMM',
                     dayRangeHeaderFormat: ({ start, end }) =>
@@ -160,7 +160,10 @@ export default function AdvancedCalendar({
                 }}
                 dayLayoutAlgorithm="no-overlap"
                 components={{
-                    toolbar: (props: any) => <CustomToolbar {...props} isMobile={isMobile} />
+                    toolbar: (props: any) => <CustomToolbar {...props} isMobile={isMobile} />,
+                    month: {
+                        dateHeader: ({ date, label }: any) => <MonthDateHeader date={date} label={label} />
+                    }
                 }}
             />
         </div>
@@ -169,56 +172,76 @@ export default function AdvancedCalendar({
 
 // Custom Toolbar Component
 function CustomToolbar({ label, onNavigate, onView, view, isMobile }: any) {
+    const views = [
+        { key: 'month', label: 'Mes' },
+        { key: 'week', label: 'Semana' },
+        { key: 'day', label: 'Día' },
+        { key: 'agenda', label: 'Lista' },
+    ]
+
     return (
-        <div className="flex flex-col gap-2 mb-4 pb-4">
-            {/* Top row: nav + label */}
-            <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5">
-                    <button
-                        onClick={() => onNavigate('TODAY')}
-                        className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium whitespace-nowrap"
-                    >
-                        Hoy
-                    </button>
+        <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-border/40">
+            {/* Left: label + nav arrows */}
+            <div className="flex items-center gap-2">
+                <h2 className="text-sm font-bold tracking-wide uppercase text-foreground">
+                    {label}
+                </h2>
+                <div className="flex items-center gap-0.5">
                     <button
                         onClick={() => onNavigate('PREV')}
-                        className="px-2.5 py-1.5 border border-border rounded-lg hover:bg-muted transition text-foreground text-sm"
+                        className="w-6 h-6 flex items-center justify-center rounded hover:bg-muted text-muted-foreground hover:text-foreground transition text-sm"
                     >
-                        ←
+                        ‹
                     </button>
                     <button
                         onClick={() => onNavigate('NEXT')}
-                        className="px-2.5 py-1.5 border border-border rounded-lg hover:bg-muted transition text-foreground text-sm"
+                        className="w-6 h-6 flex items-center justify-center rounded hover:bg-muted text-muted-foreground hover:text-foreground transition text-sm"
                     >
-                        →
-                    </button>
-                </div>
-
-                {/* View switcher */}
-                <div className="flex gap-0.5 bg-muted rounded-lg p-1">
-                    <button
-                        onClick={() => onView('day')}
-                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition text-foreground ${view === 'day' ? 'bg-card shadow-sm' : 'hover:bg-muted/70'}`}
-                    >
-                        Día
-                    </button>
-                    <button
-                        onClick={() => onView('week')}
-                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition text-foreground ${view === 'week' ? 'bg-card shadow-sm' : 'hover:bg-muted/70'}`}
-                    >
-                        Semana
-                    </button>
-                    <button
-                        onClick={() => onView('month')}
-                        className={`px-3 py-1.5 rounded-md text-xs font-medium transition text-foreground ${view === 'month' ? 'bg-card shadow-sm' : 'hover:bg-muted/70'}`}
-                    >
-                        Mes
+                        ›
                     </button>
                 </div>
             </div>
 
-            {/* Date label */}
-            <h2 className="text-base font-semibold text-foreground">{label}</h2>
+            {/* Right: Today + view switcher */}
+            <div className="flex items-center gap-2">
+                <button
+                    onClick={() => onNavigate('TODAY')}
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition text-xs font-semibold whitespace-nowrap"
+                >
+                    Hoy
+                </button>
+                <div className="flex items-center bg-muted/60 rounded-lg p-0.5">
+                    {views.map(({ key, label: lbl }) => (
+                        <button
+                            key={key}
+                            onClick={() => onView(key)}
+                            className={`px-2.5 py-1 rounded-md text-xs font-medium transition whitespace-nowrap ${
+                                view === key
+                                    ? 'bg-card text-foreground shadow-sm'
+                                    : 'text-muted-foreground hover:text-foreground'
+                            }`}
+                        >
+                            {lbl}
+                        </button>
+                    ))}
+                </div>
+            </div>
         </div>
+    )
+}
+
+// Month date header with "today" circle
+function MonthDateHeader({ date, label }: { date: Date; label: string }) {
+    const isToday = moment(date).isSame(new Date(), 'day')
+    return (
+        <span
+            className={`inline-flex items-center justify-center w-7 h-7 text-sm font-medium rounded-full transition-colors ${
+                isToday
+                    ? 'bg-blue-600 text-white font-bold'
+                    : 'text-foreground hover:bg-muted'
+            }`}
+        >
+            {label}
+        </span>
     )
 }
