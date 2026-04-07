@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ShieldCheck, Building2, Shield, ArrowLeft } from "lucide-react";
+import { ShieldCheck, Building2, Shield, ArrowLeft, Map } from "lucide-react";
 
 export default async function AdminLayout({
     children,
@@ -47,6 +47,13 @@ export default async function AdminLayout({
                             >
                                 <Shield className="w-4 h-4" />
                                 Roles
+                            </Link>
+                            <Link
+                                href="/dashboard/admin/roadmap"
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                            >
+                                <Map className="w-4 h-4" />
+                                Roadmap
                             </Link>
                         </nav>
                     </div>

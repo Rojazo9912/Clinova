@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import FaqAccordion from "@/components/landing/FaqAccordion";
 import PricingSection from "@/components/landing/PricingSection";
 import {
@@ -240,7 +243,7 @@ export default function Home() {
       <main className="flex-1">
 
         {/* ── HERO ──────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-20 pb-24 md:pt-28 md:pb-32">
+        <section className="relative overflow-hidden pt-12 pb-20 md:pt-16 md:pb-28">
           {/* Background glow */}
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[900px] h-[500px] opacity-25">
@@ -249,7 +252,12 @@ export default function Home() {
           </div>
 
           <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center text-center space-y-6 max-w-4xl mx-auto">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="flex flex-col items-center text-center space-y-6 max-w-4xl mx-auto"
+            >
 
               {/* Badge */}
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary">
@@ -294,10 +302,15 @@ export default function Home() {
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* ── Dashboard Preview ── */}
-            <div className="mt-16 max-w-5xl mx-auto">
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              className="mt-12 max-w-5xl mx-auto"
+            >
               <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10 ring-1 ring-black/5">
                 {/* Browser chrome */}
                 <div className="flex items-center gap-2 bg-slate-800 px-4 py-3">
@@ -401,7 +414,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
