@@ -59,8 +59,9 @@ export async function grantPortalAccess(patientId: string) {
 
         // 5. Create user in Supabase Auth
         const tempPassword = generateRandomPassword()
+        const adminClient = createAdminClient()
 
-        const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+        const { data: authUser, error: authError } = await adminClient.auth.admin.createUser({
             email: patient.email,
             password: tempPassword,
             email_confirm: true,
@@ -90,7 +91,7 @@ export async function grantPortalAccess(patientId: string) {
         if (linkError) {
             console.error('Error linking patient user:', linkError)
             // Rollback: delete auth user
-            await supabase.auth.admin.deleteUser(authUser.user.id)
+            await adminClient.auth.admin.deleteUser(authUser.user.id)
             throw new Error('Failed to link patient account')
         }
 
