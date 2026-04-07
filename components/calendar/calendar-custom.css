@@ -52,17 +52,17 @@
 }
 
 .rbc-time-content > * + * > * {
-    border-left: 1px solid hsl(var(--border) / 0.35);
+    border-left: 1px solid hsl(var(--border) / 0.4) !important;
 }
 
 .rbc-timeslot-group {
     min-height: 80px;
-    border-bottom: 1px solid hsl(var(--border) / 0.35);
-    border-left: 1px solid hsl(var(--border) / 0.35);
+    border-bottom: 1px solid hsl(var(--border) / 0.4) !important;
+    border-left: 1px solid hsl(var(--border) / 0.4) !important;
 }
 
 .rbc-day-slot .rbc-time-slot {
-    border-top: 1px solid hsl(var(--border) / 0.2);
+    border-top: 1px solid hsl(var(--border) / 0.25) !important;
 }
 
 .rbc-label {
