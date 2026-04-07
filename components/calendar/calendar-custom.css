@@ -1,231 +1,249 @@
-/* Custom styles for react-big-calendar */
+/* ================================================================
+   AXOMED CALENDAR — Premium Dark Mode Style
+   Inspired by Cron / Linear / Apple Calendar aesthetic
+   ================================================================ */
 
 .rbc-calendar {
     font-family: inherit;
+    background: transparent;
 }
 
-/* ====================================
-   TOOLBAR (handled by CustomToolbar)
-   ==================================== */
+/* ================================================================
+   GRID BASE — Suave, minimal
+   ================================================================ */
 
-/* ====================================
-   DAY/WEEK HEADERS
-   ==================================== */
 .rbc-header {
     padding: 10px 4px;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
     color: hsl(var(--muted-foreground));
     border-bottom: 1px solid hsl(var(--border) / 0.4);
     background: transparent;
+    text-transform: uppercase;
 }
 
 .rbc-header + .rbc-header {
     border-left: 1px solid hsl(var(--border) / 0.3);
 }
 
-/* ====================================
-   TIME VIEW
-   ==================================== */
-.rbc-time-header-content,
-.rbc-time-content,
-.rbc-time-header-gutter {
-    border-color: hsl(var(--border) / 0.25) !important;
-}
-
 .rbc-time-view {
-    border: none;
-    border-top: 1px solid hsl(var(--border) / 0.25);
+    border: 1px solid hsl(var(--border) / 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    background: hsl(var(--card));
 }
 
-.rbc-time-slot {
-    min-height: 40px;
+.rbc-time-header {
+    border-bottom: 1px solid hsl(var(--border) / 0.4);
+}
+
+.rbc-time-header-content {
+    border-left: none !important;
+}
+
+.rbc-time-header-gutter {
+    background: hsl(var(--card));
+}
+
+.rbc-time-content {
+    border-top: none !important;
+    background: hsl(var(--card));
+}
+
+.rbc-time-content > * + * > * {
+    border-left: 1px solid hsl(var(--border) / 0.25);
 }
 
 .rbc-timeslot-group {
     min-height: 80px;
-    border-bottom: 1px solid hsl(var(--border) / 0.2);
+    border-bottom: 1px solid hsl(var(--border) / 0.25);
+    border-left: 1px solid hsl(var(--border) / 0.25);
 }
 
 .rbc-day-slot .rbc-time-slot {
-    border-top: 1px dashed hsl(var(--border) / 0.15);
+    border-top: 1px dashed hsl(var(--border) / 0.2);
 }
 
-.rbc-time-gutter .rbc-label {
+.rbc-label {
     font-size: 11px;
-    color: hsl(var(--muted-foreground));
-    padding-right: 8px;
+    color: hsl(var(--muted-foreground) / 0.7);
+    padding-right: 8px !important;
+    font-weight: 500;
 }
 
+/* Today column highlight */
 .rbc-today {
     background-color: hsl(var(--primary) / 0.04);
 }
 
-/* ====================================
-   EVENT CARDS — TIME VIEW
-   ==================================== */
+/* ================================================================
+   EVENT CARDS — Solid vibrant colors (dark mode style)
+   ================================================================ */
+
+/* Reset default rbc event styles */
 .rbc-event {
-    padding: 2px 4px !important;
+    padding: 1px 2px !important;
     background: transparent !important;
     border: none !important;
-    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
 }
 
 .rbc-event:focus {
     outline: none !important;
 }
 
-.rbc-event-content {
-    height: 100%;
-}
-
+/* The actual styled card inside */
 .rbc-event-card {
     height: 100%;
     width: 100%;
-    padding: 5px 8px;
-    border-radius: 8px;
-    font-size: 11.5px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 600;
-    transition: all 0.15s ease;
+    color: white;
+    transition: filter 0.15s ease;
     overflow: hidden;
-    line-height: 1.35;
-    color: white;
-}
-
-.rbc-event:hover .rbc-event-card {
-    transform: translateY(-1px);
-    filter: brightness(1.1);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.25);
-}
-
-/* Status Colors — solid, vibrant */
-.rbc-event-status-pending {
-    background-color: #f59e0b;
-    box-shadow: 0 1px 3px rgb(245 158 11 / 0.3);
-}
-
-.rbc-event-status-confirmed {
-    background-color: #06b6d4;
-    box-shadow: 0 1px 3px rgb(6 182 212 / 0.3);
-}
-
-.rbc-event-status-completed {
-    background-color: #22c55e;
-    box-shadow: 0 1px 3px rgb(34 197 94 / 0.3);
-}
-
-.rbc-event-status-cancelled {
-    background-color: #ef4444;
-    box-shadow: 0 1px 3px rgb(239 68 68 / 0.25);
-    opacity: 0.6;
-    text-decoration: line-through;
-}
-
-/* Block Events */
-.rbc-event-block-local,
-.rbc-event-block-gcal {
-    height: 100%;
-    width: 100%;
-    padding: 6px;
-    border-radius: 8px;
-    font-size: 11px;
-    font-weight: 600;
-    color: white;
-    cursor: not-allowed;
+    line-height: 1.3;
+    cursor: pointer;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
 }
 
+.rbc-event:hover .rbc-event-card {
+    filter: brightness(1.15);
+}
+
+/* Status: PENDING — amber solid */
+.rbc-event-status-pending {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+/* Status: CONFIRMED — emerald solid */
+.rbc-event-status-confirmed {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Status: COMPLETED — slate */
+.rbc-event-status-completed {
+    background: linear-gradient(135deg, #64748b, #475569);
+    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.2);
+    opacity: 0.85;
+}
+
+/* Status: CANCELLED — red, muted */
+.rbc-event-status-cancelled {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+    opacity: 0.6;
+}
+.rbc-event-status-cancelled .rbc-event-card {
+    text-decoration: line-through;
+}
+
+/* Block events */
+.rbc-event-block-wrapper {
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    cursor: not-allowed;
+}
+
 .rbc-event-block-local {
-    background-color: #6b7280;
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.08) 10px, rgba(255,255,255,.08) 20px);
-    border: 2px dashed #9ca3af;
-    opacity: 0.75;
+    background: repeating-linear-gradient(
+        45deg,
+        #374151,
+        #374151 8px,
+        #4b5563 8px,
+        #4b5563 16px
+    );
+    border: 1.5px dashed #6b7280;
 }
 
 .rbc-event-block-gcal {
-    background-color: #4f46e5;
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.08) 10px, rgba(255,255,255,.08) 20px);
-    border: 2px solid #6366f1;
-    opacity: 0.9;
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 8px,
+        rgba(255,255,255,0.07) 8px,
+        rgba(255,255,255,0.07) 16px
+    );
+    border: 1.5px solid #6366f1;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
 }
 
-/* ====================================
+/* ================================================================
    MONTH VIEW
-   ==================================== */
+   ================================================================ */
+
 .rbc-month-view {
-    border: none;
-    border-top: 1px solid hsl(var(--border) / 0.25);
+    border: 1px solid hsl(var(--border) / 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    background: hsl(var(--card));
 }
 
 .rbc-month-row {
-    border-top: 1px solid hsl(var(--border) / 0.2);
-    min-height: 100px;
+    border-top: 1px solid hsl(var(--border) / 0.3);
+    min-height: 80px;
 }
 
 .rbc-day-bg + .rbc-day-bg {
-    border-left: 1px solid hsl(var(--border) / 0.2);
+    border-left: 1px solid hsl(var(--border) / 0.3);
 }
 
 .rbc-date-cell {
     padding: 6px 8px;
     text-align: right;
+    font-size: 13px;
+    font-weight: 500;
+    color: hsl(var(--foreground) / 0.8);
 }
 
-/* Month view events: solid pill */
-.rbc-month-view .rbc-event {
-    padding: 1px 4px !important;
-    border-radius: 6px;
-    margin: 1px 2px;
+.rbc-date-cell.rbc-now a {
+    color: hsl(var(--primary));
+    font-weight: 700;
 }
 
-.rbc-month-view .rbc-event-status-pending {
-    background-color: #f59e0b !important;
-    color: white !important;
-    border-radius: 6px;
+.rbc-off-range {
+    opacity: 0.35;
 }
 
-.rbc-month-view .rbc-event-status-confirmed {
-    background-color: #06b6d4 !important;
-    color: white !important;
-    border-radius: 6px;
-}
-
-.rbc-month-view .rbc-event-status-completed {
-    background-color: #22c55e !important;
-    color: white !important;
-    border-radius: 6px;
-}
-
-.rbc-month-view .rbc-event-status-cancelled {
-    background-color: #ef4444 !important;
-    color: white !important;
-    opacity: 0.55;
-    border-radius: 6px;
+.rbc-off-range-bg {
+    background-color: hsl(var(--muted) / 0.3);
 }
 
 .rbc-show-more {
-    background-color: transparent;
+    background: transparent;
     color: hsl(var(--primary));
     font-weight: 600;
     font-size: 11px;
-    padding: 1px 4px;
-    margin: 1px 2px;
-}
-
-.rbc-show-more:hover {
-    background-color: hsl(var(--primary) / 0.1);
+    padding: 1px 6px;
     border-radius: 4px;
 }
 
-/* ====================================
-   TIME INDICATOR
-   ==================================== */
+.rbc-show-more:hover {
+    background: hsl(var(--primary) / 0.1);
+}
+
+/* ================================================================
+   CURRENT TIME INDICATOR — Primary color pulse
+   ================================================================ */
+
 .rbc-current-time-indicator {
-    background-color: #ef4444;
+    background-color: hsl(var(--primary));
     height: 2px;
     position: relative;
     z-index: 10;
@@ -234,20 +252,27 @@
 .rbc-current-time-indicator::before {
     content: '';
     position: absolute;
-    left: -4px;
+    left: -5px;
     top: -4px;
     width: 10px;
     height: 10px;
-    background-color: #ef4444;
+    background-color: hsl(var(--primary));
     border-radius: 50%;
+    animation: pulse-time 2s ease-in-out infinite;
 }
 
-/* ====================================
-   DRAG AND DROP
-   ==================================== */
+@keyframes pulse-time {
+    0%, 100% { box-shadow: 0 0 0 0 hsla(var(--primary) / 0.5); }
+    50% { box-shadow: 0 0 0 6px hsla(var(--primary) / 0); }
+}
+
+/* ================================================================
+   SLOT SELECTION
+   ================================================================ */
+
 .rbc-slot-selection {
     background-color: hsl(var(--primary) / 0.12);
-    border: 2px dashed hsl(var(--primary) / 0.6);
+    border: 1.5px dashed hsl(var(--primary) / 0.6);
     border-radius: 6px;
 }
 
@@ -255,62 +280,38 @@
     background-color: hsl(var(--primary) / 0.08) !important;
 }
 
-/* ==============================
-   DARK MODE
-   ============================== */
-.dark .rbc-calendar {
-    color: hsl(var(--foreground));
+.rbc-addons-dnd-dragging {
+    opacity: 0.6;
 }
 
+/* ================================================================
+   ALL-DAY SECTION
+   ================================================================ */
+
+.rbc-allday-cell {
+    background: hsl(var(--card));
+}
+
+/* ================================================================
+   DARK MODE — Reinforce vars for components that don't inherit
+   ================================================================ */
+
 .dark .rbc-time-view,
-.dark .rbc-month-view {
+.dark .rbc-month-view,
+.dark .rbc-time-content,
+.dark .rbc-time-header-gutter,
+.dark .rbc-allday-cell {
     background-color: hsl(var(--card));
 }
 
-.dark .rbc-off-range-bg {
-    background-color: hsl(var(--muted) / 0.15);
-}
-
-.dark .rbc-off-range .rbc-date-cell {
-    opacity: 0.35;
-}
-
-.dark .rbc-today {
-    background-color: hsl(var(--primary) / 0.06);
-}
-
-.dark .rbc-allday-cell {
-    background-color: transparent;
-}
-
-/* ==============================
-   AGENDA VIEW (Lista)
-   ============================== */
-.rbc-agenda-view table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.rbc-agenda-date-cell,
-.rbc-agenda-time-cell {
-    white-space: nowrap;
-    font-size: 12px;
+.dark .rbc-header {
     color: hsl(var(--muted-foreground));
-    padding: 8px 12px;
 }
 
-.rbc-agenda-event-cell {
-    padding: 6px 12px;
-    font-size: 13px;
-}
-
-.rbc-agenda-table tbody > tr {
-    border-bottom: 1px solid hsl(var(--border) / 0.25);
-}
-
-/* ==============================
+/* ================================================================
    MOBILE RESPONSIVE
-   ============================== */
+   ================================================================ */
+
 @media (max-width: 767px) {
     .rbc-header {
         padding: 6px 2px;
@@ -331,8 +332,5 @@
     }
     .rbc-label {
         font-size: 10px;
-    }
-    .rbc-month-row {
-        min-height: 60px;
     }
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { Home, Calendar, FileText, Activity, Settings, ChevronRight } from 'lucide-react'
+import { Home, Calendar, FileText, Activity, Settings, ChevronRight, Bell, MessageSquare, Shield } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -9,7 +9,10 @@ const NAV_ITEMS = [
     { label: 'Mis Citas', icon: Calendar, href: '/portal/appointments' },
     { label: 'Expediente Médico', icon: FileText, href: '/portal/medical-records' },
     { label: 'Mis Ejercicios', icon: Activity, href: '/portal/exercises' },
-    { label: 'Configuración', icon: Settings, href: '/portal/settings' }
+    { label: 'Notificaciones', icon: Bell, href: '/portal/notifications' },
+    { label: 'Chat con Clínica', icon: MessageSquare, href: '/portal/chat' },
+    { label: 'Configuración', icon: Settings, href: '/portal/settings' },
+    { label: 'Seguridad', icon: Shield, href: '/portal/security' },
 ]
 
 export default function PortalSidebar() {

@@ -94,12 +94,76 @@ export default function PortalDashboardPage() {
         )
     }
 
+    // KPI derived values
+    const nextAppointment = upcomingAppointments
+        .filter(a => ['confirmed', 'pending', 'scheduled'].includes(a.status) && new Date(a.start_time) > new Date())
+        .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime())[0]
+
+    const completedSessions = activePlan?.completed_sessions ?? null
+    const totalSessions = activePlan?.total_sessions ?? null
+    const pendingBalance = activePlan
+        ? Math.max(0, (activePlan.package_price ?? 0) - (activePlan.paid_amount ?? 0))
+        : 0
+
     return (
         <div className="space-y-6">
             {/* Welcome Header */}
             <div>
                 <h1 className="text-3xl font-bold text-foreground">Bienvenido</h1>
                 <p className="text-muted-foreground mt-2">Gestiona tus citas y revisa tu información médica</p>
+            </div>
+
+            {/* KPI Stats */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Próxima Cita */}
+                <div className="bg-card rounded-xl border border-border p-5 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
+                        <Calendar className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div className="min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Próxima Cita</p>
+                        <p className="text-lg font-bold text-foreground truncate">
+                            {nextAppointment
+                                ? format(new Date(nextAppointment.start_time), "d MMM · HH:mm", { locale: es })
+                                : 'Sin citas'}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">
+                            {nextAppointment ? nextAppointment.service.name : 'Agenda tu primera cita'}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Sesiones */}
+                <div className="bg-card rounded-xl border border-border p-5 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                        <CheckCircle2 className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div className="min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Sesiones</p>
+                        <p className="text-lg font-bold text-foreground">
+                            {completedSessions !== null ? `${completedSessions} / ${totalSessions}` : '—'}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                            {completedSessions !== null ? 'completadas de tu plan' : 'Sin plan activo'}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Saldo */}
+                <div className={`bg-card rounded-xl border p-5 flex items-center gap-4 ${pendingBalance > 0 ? 'border-orange-200 dark:border-orange-900/40' : 'border-border'}`}>
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${pendingBalance > 0 ? 'bg-orange-100 dark:bg-orange-900/30' : 'bg-green-100 dark:bg-green-900/30'}`}>
+                        <DollarSign className={`w-6 h-6 ${pendingBalance > 0 ? 'text-orange-600' : 'text-green-600'}`} />
+                    </div>
+                    <div className="min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Saldo Pendiente</p>
+                        <p className={`text-lg font-bold ${pendingBalance > 0 ? 'text-orange-600' : 'text-green-600'}`}>
+                            {pendingBalance > 0 ? `$${pendingBalance.toLocaleString('es-MX')}` : 'Al corriente'}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                            {pendingBalance > 0 ? 'Pago pendiente' : 'Sin saldo pendiente'}
+                        </p>
+                    </div>
+                </div>
             </div>
 
             {/* Quick Actions */}

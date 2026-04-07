@@ -75,7 +75,7 @@ export default function AdvancedCalendar({
         const isBlock = event.resource?.isBlock
 
         if (isBlock) {
-            const isGcal = event.resource?.isGcal;
+            const isGcal = event.resource?.isGcal
             return {
                 className: isGcal ? 'rbc-event-block-gcal' : 'rbc-event-block-local'
             }
@@ -122,7 +122,7 @@ export default function AdvancedCalendar({
     }), [])
 
     return (
-        <div className="h-[calc(100vh-200px)] bg-card rounded-xl overflow-hidden">
+        <div className="h-[calc(100vh-200px)] rounded-xl overflow-hidden">
             <DnDCalendar
                 localizer={localizer}
                 events={events}

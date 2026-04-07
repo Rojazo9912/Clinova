@@ -1,6 +1,6 @@
 'use client'
 
-import { Home, Calendar, FileText, Activity, Settings } from 'lucide-react'
+import { Home, Calendar, FileText, Activity, Bell, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -9,7 +9,8 @@ const NAV_ITEMS = [
     { label: 'Citas', icon: Calendar, href: '/portal/appointments' },
     { label: 'Expediente', icon: FileText, href: '/portal/medical-records' },
     { label: 'Ejercicios', icon: Activity, href: '/portal/exercises' },
-    { label: 'Perfil', icon: Settings, href: '/portal/settings' }
+    { label: 'Chat', icon: MessageSquare, href: '/portal/chat' },
+    { label: 'Avisos', icon: Bell, href: '/portal/notifications' },
 ]
 
 export default function PortalBottomNav() {

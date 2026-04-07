@@ -27,6 +27,8 @@ export default function MedicalRecordsPage() {
     const [records, setRecords] = useState<MedicalRecord[]>([])
     const [measurements, setMeasurements] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
+    const [filterPhysio, setFilterPhysio] = useState('')
+    const [filterMonth, setFilterMonth] = useState('')
 
     const METRICS_LABELS: any = {
         dolor: 'Nivel de Dolor (EVA)',
@@ -66,6 +68,16 @@ export default function MedicalRecordsPage() {
 
     const metricsToShow = ['dolor', 'movilidad', 'fuerza']
         .filter(m => measurements.some(ms => ms.metric === m))
+
+    // Unique physiotherapists from records
+    const physios = Array.from(new Set(records.map(r => r.physiotherapist.full_name))).sort()
+
+    // Filtered records
+    const filteredRecords = records.filter(r => {
+        const matchPhysio = !filterPhysio || r.physiotherapist.full_name === filterPhysio
+        const matchMonth = !filterMonth || r.session_date.startsWith(filterMonth)
+        return matchPhysio && matchMonth
+    })
 
     const handleExportPDF = async () => {
         const doc = new jsPDF()
@@ -203,16 +215,57 @@ export default function MedicalRecordsPage() {
                 </div>
             )}
 
-            <h2 className="text-xl font-bold text-foreground pt-4">Historial de Sesiones</h2>
+            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center pt-2">
+                <h2 className="text-xl font-bold text-foreground">Historial de Sesiones</h2>
+                <div className="flex gap-2 ml-auto">
+                    {/* Month filter */}
+                    <input
+                        type="month"
+                        value={filterMonth}
+                        onChange={e => setFilterMonth(e.target.value)}
+                        className="px-3 py-1.5 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {/* Physio filter */}
+                    {physios.length > 1 && (
+                        <select
+                            value={filterPhysio}
+                            onChange={e => setFilterPhysio(e.target.value)}
+                            className="px-3 py-1.5 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="">Todos los fisios</option>
+                            {physios.map(p => <option key={p} value={p}>{p}</option>)}
+                        </select>
+                    )}
+                    {(filterMonth || filterPhysio) && (
+                        <button
+                            onClick={() => { setFilterMonth(''); setFilterPhysio('') }}
+                            className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground border border-border rounded-lg transition"
+                        >
+                            Limpiar
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {filteredRecords.length < records.length && (
+                <p className="text-xs text-muted-foreground -mt-2">
+                    Mostrando {filteredRecords.length} de {records.length} sesiones
+                </p>
+            )}
 
             {records.length === 0 ? (
                 <div className="text-center py-12 bg-card rounded-xl border border-border">
                         <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                         <p className="text-muted-foreground">No hay registros médicos</p>
                 </div>
+            ) : filteredRecords.length === 0 ? (
+                <div className="text-center py-8 bg-card rounded-xl border border-border">
+                    <History className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+                    <p className="text-muted-foreground">No hay sesiones con los filtros aplicados</p>
+                </div>
             ) : (
                 <div className="space-y-4">
-                    {records.map((record) => (
+                    {filteredRecords.map((record) => (
                         <div key={record.id} className="bg-card rounded-xl border border-border p-6 hover:shadow-md transition">
                             <div className="flex gap-4">
                                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">

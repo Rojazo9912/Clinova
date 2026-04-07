@@ -408,6 +408,56 @@ export async function getPatientProfile() {
     return patient
 }
 
+export async function rescheduleAppointment(appointmentId: string, date: string, time: string) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { success: false, message: 'No autenticado' }
+
+    try {
+        // Verify ownership
+        const { data: patientUser } = await supabase
+            .from('patient_users')
+            .select('patient_id')
+            .eq('user_id', user.id)
+            .single()
+        if (!patientUser) return { success: false, message: 'Paciente no encontrado' }
+
+        // Get current appointment to know service duration
+        const { data: apt } = await supabase
+            .from('appointments')
+            .select('service_id, patient_id')
+            .eq('id', appointmentId)
+            .eq('patient_id', patientUser.patient_id)
+            .single()
+        if (!apt) return { success: false, message: 'Cita no encontrada' }
+
+        const { data: service } = await supabase
+            .from('services')
+            .select('duration_minutes')
+            .eq('id', apt.service_id)
+            .single()
+        if (!service) return { success: false, message: 'Servicio no encontrado' }
+
+        const startTime = parseISO(`${date}T${time}:00`)
+        const endTime = addMinutes(startTime, service.duration_minutes)
+
+        const { error } = await supabase
+            .from('appointments')
+            .update({
+                start_time: startTime.toISOString(),
+                end_time: endTime.toISOString(),
+                status: 'scheduled'
+            })
+            .eq('id', appointmentId)
+            .eq('patient_id', patientUser.patient_id)
+
+        if (error) throw error
+        return { success: true, message: 'Cita reagendada exitosamente' }
+    } catch (error: any) {
+        return { success: false, message: error.message }
+    }
+}
+
 export async function updatePatientProfile(data: {
     first_name: string
     last_name: string

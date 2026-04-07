@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import { getPatientExercises, updateExerciseStatus, PatientExercise } from '@/lib/actions/exercises'
-import { Dumbbell, CheckCircle2, Play, Clock, ArrowRight, Loader2 } from 'lucide-react'
+import { Dumbbell, CheckCircle2, Play, Loader2, Trophy } from 'lucide-react'
 import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase/client'
 import { getPatientProfile } from '@/lib/actions/portal'
+import { startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns'
 
 const CATEGORIES = {
     mobility: '🏃 Movilidad',
@@ -63,6 +62,15 @@ export default function ExercisesPage() {
     const activeExercises = assignments.filter(a => a.status === 'active')
     const completedExercises = assignments.filter(a => a.status === 'completed')
 
+    // Weekly progress
+    const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 })
+    const weekEnd = endOfWeek(new Date(), { weekStartsOn: 1 })
+    const completedThisWeek = completedExercises.filter(a =>
+        a.completed_date && isWithinInterval(parseISO(a.completed_date), { start: weekStart, end: weekEnd })
+    ).length
+    const totalThisWeek = activeExercises.length + completedThisWeek
+    const weekPercent = totalThisWeek > 0 ? Math.round((completedThisWeek / totalThisWeek) * 100) : 0
+
     if (loading) {
         return (
             <div className="space-y-8 animate-in fade-in duration-500">
@@ -106,6 +114,32 @@ export default function ExercisesPage() {
                 <h1 className="text-3xl font-bold text-foreground">Mis Ejercicios</h1>
                 <p className="text-muted-foreground mt-2">
                     Ejercicios personalizados para tu recuperación
+                </p>
+            </div>
+
+            {/* Weekly Progress Card */}
+            <div className="bg-card rounded-xl border border-border p-5">
+                <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                        <Trophy className="w-5 h-5 text-amber-500" />
+                        <h2 className="font-semibold text-foreground">Progreso de esta semana</h2>
+                    </div>
+                    <span className="text-sm font-bold text-foreground">
+                        {completedThisWeek} / {totalThisWeek}
+                    </span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
+                    <div
+                        className="h-3 rounded-full bg-gradient-to-r from-blue-500 to-green-500 transition-all duration-700"
+                        style={{ width: `${weekPercent}%` }}
+                    />
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                    {weekPercent === 100
+                        ? '¡Semana completada! Excelente trabajo.'
+                        : weekPercent > 0
+                        ? `${weekPercent}% completado — sigue así`
+                        : 'Comienza tus ejercicios de esta semana'}
                 </p>
             </div>
 
