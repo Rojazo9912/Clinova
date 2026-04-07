@@ -74,53 +74,15 @@ export default function AdvancedCalendar({
         const status = event.resource?.status || 'pending'
         const isBlock = event.resource?.isBlock
 
-        let backgroundColor = '#3b82f6' // Default blue
-
         if (isBlock) {
-            // Reutilizar estilo para bloqueos de GCal
             const isGcal = event.resource?.isGcal;
             return {
-                style: {
-                    backgroundColor: isGcal ? '#4f46e5' : '#9ca3af', // Indigo para Gcal, Gris para bloqueos locales
-                    backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.1) 10px, rgba(255,255,255,.1) 20px)',
-                    borderRadius: '6px',
-                    opacity: isGcal ? 0.9 : 0.8,
-                    color: 'white',
-                    border: isGcal ? '2px solid #4338ca' : '2px dashed #6b7280',
-                    display: 'block',
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    cursor: 'not-allowed'
-                }
+                className: isGcal ? 'rbc-event-block-gcal' : 'rbc-event-block-local'
             }
-        }
-
-        switch (status) {
-            case 'confirmed':
-                backgroundColor = '#10b981' // Green
-                break
-            case 'pending':
-                backgroundColor = '#f59e0b' // Orange
-                break
-            case 'cancelled':
-                backgroundColor = '#ef4444' // Red
-                break
-            case 'completed':
-                backgroundColor = '#6b7280' // Gray
-                break
         }
 
         return {
-            style: {
-                backgroundColor,
-                borderRadius: '6px',
-                opacity: 0.9,
-                color: 'white',
-                border: '0px',
-                display: 'block',
-                fontSize: '13px',
-                fontWeight: '500'
-            }
+            className: `rbc-event-card rbc-event-status-${status}`
         }
     }, [])
 
