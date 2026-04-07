@@ -315,24 +315,24 @@
 
 /* Dark mode: make grid lines clearly visible */
 .dark .rbc-timeslot-group {
-    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
-    border-left-color: rgba(255, 255, 255, 0.12) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 .dark .rbc-day-slot .rbc-time-slot {
-    border-top-color: rgba(255, 255, 255, 0.06) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
 .dark .rbc-time-content > * + * > * {
-    border-left-color: rgba(255, 255, 255, 0.12) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 .dark .rbc-time-view {
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .dark .rbc-time-header {
-    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 /* ================================================================
