@@ -52,17 +52,17 @@
 }
 
 .rbc-time-content > * + * > * {
-    border-left: 1px solid hsl(var(--border) / 0.25);
+    border-left: 1px solid hsl(var(--border) / 0.35);
 }
 
 .rbc-timeslot-group {
     min-height: 80px;
-    border-bottom: 1px solid hsl(var(--border) / 0.25);
-    border-left: 1px solid hsl(var(--border) / 0.25);
+    border-bottom: 1px solid hsl(var(--border) / 0.35);
+    border-left: 1px solid hsl(var(--border) / 0.35);
 }
 
 .rbc-day-slot .rbc-time-slot {
-    border-top: 1px dashed hsl(var(--border) / 0.2);
+    border-top: 1px solid hsl(var(--border) / 0.2);
 }
 
 .rbc-label {
@@ -306,6 +306,33 @@
 
 .dark .rbc-header {
     color: hsl(var(--muted-foreground));
+    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark .rbc-header + .rbc-header {
+    border-left-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Dark mode: make grid lines clearly visible */
+.dark .rbc-timeslot-group {
+    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+    border-left-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark .rbc-day-slot .rbc-time-slot {
+    border-top-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.dark .rbc-time-content > * + * > * {
+    border-left-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark .rbc-time-view {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .rbc-time-header {
+    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 /* ================================================================
